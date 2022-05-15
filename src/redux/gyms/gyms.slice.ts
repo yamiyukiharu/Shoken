@@ -4,12 +4,21 @@ import { createNewGymFirestore, getGymsFirestore, TGym } from "../../utils/fireb
 
 interface TGymState {
     gyms: Array<TGym>;
+    gymInEdit: TGym;
     createNewGymLoading: boolean;
     getGymsLoading: boolean;
 }
 
-const initialState: TGymState = {
+export const gymInitialState: TGymState = {
     gyms: [],
+    gymInEdit: {
+        name: '',
+        address: '',
+        createdBy: '',
+        image: '',
+        size: 0,
+        equipment: {},
+    },
     createNewGymLoading: false,
     getGymsLoading: false,
 }
@@ -36,10 +45,10 @@ export const getGyms = createAsyncThunk(
 
 const gymsSlice = createSlice({
     name: 'gyms',
-    initialState,
+    initialState: gymInitialState,
     reducers: {
-        addNewGym(state, action) {
-            state.gyms.push(action.payload)
+        setGymInEdit(state:TGymState, action:PayloadAction<TGym>) {
+            state.gymInEdit = {...state.gymInEdit, ...action.payload}
         },
     },
     extraReducers: {
@@ -70,5 +79,5 @@ const gymsSlice = createSlice({
     }
 })
 
-export const { addNewGym } = gymsSlice.actions;
+export const { setGymInEdit } = gymsSlice.actions;
 export default gymsSlice.reducer;

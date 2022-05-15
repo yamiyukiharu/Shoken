@@ -27,7 +27,7 @@ const GymAddScreen = () => {
           showsVerticalScrollIndicator={false}
           data={gyms}
           renderItem={({item, index, seperators}) =>
-            <GymSearchEntry gymName={item.name}/>
+            <GymSearchEntry gym={item}/>
           }
         />
       )}
@@ -39,10 +39,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     justifyContent: 'center',
-    marginHorizontal: 10,
   },
   gymList: {
-    marginHorizontal: 10,
   }
 });
 

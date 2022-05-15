@@ -34,7 +34,7 @@ const WorkoutsScreen = ({navigation}) => {
             index === 0 ? (
               <AddNewTile
                 style={styles.gymTile}
-                onPress={() => navigation.navigate('Workouts-gym-add')}
+                onPress={() => navigation.navigate('GymAddScreen')}
               />
             ) : (
               <Tile style={styles.gymTile}>

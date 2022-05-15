@@ -5,6 +5,7 @@ export interface TGym {
     address: string;
     createdBy: string;
     size: number;
+    image: string;
     equipment: { [key: string]: Array<string>};
 }
 

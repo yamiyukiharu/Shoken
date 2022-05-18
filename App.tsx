@@ -17,8 +17,10 @@ import HomeScreen from './src/screens/home.screen';
 import WorkoutsScreen from './src/screens/workouts.screen';
 import WorkoutEditScreen from './src/screens/workout-edit.screen';
 import GymAddScreen from './src/screens/gym-add.screen';
-import GymEditScreen from './src/screens/gym-edit.screen.tsx';
-import GymCreateScreen from './src/screens/gym-create.screen';
+import GymEditScreen from './src/screens/gym-edit.screen';
+import GymAddEquipmentCategoriesScreen from './src/screens/gym-add-equipment-categories.screen';
+import GymAddEquipmentListScreen from './src/screens/gym-add-equipment-list.screen';
+import GymDetailsScreen from './src/screens/gym-details.screen';
 
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -48,21 +50,36 @@ const WorkoutsStackScreen = () => {
           component={GymAddScreen}
           options={({navigation, route}) => ({
             headerTitle: 'Add Gym',
-            headerRight: () => (
-              <Button
-                onPress={() => navigation.navigate('GymEditScreen')}
-                title="Create New"
-              />
-            ),
+          })}
+        />
+        <WorkoutsStack.Screen
+          name='GymDetailsScreen'
+          component={GymDetailsScreen}
+          options={({navigation, route}) => ({
+            headerTitle: 'Gym Details',
           })}
         />
       </WorkoutsStack.Group>
-      <WorkoutsStack.Group screenOptions={{presentation: 'modal'}}>
+      <WorkoutsStack.Group>
         <WorkoutsStack.Screen
           name="GymEditScreen"
           component={GymEditScreen}
           options={() => ({
             headerTitle: 'Create New Gym',
+          })}
+        />
+        <WorkoutsStack.Screen
+          name="GymAddEquipmentCategoriesScreen"
+          component={GymAddEquipmentCategoriesScreen}
+          options={() => ({
+            headerTitle: 'Add Equipment',
+          })}
+        />
+        <WorkoutsStack.Screen
+          name="GymAddEquipmentListScreen"
+          component={GymAddEquipmentListScreen}
+          options={() => ({
+            headerTitle: 'Add Equipment',
           })}
         />
       </WorkoutsStack.Group>

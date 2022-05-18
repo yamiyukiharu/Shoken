@@ -7,14 +7,19 @@ import {getGyms} from '../redux/gyms/gyms.slice';
 import SearchBar from '../components/search-bar/search-bar.component';
 import Tile from '../components/tile/tile.component';
 import AddNewTile from '../components/add-new-tile/add-new-tile.component';
+import { useNavigation } from '@react-navigation/native';
+import GymTile from '../components/gym-tile/gym-tile.component';
 
-const WorkoutsScreen = ({navigation}) => {
+const WorkoutsScreen = () => {
+  const navigation = useNavigation()
   const dispatch = useAppDispatch();
-  const {gyms, getGymsLoading} = useAppSelector(state => state.gym);
+  const {savedGyms, getGymsLoading} = useAppSelector(state => state.gym);
 
   useEffect(() => {
     dispatch(getGyms());
   }, []);
+
+
 
   return (
     <View>
@@ -29,18 +34,14 @@ const WorkoutsScreen = ({navigation}) => {
           style={styles.gymSlider}
           horizontal
           showsHorizontalScrollIndicator={false}
-          data={[null, ...gyms]}
-          renderItem={({item, index, seperators}) =>
-            index === 0 ? (
-              <AddNewTile
+          data={[null, ...savedGyms]}
+          renderItem={({item}) =>
+            item === null
+            ? <AddNewTile
                 style={styles.gymTile}
                 onPress={() => navigation.navigate('GymAddScreen')}
               />
-            ) : (
-              <Tile style={styles.gymTile}>
-                <Text>{item.name}</Text>
-              </Tile>
-            )
+            : <GymTile style={styles.gymTile} gymName={item.name}/>
           }
         />
         }        

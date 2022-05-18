@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: 'black',
     borderWidth: 1,
+    width: 150,
   },
   text: {
     fontSize: 16,

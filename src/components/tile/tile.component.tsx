@@ -1,9 +1,13 @@
 import React from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 
+type Props = {
+    style? :StyleProp<ViewStyle>;
+    children?: JSX.Element | JSX.Element[];
+    onPress: ()=>void;
+}
 
-
-const Tile = ({style, text, children, onPress }) => {
+const Tile:React.FC<Props> = ({style, children, onPress }) => {
     return (
         <TouchableOpacity onPress={onPress}>
             <View style={[styles.container, style]}>
@@ -19,7 +23,9 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         padding: 10,
         flexDirection: 'column',
-        backgroundColor: 'pink',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
         borderRadius: 10,
         shadowColor: '0x000000',
         shadowRadius: 2,

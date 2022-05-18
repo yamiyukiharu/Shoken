@@ -1,11 +1,11 @@
-import { configureStore, getDe } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import gymsReducer from "./gyms/gyms.slice";
 
 export const store = configureStore({
     reducer: {
         gym: gymsReducer,
     },
-    middleware: (getDefaultMiddleware) => [...getDefaultMiddleware({immutableCheck: false})],
+    // middleware: (getDefaultMiddleware) => [...getDefaultMiddleware({immutableCheck: false})],
     
 });
 

@@ -1,24 +1,34 @@
 import React from 'react';
 import {
-  Text,
   View,
   StyleSheet,
-  ScrollView,
   FlatList,
   Button,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import SearchBar from '../components/search-bar/search-bar.component';
 import GymSearchEntry from '../components/gym-search-entry/gym-search-entry.component';
 
 import {useAppSelector} from '../redux/hooks';
+import {useNavigation} from '@react-navigation/native';
+import {GymAddScreenProp} from '../../types';
 
 const GymAddScreen = () => {
+  const navigation = useNavigation<GymAddScreenProp>();
   const {gyms, getGymsLoading} = useAppSelector(state => state.gym);
+
+  navigation.setOptions({
+    headerRight: () => (
+      <Button
+        onPress={() => navigation.navigate('GymEditScreen', {mode: 'new'})}
+        title="Create New"
+      />
+    ),
+  });
 
   return (
     <View style={styles.container}>
-      <SearchBar/>
+      <SearchBar />
       {getGymsLoading ? (
         <ActivityIndicator size="large" />
       ) : (
@@ -26,9 +36,7 @@ const GymAddScreen = () => {
           style={styles.gymList}
           showsVerticalScrollIndicator={false}
           data={gyms}
-          renderItem={({item, index, seperators}) =>
-            <GymSearchEntry gym={item}/>
-          }
+          renderItem={({item}) => <GymSearchEntry gym={item} />}
         />
       )}
     </View>
@@ -40,8 +48,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
   },
-  gymList: {
-  }
+  gymList: {},
 });
 
 export default GymAddScreen;

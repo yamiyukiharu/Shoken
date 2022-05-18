@@ -10,13 +10,13 @@ import {
 import {SliderBox} from 'react-native-image-slider-box';
 
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { GymDetailsScreenProp } from '../../../types';
+import { WorkoutsNavProp } from '../../../types';
 import { useAppSelector } from '../../redux/hooks';
 import { TGym } from '../../utils/firebase/firestore.utils';
 
 const GymSearchEntry: React.FC<{gym: TGym}> = ({gym}) => {
   const [width, setWidth] = useState(0);
-  const navigation = useNavigation<GymDetailsScreenProp>()
+  const navigation = useNavigation<WorkoutsNavProp>()
   const {savedGyms} = useAppSelector(state => state.gym)
 
   const onEntryTapped = () => {

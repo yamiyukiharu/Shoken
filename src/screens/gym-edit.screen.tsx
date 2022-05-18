@@ -8,12 +8,12 @@ import MyImagePicker from '../components/image-picker/image-picker.component';
 import {useAppSelector, useAppDispatch} from '../redux/hooks';
 import {gymInitialState, setGymInEdit} from '../redux/gyms/gyms.slice';
 import {
-  GymAddEquipmentCategoriesScreenProp,
+  WorkoutsNavProp,
   GymEditScreenRouteProp,
 } from '../../types';
 
 const GymEditScreen: React.FC = () => {
-  const navigation = useNavigation<GymAddEquipmentCategoriesScreenProp>();
+  const navigation = useNavigation<WorkoutsNavProp>();
   const route = useRoute<GymEditScreenRouteProp>();
   const dispatch = useAppDispatch();
   const {gymInEdit} = useAppSelector(state => state.gym);

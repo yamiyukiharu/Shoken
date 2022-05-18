@@ -11,10 +11,10 @@ import GymSearchEntry from '../components/gym-search-entry/gym-search-entry.comp
 
 import {useAppSelector} from '../redux/hooks';
 import {useNavigation} from '@react-navigation/native';
-import {GymAddScreenProp} from '../../types';
+import {WorkoutsNavProp} from '../../types';
 
 const GymAddScreen = () => {
-  const navigation = useNavigation<GymAddScreenProp>();
+  const navigation = useNavigation<WorkoutsNavProp>();
   const {gyms, getGymsLoading} = useAppSelector(state => state.gym);
 
   navigation.setOptions({

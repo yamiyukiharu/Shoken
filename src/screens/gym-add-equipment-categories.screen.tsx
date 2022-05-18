@@ -13,10 +13,10 @@ import {getAllEquipment} from '../redux/gyms/gyms.slice';
 import EquipmentCategories from '../components/equipment-categories/equipment-categories.component';
 import NormalButton from '../components/normal-button/normal-button.component';
 import { TEquipmentCategories } from '../utils/firebase/firestore.utils';
-import { GymAddEquipmentCategoriesScreenProp } from '../../types';
+import { WorkoutsNavProp } from '../../types';
 
 export const GymAddEquipmentCategoriesScreen = () => {
-  const navigation = useNavigation<GymAddEquipmentCategoriesScreenProp>();
+  const navigation = useNavigation<WorkoutsNavProp>();
   const dispatch = useAppDispatch();
 
   const {allEquipment, getAllEquipmentLoading} = useAppSelector(

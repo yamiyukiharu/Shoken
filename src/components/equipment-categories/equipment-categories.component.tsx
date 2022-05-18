@@ -13,7 +13,7 @@ import {getAllEquipment, setGymInEdit} from '../../redux/gyms/gyms.slice';
 
 import { TEquipment, TEquipmentCategories } from '../../utils/firebase/firestore.utils';
 import AddNewTile from '../add-new-tile/add-new-tile.component';
-import { GymAddEquipmentCategoriesScreenProp } from '../../../types';
+import { WorkoutsNavProp } from '../../../types';
 
 type Props = {
     categories: Array<TEquipmentCategories>;
@@ -22,7 +22,7 @@ type Props = {
 
 const EquipmentCategories:React.FC<Props> = ({categories, mode}) => {
     const {gymInEdit} = useAppSelector(state => state.gym)
-    const navigation = useNavigation<GymAddEquipmentCategoriesScreenProp>()
+    const navigation = useNavigation<WorkoutsNavProp>()
 
   return (
     <View>

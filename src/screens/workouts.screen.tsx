@@ -9,9 +9,10 @@ import Tile from '../components/tile/tile.component';
 import AddNewTile from '../components/add-new-tile/add-new-tile.component';
 import { useNavigation } from '@react-navigation/native';
 import GymTile from '../components/gym-tile/gym-tile.component';
+import { WorkoutsNavProp } from '../../types';
 
 const WorkoutsScreen = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<WorkoutsNavProp>()
   const dispatch = useAppDispatch();
   const {savedGyms, getGymsLoading} = useAppSelector(state => state.gym);
 

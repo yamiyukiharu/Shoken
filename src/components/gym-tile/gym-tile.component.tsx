@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
-import { GymDetailsScreenProp } from "../../../types";
+import { WorkoutsNavProp } from "../../../types";
 import Tile from "../tile/tile.component";
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 
 
 const GymTile:React.FC<Props> = ({gymName, style}) => {
-    const navigation = useNavigation<GymDetailsScreenProp>()
+    const navigation = useNavigation<WorkoutsNavProp>()
     const onGymTapped = () => {
         navigation.navigate('GymDetailsScreen', {gymName: gymName, mode: 'edit'})
     }

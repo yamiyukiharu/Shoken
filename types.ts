@@ -21,12 +21,7 @@ export type WorkoutStackParamList = {
 
 
 
-export type WorkoutsScreenProp = NativeStackNavigationProp<WorkoutStackParamList,'WorkoutsScreen'>
-export type GymEditScreenProp = NativeStackNavigationProp<WorkoutStackParamList,'GymEditScreen'>
-export type GymAddScreenProp = NativeStackNavigationProp<WorkoutStackParamList,'GymAddScreen'>
-export type GymAddEquipmentCategoriesScreenProp = NativeStackNavigationProp<WorkoutStackParamList,'GymAddEquipmentCategoriesScreen'>
-
-export type GymDetailsScreenProp = NativeStackNavigationProp<WorkoutStackParamList,'GymDetailsScreen'>
+export type WorkoutsNavProp = NativeStackNavigationProp<WorkoutStackParamList>
 
 export type GymAddEquipmentListScreenRouteProp = RouteProp<WorkoutStackParamList, 'GymAddEquipmentListScreen'>
 export type GymDetailsScreenScreenRouteProp = RouteProp<WorkoutStackParamList, 'GymDetailsScreen'>

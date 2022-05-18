@@ -3,9 +3,7 @@ import React from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {
   GymDetailsScreenScreenRouteProp,
-  GymEditScreenProp,
-  WorkoutsScreenProp,
-  WorkoutStackParamList,
+  WorkoutsNavProp,
 } from '../../types';
 import {SliderBox} from 'react-native-image-slider-box';
 import {useAppSelector, useAppDispatch} from '../redux/hooks';
@@ -22,7 +20,7 @@ const GymDetailsScreen = () => {
   const route = useRoute<GymDetailsScreenScreenRouteProp>();
   const currentGym = gyms.find(gym => gym.name === route.params.gymName);
   const categories = currentGym ? Object.keys(currentGym.equipment) as Array<TEquipmentCategories> : [] 
-  const navigation = useNavigation<WorkoutsScreenProp | GymEditScreenProp>();
+  const navigation = useNavigation<WorkoutsNavProp>();
 
   // set the top right button type depending on edit or create new mode
   navigation.setOptions({

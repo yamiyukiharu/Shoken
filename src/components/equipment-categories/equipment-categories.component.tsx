@@ -14,6 +14,7 @@ import {getAllEquipment, setGymInEdit} from '../../redux/gyms/gyms.slice';
 import { TEquipment, TEquipmentCategories } from '../../utils/firebase/firestore.utils';
 import AddNewTile from '../add-new-tile/add-new-tile.component';
 import { WorkoutsNavProp } from '../../../types';
+import ShokenTile from '../shoken-tile/shoken-tile.component';
 
 type Props = {
     categories: Array<TEquipmentCategories>;
@@ -21,7 +22,7 @@ type Props = {
 }
 
 const EquipmentCategories:React.FC<Props> = ({categories, mode}) => {
-    const {gymInEdit} = useAppSelector(state => state.gym)
+    const {gymInEdit, currentGym} = useAppSelector(state => state.gym)
     const navigation = useNavigation<WorkoutsNavProp>()
 
   return (
@@ -32,30 +33,35 @@ const EquipmentCategories:React.FC<Props> = ({categories, mode}) => {
         data={categories}
         renderItem={({item}) => {
           const category = item as TEquipmentCategories;
+          console.log(item)
           if (mode === 'view') {
             return (
-                <AddNewTile
+                <ShokenTile
                   style={styles.tile}
+                  addNew={false}
                   onPress={() =>
                     navigation.navigate('GymAddEquipmentListScreen', {
                       equipmentCategory: item,
+                      mode: 'view',
                     })
                   }
                   title={item}
                   details={`${
-                    gymInEdit.equipment[category]
-                      ? gymInEdit.equipment[category].length.toString()
+                    currentGym.equipment[category]
+                      ? currentGym.equipment[category].length.toString()
                       : '0'
-                  } added`}
+                  } Equipment`}
                 />
               );
           } else {
             return (
-                <AddNewTile
+                <ShokenTile
                   style={styles.tile}
+                  addNew={true}
                   onPress={() =>
                     navigation.navigate('GymAddEquipmentListScreen', {
                       equipmentCategory: item,
+                      mode: 'edit',
                     })
                   }
                   title={item}

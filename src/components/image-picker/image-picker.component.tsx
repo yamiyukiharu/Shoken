@@ -28,7 +28,7 @@ const MyImagePicker: React.FC = () => {
       const res = await launchImageLibrary(options, response => {
         if (response.assets) {
           response.assets[0].uri &&
-            dispatch(setGymInEdit({...gymInEdit, image: response.assets[0].uri}))
+            dispatch(setGymInEdit({...gymInEdit, images: [response.assets[0].uri]}))
         }
         setSheetState('cancel');
       });
@@ -39,7 +39,7 @@ const MyImagePicker: React.FC = () => {
         console.log(response);
         if (response.assets) {
           response.assets[0].uri &&
-          dispatch(setGymInEdit({...gymInEdit, image: response.assets[0].uri}))
+          dispatch(setGymInEdit({...gymInEdit, images: [response.assets[0].uri]}))
         }
         setSheetState('cancel');
       });

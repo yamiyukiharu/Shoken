@@ -11,20 +11,19 @@ import {SliderBox} from 'react-native-image-slider-box';
 
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { WorkoutsNavProp } from '../../../types';
-import { useAppSelector } from '../../redux/hooks';
+import { setCurrentGym } from '../../redux/gyms/gyms.slice';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { TGym } from '../../utils/firebase/firestore.utils';
 
 const GymSearchEntry: React.FC<{gym: TGym}> = ({gym}) => {
   const [width, setWidth] = useState(0);
   const navigation = useNavigation<WorkoutsNavProp>()
+  const dispatch = useAppDispatch()
   const {savedGyms} = useAppSelector(state => state.gym)
 
   const onEntryTapped = () => {
-    if (savedGyms.filter(savedGym => savedGym.name === gym.name).length > 0) {
-      navigation.navigate('GymDetailsScreen', {gymName: gym.name, mode:'none'})
-    } else {
-      navigation.navigate('GymDetailsScreen', {gymName: gym.name, mode:'add'})
-    }
+      dispatch(setCurrentGym(gym))
+      navigation.navigate('GymDetailsScreen', {mode:'add'})
   }
 
   return (

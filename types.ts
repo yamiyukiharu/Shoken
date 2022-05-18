@@ -12,10 +12,10 @@ export type WorkoutStackParamList = {
     GymAddEquipmentCategoriesScreen: undefined;
     GymAddEquipmentListScreen: {
       equipmentCategory: string;
+      mode: 'view' | 'edit';
     };
     GymDetailsScreen: {
-      gymName: string;
-      mode: 'add' | 'edit' | 'none';
+      mode: 'add' | 'edit';
     }
   };
 

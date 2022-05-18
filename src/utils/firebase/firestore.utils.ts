@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 
-export type TEquipmentCategories = 'bars'|'benches'|'cardio'|'dumbells'|'machines'|'racks'
+export type TEquipmentCategories = 'bars'|'benches'|'cardio'|'dumbbells'|'machines'|'racks'
 type dict<TValue> = {[key in TEquipmentCategories]: TValue}
 
 export interface TEquipment {

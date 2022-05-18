@@ -42,7 +42,7 @@ const WorkoutsScreen = () => {
                 style={styles.gymTile}
                 onPress={() => navigation.navigate('GymAddScreen')}
               />
-            : <GymTile style={styles.gymTile} gymName={item.name}/>
+            : <GymTile style={styles.gymTile} gym={item}/>
           }
         />
         }        

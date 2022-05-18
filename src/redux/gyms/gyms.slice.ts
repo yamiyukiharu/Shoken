@@ -17,6 +17,7 @@ import {
 interface TGymState {
   gyms: Array<TGym>;
   savedGyms: Array<TGym>;
+  currentGym: TGym;
   gymInEdit: TGym;
   allEquipment: TAllEquipment;
   createNewGymLoading: boolean;
@@ -29,31 +30,34 @@ export type TEditGymEquipment = {
   equipmentName: string;
 };
 
+const emptyGym = {
+  name: '',
+  address: '',
+  createdBy: '',
+  images: [],
+  size: 0,
+  equipment: {
+    bars: [],
+    benches: [],
+    cardio: [],
+    machines: [],
+    racks: [],
+    dumbbells: [],
+  },
+}
+
 export const gymInitialState: TGymState = {
   gyms: [],
   savedGyms: [],
-  gymInEdit: {
-    name: '',
-    address: '',
-    createdBy: '',
-    images: [],
-    size: 0,
-    equipment: {
-      bars: [],
-      benches: [],
-      cardio: [],
-      machines: [],
-      racks: [],
-      dumbells: [],
-    },
-  },
+  currentGym: emptyGym,
+  gymInEdit: emptyGym,
   allEquipment: {
     bars: [],
     benches: [],
     cardio: [],
     machines: [],
     racks: [],
-    dumbells: [],
+    dumbbells: [],
   },
   createNewGymLoading: false,
   getGymsLoading: false,
@@ -99,6 +103,9 @@ const gymsSlice = createSlice({
   reducers: {
     addGym(state:TGymState, action:PayloadAction<TGym>) {
       state.savedGyms.push(action.payload)
+    },
+    setCurrentGym(state:TGymState, action:PayloadAction<TGym>) {
+      state.currentGym = action.payload
     },
     setGymInEdit(state: TGymState, action: PayloadAction<TGym>) {
       state.gymInEdit = {...state.gymInEdit, ...action.payload};
@@ -176,6 +183,6 @@ const gymsSlice = createSlice({
   },
 });
 
-export const {setGymInEdit, addEquipmentToGym, removeEquipmentFromGym, addGym} =
+export const {setGymInEdit, setCurrentGym, addEquipmentToGym, removeEquipmentFromGym, addGym} =
   gymsSlice.actions;
 export default gymsSlice.reducer;

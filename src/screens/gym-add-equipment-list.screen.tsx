@@ -13,16 +13,18 @@ import type {TEquipmentCategories} from '../utils/firebase/firestore.utils';
 
 const GymAddEquipmentListScreen = () => {
   const route = useRoute<GymAddEquipmentListScreenRouteProp>();
-  const {gymInEdit, allEquipment} = useAppSelector(state => state.gym);
+  const {gymInEdit, currentGym, allEquipment} = useAppSelector(state => state.gym);
   const equipmentCategory = route.params
     .equipmentCategory as TEquipmentCategories;
+  const mode = route.params.mode
+  const equipment = mode === 'edit' ? allEquipment[equipmentCategory] : currentGym.equipment[equipmentCategory]
 
   return (
     <View>
       <SearchBar />
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={allEquipment[equipmentCategory]}
+        data={equipment}
         renderItem={({item}) => {
           const isAdded =
             gymInEdit.equipment[equipmentCategory].filter(
@@ -32,6 +34,7 @@ const GymAddEquipmentListScreen = () => {
             <EquipmentSearchEntry
               equipmentName={item.name}
               equipmentCategory={equipmentCategory}
+              isEditable={mode === 'edit'}
               isAdded={isAdded}
             />
           );

@@ -15,11 +15,10 @@ import { TEquipmentCategories } from '../utils/firebase/firestore.utils';
 
 const GymDetailsScreen = () => {
   const dispatch = useAppDispatch();
-  const {gyms} = useAppSelector(state => state.gym);
+  const {gyms, currentGym} = useAppSelector(state => state.gym);
 
   const route = useRoute<GymDetailsScreenScreenRouteProp>();
-  const currentGym = gyms.find(gym => gym.name === route.params.gymName);
-  const categories = currentGym ? Object.keys(currentGym.equipment) as Array<TEquipmentCategories> : [] 
+  const categories = Object.keys(currentGym.equipment) as Array<TEquipmentCategories> 
   const navigation = useNavigation<WorkoutsNavProp>();
 
   // set the top right button type depending on edit or create new mode

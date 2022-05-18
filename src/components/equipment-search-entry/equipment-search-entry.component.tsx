@@ -4,54 +4,59 @@ import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {useAppDispatch} from '../../redux/hooks';
-import {addEquipmentToGym, removeEquipmentFromGym} from '../../redux/gyms/gyms.slice';
+import {
+  addEquipmentToGym,
+  removeEquipmentFromGym,
+} from '../../redux/gyms/gyms.slice';
 import type {TEquipmentCategories} from '../../utils/firebase/firestore.utils';
 
 interface Props {
   equipmentName: string;
   equipmentCategory: TEquipmentCategories;
+  isEditable: boolean;
   isAdded: boolean;
 }
 
 const EquipmentSearchEntry: React.FC<Props> = ({
   equipmentName,
   equipmentCategory,
+  isEditable,
   isAdded,
 }) => {
-
   const dispatch = useAppDispatch();
 
-  const onPlusTapped = () => {    
+  const onPlusTapped = () => {
     dispatch(
       addEquipmentToGym({
         category: equipmentCategory,
-        equipmentName: equipmentName
-      })
+        equipmentName: equipmentName,
+      }),
     );
   };
 
-  const onCheckTapped = () => {    
+  const onCheckTapped = () => {
     dispatch(
       removeEquipmentFromGym({
         category: equipmentCategory,
-        equipmentName: equipmentName
-      })
+        equipmentName: equipmentName,
+      }),
     );
   };
 
   return (
     <View style={styles.container}>
       <Text style={{textTransform: 'capitalize'}}>{equipmentName}</Text>
-      
-        {
-          isAdded 
-          ? <TouchableOpacity onPress={onCheckTapped}>
-              <MaterialIcon style={{padding: 10}} name="check" size={20} />
-            </TouchableOpacity>
-          : <TouchableOpacity onPress={onPlusTapped}>
-              <MaterialIcon style={{padding: 10}} name="plus" size={20} />
-            </TouchableOpacity>
-        } 
+
+      {isEditable &&
+        (isAdded ? (
+          <TouchableOpacity onPress={onCheckTapped}>
+            <MaterialIcon style={{padding: 10}} name="check" size={20} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={onPlusTapped}>
+            <MaterialIcon style={{padding: 10}} name="plus" size={20} />
+          </TouchableOpacity>
+        ))}
     </View>
   );
 };

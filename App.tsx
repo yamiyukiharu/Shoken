@@ -33,7 +33,7 @@ const NutritionStack = createNativeStackNavigator();
 const PlannerStack = createNativeStackNavigator();
 const CommunityStack = createNativeStackNavigator();
 
-const WorkoutsStackScreen = () => {
+export const WorkoutsStackScreen = () => {
   return (
     <WorkoutsStack.Navigator>
       <WorkoutsStack.Group>

@@ -1,39 +1,36 @@
-import type { TAllEquipment, TEquipmentCategories, TEquipment, TGym } from "../firestore.utils";
+import type {
+  TAllEquipment,
+  TEquipmentCategories,
+  TEquipment,
+  TGym,
+} from '../firestore.utils';
 
-export const getGymsFirestore = async ():Promise<Array<TGym>> => {
-    try {
-        return [
-            {
-                name: 'Mock Gym',
-                address: 'Blk 12, St 23, 45678 Singapore',
-                createdBy: 'mockUser',
-                size: 2000,
-                images: [
-                    'https://www.google.com/url?sa=i&url=https%3A%2F%2Femilypost.com%2Fadvice%2Fdos-and-donts-at-the-gym&psig=AOvVaw3o34vnmaliSESfi-ZkWooy&ust=1653025285293000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCNDPjZvt6vcCFQAAAAAdAAAAABAO',
+export const mockGym: TGym = {
+  name: 'Mock Gym',
+  address: 'Blk 12, St 23, 45678 Singapore',
+  createdBy: 'mockUser',
+  size: 2000,
+  images: [
+    'https://www.google.com/url?sa=i&url=https%3A%2F%2Femilypost.com%2Fadvice%2Fdos-and-donts-at-the-gym&psig=AOvVaw3o34vnmaliSESfi-ZkWooy&ust=1653025285293000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCNDPjZvt6vcCFQAAAAAdAAAAABAO',
+  ],
+  equipment: {
+    bars: [
+      {
+        name: 'fixed barbell',
+        weights: ['15kg', '20kg'],
+      },
+    ],
+    benches: [],
+    cardio: [],
+    dumbbells: [],
+    machines: [],
+    racks: [],
+  },
+};
 
-                ],
-                equipment: {
-                    'bars': [
-                        {
-                            name: 'fixed barbell',
-                            weights: [
-                                '15kg',
-                                '20kg',
-                            ]
-                        }
-                    ],
-                    'benches': [],
-                    'cardio': [],
-                    'dumbbells': [],
-                    'machines': [],
-                    'racks': [],
-                }
-            },
-        ];
-    } catch (err) {
-        throw err
-    }
-}
+export const getGymsFirestore = async (): Promise<Array<TGym>> => {
+  return [mockGym]
+};
 
 // export const createNewGymFirestore = async (gymDetails: TGym):Promise<TGym> => {
 //     try {

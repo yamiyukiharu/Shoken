@@ -47,11 +47,6 @@ const WorkoutsScreen = () => {
         }        
         <Text style={styles.sectionTitle}>Workouts</Text>
         <View style={styles.workoutContainer}>
-          <Tile style={styles.workoutTile} />
-          <Tile style={styles.workoutTile} />
-          <Tile style={styles.workoutTile} />
-          <Tile style={styles.workoutTile} />
-          <Tile style={styles.workoutTile} />
           <AddNewTile
             style={styles.workoutTile}
             onPress={() => navigation.navigate('Workouts-edit')}

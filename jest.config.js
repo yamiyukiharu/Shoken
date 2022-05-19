@@ -1,4 +1,8 @@
 module.exports = {
     preset: 'react-native',
-    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node']
+    transformIgnorePatterns: [
+      'node_modules/(?!@react-native-community/google-signin|react-native|@react-native|@react-navigation|@react-native-firebase/firestore|@react-native-community/async-storage|@invertase/react-native-apple-authentication)',
+    ],
+    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+    setupFiles: ['<rootDir>/jest.setup.ts'],
   };

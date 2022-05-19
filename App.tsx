@@ -14,7 +14,7 @@ import auth from '@react-native-firebase/auth';
 
 import SignInScreen from './src/screens/sign-in.screen';
 import HomeScreen from './src/screens/home.screen';
-import WorkoutsScreen from './src/screens/workouts.screen';
+import WorkoutsScreen from './src/screens/workouts-screen/workouts.screen';
 import WorkoutEditScreen from './src/screens/workout-edit.screen';
 import GymAddScreen from './src/screens/gym-add.screen';
 import GymEditScreen from './src/screens/gym-edit.screen';

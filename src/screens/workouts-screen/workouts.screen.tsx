@@ -1,15 +1,16 @@
 import React, {useEffect} from 'react';
 import {Text, View, StyleSheet, ScrollView, FlatList, ActivityIndicator} from 'react-native';
 
-import {useAppDispatch, useAppSelector} from '../redux/hooks';
-import {getGyms} from '../redux/gyms/gyms.slice';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
+import {getGyms} from '../../redux/gyms/gyms.slice';
 
-import SearchBar from '../components/search-bar/search-bar.component';
-import Tile from '../components/tile/tile.component';
-import AddNewTile from '../components/add-new-tile/add-new-tile.component';
+import Tile from '../../components/tile/tile.component';
+import AddNewTile from '../../components/add-new-tile/add-new-tile.component';
+
+import SearchBar from '../../components/search-bar/search-bar.component';
 import { useNavigation } from '@react-navigation/native';
-import GymTile from '../components/gym-tile/gym-tile.component';
-import { WorkoutsNavProp } from '../../types';
+import GymTile from '../../components/gym-tile/gym-tile.component';
+import { WorkoutsNavProp } from '../../../types';
 
 const WorkoutsScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>()
@@ -19,8 +20,6 @@ const WorkoutsScreen = () => {
   useEffect(() => {
     dispatch(getGyms());
   }, []);
-
-
 
   return (
     <View>

@@ -11,6 +11,11 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 GoogleSignin.configure();
 
 const SignInScreen = () => {
+
+  const onGoogleSignInTapped = async () => {
+    await onGoogleButtonPress()
+  }
+
   return (
     <View style={styles.container}>
       <Image 
@@ -32,7 +37,7 @@ const SignInScreen = () => {
 
         <Button title='Sign Out' onPress={onGoogleSignOut}/>
         <TouchableOpacity 
-          onPress={async () => await onGoogleButtonPress()}
+          onPress={onGoogleSignInTapped}
           style={styles.googleSignIn}>
           <MaterialIcon name={'google'} size={18}/>
           <Text style={{marginLeft:10, color: '#222222'}}>Sign in with Google</Text>

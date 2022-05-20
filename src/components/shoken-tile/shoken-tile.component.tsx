@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Tile from '../tile/tile.component';
 
 interface Props {
     style: StyleProp<ViewStyle>;
@@ -15,11 +14,17 @@ interface Props {
 const ShokenTile:React.FC<Props> = (props) => {
     return (
         <TouchableOpacity {...{...props, style: [styles.container, props.style]}}>
-            <Text style={styles.title}>{props.title && props.title.toLocaleUpperCase()}</Text>
+            {
+                props.title &&
+                <Text style={styles.title}>{props.title && props.title.toLocaleUpperCase()}</Text>
+            }
             {
                 props.addNew && <MaterialIcon name={'plus-circle-outline'} size={30}/>
             }
-            <Text style={styles.details}>{props.details && props.details}</Text>
+            {
+                props.details &&
+                <Text style={styles.details}>{props.details && props.details}</Text>
+            }
         </TouchableOpacity>
     )
 }

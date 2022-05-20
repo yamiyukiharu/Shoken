@@ -8,11 +8,9 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {useAppSelector, useAppDispatch} from '../../redux/hooks';
-import {getAllEquipment, setGymInEdit} from '../../redux/gyms/gyms.slice';
+import {useAppSelector} from '../../redux/hooks';
 
-import { TEquipment, TEquipmentCategories } from '../../utils/firebase/firestore.utils';
-import AddNewTile from '../add-new-tile/add-new-tile.component';
+import { TEquipmentCategories } from '../../utils/firebase/types';
 import { WorkoutsNavProp } from '../../../types';
 import ShokenTile from '../shoken-tile/shoken-tile.component';
 
@@ -24,6 +22,7 @@ type Props = {
 const EquipmentCategories:React.FC<Props> = ({categories, mode}) => {
     const {gymInEdit, currentGym} = useAppSelector(state => state.gym)
     const navigation = useNavigation<WorkoutsNavProp>()
+    const gym = currentGym.gym
 
   return (
     <View>
@@ -47,8 +46,8 @@ const EquipmentCategories:React.FC<Props> = ({categories, mode}) => {
                   }
                   title={item}
                   details={`${
-                    currentGym.equipment[category]
-                      ? currentGym.equipment[category].length.toString()
+                    gym.equipment[category]
+                      ? gym.equipment[category].length.toString()
                       : '0'
                   } Equipment`}
                 />
@@ -66,8 +65,8 @@ const EquipmentCategories:React.FC<Props> = ({categories, mode}) => {
                   }
                   title={item}
                   details={`${
-                    gymInEdit.equipment[category]
-                      ? gymInEdit.equipment[category].length.toString()
+                    gym.equipment[category]
+                      ? gym.equipment[category].length.toString()
                       : '0'
                   } added`}
                 />

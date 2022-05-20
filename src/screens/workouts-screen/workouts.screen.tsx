@@ -11,14 +11,12 @@ import {
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {getGyms} from '../../redux/gyms/gyms.slice';
 
-import Tile from '../../components/tile/tile.component';
-import AddNewTile from '../../components/add-new-tile/add-new-tile.component';
-
 import SearchBar from '../../components/search-bar/search-bar.component';
 import {useNavigation} from '@react-navigation/native';
-import GymTile from '../../components/gym-tile/gym-tile.component';
 import {WorkoutsNavProp} from '../../../types';
 import {TFbGymEntry} from '../../utils/firebase/types';
+import ShokenTile from '../../components/shoken-tile/shoken-tile.component';
+import {setCurrentGym} from '../../redux/gyms/gyms.slice';
 
 const WorkoutsScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>();
@@ -53,19 +51,31 @@ const WorkoutsScreen = () => {
             data={[null, ...gymsToDisplay]}
             renderItem={({item}) =>
               item === null ? (
-                <AddNewTile
+                <ShokenTile
+                  addNew={true}
                   style={styles.gymTile}
-                  onPress={() => navigation.navigate('GymAddScreen')}
+                  onPress={() => {
+                    navigation.navigate('GymAddScreen');
+                  }}
                 />
               ) : (
-                <GymTile style={styles.gymTile} gymEntry={item} />
+                <ShokenTile
+                  addNew={false}
+                  details={item.gym.name}
+                  style={styles.gymTile}
+                  onPress={() => {
+                    dispatch(setCurrentGym(item));
+                    navigation.navigate('GymDetailsScreen', {mode: 'edit'});
+                  }}
+                />
               )
             }
           />
         )}
         <Text style={styles.sectionTitle}>Workouts</Text>
         <View style={styles.workoutContainer}>
-          <AddNewTile
+          <ShokenTile
+            addNew={true}
             style={styles.workoutTile}
             onPress={() => navigation.navigate('Workouts-edit')}
           />

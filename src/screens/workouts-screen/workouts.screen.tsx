@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -23,16 +23,22 @@ const WorkoutsScreen = () => {
   const dispatch = useAppDispatch();
   const {gyms, getGymsLoading} = useAppSelector(state => state.gym);
   const {user} = useAppSelector(state => state.user);
-  const gymsToDisplay: Array<TFbGymEntry> = user.savedGyms.map(id => {
-    return {
-      id: id,
-      gym: gyms[id],
-    };
-  });
+  const [gymsToDisplay, setGymsToDisplay] = useState<Array<TFbGymEntry>>([]);
 
   useEffect(() => {
     dispatch(getGyms());
   }, []);
+
+  useEffect(() => {
+    const entries:Array<TFbGymEntry> = []
+    user.savedGyms.forEach(id => {
+      if (gyms[id]) entries.push({
+        id: id,
+        gym: gyms[id]
+      })
+    })
+    setGymsToDisplay(entries)
+  }, [gyms, user]);
 
   return (
     <View>

@@ -1,6 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
+
 export const onGoogleButtonPress= async () => {
   // Get the users ID token
   const { idToken } = await GoogleSignin.signIn();
@@ -18,8 +19,7 @@ export const onGoogleSignOut = async () => {
       await GoogleSignin.signOut();
       auth()
         .signOut()
-        .then(() => alert('Your are signed out!'));
-      setloggedIn(false);
+        .then(() => console.log('Your are signed out!'));
       // setuserInfo([]);
     } catch (error) {
       console.error(error);

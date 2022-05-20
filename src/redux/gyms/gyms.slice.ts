@@ -9,10 +9,11 @@ import {
   createNewGymFirestore,
   getGymsFirestore,
   getEquipmentFirestore,
-  TGym,
-  TAllEquipment,
-  TEquipmentCategories,
 } from '../../utils/firebase/firestore.utils';
+
+import {  TGym,
+  TAllEquipment,
+  TEquipmentCategories} from '../../utils/firebase/types'
 
 interface TGymState {
   gyms: Array<TGym>;
@@ -49,8 +50,8 @@ const emptyGym = {
 export const gymInitialState: TGymState = {
   gyms: [],
   savedGyms: [],
-  currentGym: emptyGym,
-  gymInEdit: emptyGym,
+  currentGym: {...emptyGym},
+  gymInEdit: {...emptyGym},
   allEquipment: {
     bars: [],
     benches: [],
@@ -130,17 +131,17 @@ const gymsSlice = createSlice({
   },
   extraReducers: {
     //createNewGym
-    [createNewGym.pending]: (state: TGymState) => {
+    [createNewGym.pending.toString()]: (state: TGymState) => {
       state.createNewGymLoading = true;
     },
-    [createNewGym.fulfilled]: (
+    [createNewGym.fulfilled.toString()]: (
       state: TGymState,
       action: PayloadAction<TGym>,
     ) => {
       state.createNewGymLoading = false;
       state.gyms.push(action.payload);
     },
-    [createNewGym.rejected]: (
+    [createNewGym.rejected.toString()]: (
       state: TGymState,
       action: PayloadAction<string>,
     ) => {
@@ -148,32 +149,32 @@ const gymsSlice = createSlice({
       console.log(action.payload);
     },
     //getGyms
-    [getGyms.pending]: (state: TGymState) => {
+    [getGyms.pending.toString()]: (state: TGymState) => {
       state.getGymsLoading = true;
     },
-    [getGyms.fulfilled]: (
+    [getGyms.fulfilled.toString()]: (
       state: TGymState,
       action: PayloadAction<Array<TGym>>,
     ) => {
       state.getGymsLoading = false;
       state.gyms = action.payload;
     },
-    [getGyms.rejected]: (state: TGymState, action: PayloadAction<string>) => {
+    [getGyms.rejected.toString()]: (state: TGymState, action: PayloadAction<string>) => {
       state.getGymsLoading = false;
       console.log(action.payload);
     },
     //getAllEquipment
-    [getAllEquipment.pending]: (state: TGymState) => {
+    [getAllEquipment.pending.toString()]: (state: TGymState) => {
       state.getAllEquipmentLoading = true;
     },
-    [getAllEquipment.fulfilled]: (
+    [getAllEquipment.fulfilled.toString()]: (
       state: TGymState,
       action: PayloadAction<TAllEquipment>,
     ) => {
       state.getAllEquipmentLoading = false;
       state.allEquipment = action.payload;
     },
-    [getAllEquipment.rejected]: (
+    [getAllEquipment.rejected.toString()]: (
       state: TGymState,
       action: PayloadAction<string>,
     ) => {

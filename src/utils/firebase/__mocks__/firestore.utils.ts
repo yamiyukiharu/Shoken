@@ -1,9 +1,11 @@
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import type {
   TAllEquipment,
   TEquipmentCategories,
   TEquipment,
   TGym,
-} from '../firestore.utils';
+  TUser,
+} from '../types';
 
 export const mockGym: TGym = {
   name: 'Mock Gym',
@@ -28,9 +30,25 @@ export const mockGym: TGym = {
   },
 };
 
+const mockUser:TUser = {
+  name: 'Mr Mock',
+  email: 'mock@gmail.com',
+  height: 175,
+  image: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fengineering.unl.edu%2Fkayla-person%2F&psig=AOvVaw07nnM8jTjWJVgTRKJ9TEt3&ust=1653105543810000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCPjstZiY7fcCFQAAAAAdAAAAABAT',
+  level: 99,
+  providerId: 'firebase',
+  weight: 50,
+  savedGyms: ['mockGym'],
+  savedWorkouts: [],
+}
+
 export const getGymsFirestore = async (): Promise<Array<TGym>> => {
   return [mockGym]
 };
+
+export const getUserFirestore:(user:FirebaseAuthTypes.User) => Promise<TUser> = async (user) => {
+  return mockUser
+}
 
 // export const createNewGymFirestore = async (gymDetails: TGym):Promise<TGym> => {
 //     try {

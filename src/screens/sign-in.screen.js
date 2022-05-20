@@ -3,7 +3,7 @@ import {Text, View, Button, StyleSheet, Image, TextInput, TouchableOpacity} from
 
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {onGoogleButtonPress, onGoogleSignOut} from '../utils/firebase/google-auth.utils'
+import {onGoogleButtonPress, onGoogleSignOut} from '../utils/firebase/auth.utils'
 
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 

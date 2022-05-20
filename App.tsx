@@ -5,12 +5,11 @@ import {Button} from 'react-native';
 
 import {
   NavigationContainer,
-  NavigationController,
 } from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 import SignInScreen from './src/screens/sign-in.screen';
 import HomeScreen from './src/screens/home.screen';
@@ -25,6 +24,8 @@ import GymDetailsScreen from './src/screens/gym-details.screen';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import type {WorkoutStackParamList} from './types';
+import { useAppDispatch, useAppSelector } from './src/redux/hooks';
+import { setUser, resetUser } from './src/redux/user/user.slice';
 
 const Tab = createBottomTabNavigator();
 const WorkoutsStack = createNativeStackNavigator<WorkoutStackParamList>();
@@ -88,12 +89,15 @@ export const WorkoutsStackScreen = () => {
 };
 
 const AppBody = () => {
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
+  const dispatch = useAppDispatch()
+  const {isSignedIn} = useAppSelector(state => state.user)
 
-  const onAuthStateChanged = user => {
-    setUser(user);
-    if (initializing) setInitializing(false);
+  const onAuthStateChanged:(user:FirebaseAuthTypes.User | null) => void = (user) => {
+    if (user) {
+      dispatch(setUser(user))
+    } else {
+      dispatch(resetUser())
+    }
   };
 
   useEffect(() => {
@@ -101,9 +105,8 @@ const AppBody = () => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  if (initializing) return null;
 
-  if (!user) {
+  if (!isSignedIn) {
     return <SignInScreen />;
   } else {
     return (

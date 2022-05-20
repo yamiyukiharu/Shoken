@@ -1,6 +1,5 @@
 import { RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import {TGym } from "./src/utils/firebase/firestore.utils";
 
 export type WorkoutStackParamList = {
     WorkoutsScreen: undefined;

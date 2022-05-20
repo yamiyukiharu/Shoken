@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import { TGym, TAllEquipment, TEquipment, TEquipmentCategories, TUser } from './types';
+import { TGym, TAllEquipment, TEquipment, TEquipmentCategories, TUser, TFbGymEntry, TGyms } from './types';
 import { emptyUser } from '../../redux/user/user.slice';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
@@ -26,24 +26,29 @@ export const getUserFirestore:(user:FirebaseAuthTypes.User) => Promise<TUser> = 
     }
 }
 
-export const createNewGymFirestore = async (gymDetails: TGym):Promise<TGym> => {
+export const createNewGymFirestore = async (gymDetails: TGym):Promise<TFbGymEntry> => {
     try {
-        await firestore().collection('gyms').add(gymDetails)
-        return gymDetails
+        const documentReference = await firestore().collection('gyms').add(gymDetails)
+        return {
+            id: documentReference.id,
+            gym: gymDetails,
+        }
     } catch (err) {
         throw err
     }
 }
 
-export const getGymsFirestore = async ():Promise<Array<TGym>> => {
+export const getGymsFirestore = async ():Promise<TGyms> => {
     try {
         const querySnapshot = await firestore().collection('gyms').get({source: 'cache'});
-        let gyms:Array<TGym> = []
+        let gyms:TGyms = {}
         querySnapshot.forEach(documentSnapshot => {
-            gyms.push(documentSnapshot.data() as TGym)
+            gyms[documentSnapshot.id] = documentSnapshot.data() as TGym
+            // manually insert a blank image for gyms with no images
+            if (gyms[documentSnapshot.id].images.length === 0) {
+                gyms[documentSnapshot.id].images = [require('../../../assets/images/placeholder-image.png')]
+            }
         })
-        // manually insert a blank image for gyms with no images
-        gyms = gyms.map(gym => (gym.images === undefined || gym.images.length) ? gym : {...gym, images: [require('../../../assets/images/placeholder-image.png')]})
         return gyms;
     } catch (err) {
         throw err

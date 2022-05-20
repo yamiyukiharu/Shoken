@@ -1,7 +1,7 @@
 import { FirebaseAuthTypes } from '@react-native-firebase/auth'
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getUserFirestore } from '../../utils/firebase/firestore.utils';
-import { TUser } from "../../utils/firebase/types";
+import { TFbGymEntry, TUser } from "../../utils/firebase/types";
 
 type TUserState = {
     user: TUser;
@@ -46,6 +46,9 @@ const userSlice = createSlice({
             state.isSigningIn = false;
             state.isSignedIn = false;
             state.user = {...emptyUser};
+        },
+        addUserGym(state:TUserState, action:PayloadAction<TFbGymEntry>) {
+            state.user.savedGyms.push(action.payload.id)
         }
     },
     extraReducers: {
@@ -71,5 +74,5 @@ const userSlice = createSlice({
     }
 })
 
-export const {resetUser} = userSlice.actions
+export const {resetUser, addUserGym} = userSlice.actions
 export default userSlice.reducer

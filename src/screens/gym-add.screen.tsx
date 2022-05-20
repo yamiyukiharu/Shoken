@@ -12,10 +12,17 @@ import GymSearchEntry from '../components/gym-search-entry/gym-search-entry.comp
 import {useAppSelector} from '../redux/hooks';
 import {useNavigation} from '@react-navigation/native';
 import {WorkoutsNavProp} from '../../types';
+import { TFbGymEntry } from '../utils/firebase/types';
 
 const GymAddScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>();
   const {gyms, getGymsLoading} = useAppSelector(state => state.gym);
+  const gymsToDisplay: Array<TFbGymEntry> = Object.keys(gyms).map(id => {
+    return {
+      id: id,
+      gym: gyms[id],
+    };
+  });
 
   navigation.setOptions({
     headerRight: () => (
@@ -35,8 +42,8 @@ const GymAddScreen = () => {
         <FlatList
           style={styles.gymList}
           showsVerticalScrollIndicator={false}
-          data={gyms}
-          renderItem={({item}) => <GymSearchEntry gym={item} />}
+          data={gymsToDisplay}
+          renderItem={({item}) => <GymSearchEntry gymEntry={item} />}
         />
       )}
     </View>

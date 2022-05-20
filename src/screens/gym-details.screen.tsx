@@ -7,18 +7,19 @@ import {
 } from '../../types';
 import {SliderBox} from 'react-native-image-slider-box';
 import {useAppSelector, useAppDispatch} from '../redux/hooks';
-import {addGym, setGymInEdit} from '../redux/gyms/gyms.slice';
+import {setGymInEdit} from '../redux/gyms/gyms.slice';
+import { addUserGym } from '../redux/user/user.slice';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import {useWindowDimensions} from 'react-native';
 import EquipmentCategories from '../components/equipment-categories/equipment-categories.component';
-import { TEquipmentCategories } from '../utils/firebase/firestore.utils';
+import { TEquipmentCategories } from '../utils/firebase/types';
 
 const GymDetailsScreen = () => {
   const dispatch = useAppDispatch();
-  const {gyms, currentGym} = useAppSelector(state => state.gym);
+  const {currentGym} = useAppSelector(state => state.gym);
 
   const route = useRoute<GymDetailsScreenScreenRouteProp>();
-  const categories = Object.keys(currentGym.equipment) as Array<TEquipmentCategories> 
+  const categories = Object.keys(currentGym.gym.equipment) as Array<TEquipmentCategories> 
   const navigation = useNavigation<WorkoutsNavProp>();
 
   // set the top right button type depending on edit or create new mode
@@ -41,7 +42,7 @@ const GymDetailsScreen = () => {
             <Button
               title="Add Gym"
               onPress={() => {
-                currentGym && dispatch(addGym(currentGym));
+                currentGym && dispatch(addUserGym(currentGym));
                 navigation.navigate('WorkoutsScreen');
               }}
             />
@@ -74,7 +75,7 @@ const GymDetailsScreen = () => {
   const EquipmentTab = () => 
     <View style={styles.tabContainer}>
       {
-        currentGym && <EquipmentCategories categories={categories} mode='view'/>
+        <EquipmentCategories categories={categories} mode='view'/>
       }
       
     </View>;
@@ -95,8 +96,8 @@ const GymDetailsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <SliderBox sliderBoxHeight={200} images={currentGym?.images} />
-      <Text style={styles.title}>{currentGym?.name}</Text>
+      <SliderBox sliderBoxHeight={200} images={currentGym.gym.images} />
+      <Text style={styles.title}>{currentGym.gym.name}</Text>
       <TabView
         navigationState={{index, routes}}
         renderScene={renderScene}

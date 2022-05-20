@@ -1,5 +1,12 @@
 import React, {useEffect} from 'react';
-import {Text, View, StyleSheet, ScrollView, FlatList, ActivityIndicator} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {getGyms} from '../../redux/gyms/gyms.slice';
@@ -8,14 +15,22 @@ import Tile from '../../components/tile/tile.component';
 import AddNewTile from '../../components/add-new-tile/add-new-tile.component';
 
 import SearchBar from '../../components/search-bar/search-bar.component';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import GymTile from '../../components/gym-tile/gym-tile.component';
-import { WorkoutsNavProp } from '../../../types';
+import {WorkoutsNavProp} from '../../../types';
+import {TFbGymEntry} from '../../utils/firebase/types';
 
 const WorkoutsScreen = () => {
-  const navigation = useNavigation<WorkoutsNavProp>()
+  const navigation = useNavigation<WorkoutsNavProp>();
   const dispatch = useAppDispatch();
-  const {savedGyms, getGymsLoading} = useAppSelector(state => state.gym);
+  const {gyms, getGymsLoading} = useAppSelector(state => state.gym);
+  const {user} = useAppSelector(state => state.user);
+  const gymsToDisplay: Array<TFbGymEntry> = user.savedGyms.map(id => {
+    return {
+      id: id,
+      gym: gyms[id],
+    };
+  });
 
   useEffect(() => {
     dispatch(getGyms());
@@ -28,23 +43,26 @@ const WorkoutsScreen = () => {
         keyboardShouldPersistTaps="handled">
         <SearchBar />
         <Text style={styles.sectionTitle}>My Gyms</Text>
-        {
-          getGymsLoading ? <ActivityIndicator size='large'/>
-          : <FlatList
-          style={styles.gymSlider}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={[null, ...savedGyms]}
-          renderItem={({item}) =>
-            item === null
-            ? <AddNewTile
-                style={styles.gymTile}
-                onPress={() => navigation.navigate('GymAddScreen')}
-              />
-            : <GymTile style={styles.gymTile} gym={item}/>
-          }
-        />
-        }        
+        {getGymsLoading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <FlatList
+            style={styles.gymSlider}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={[null, ...gymsToDisplay]}
+            renderItem={({item}) =>
+              item === null ? (
+                <AddNewTile
+                  style={styles.gymTile}
+                  onPress={() => navigation.navigate('GymAddScreen')}
+                />
+              ) : (
+                <GymTile style={styles.gymTile} gymEntry={item} />
+              )
+            }
+          />
+        )}
         <Text style={styles.sectionTitle}>Workouts</Text>
         <View style={styles.workoutContainer}>
           <AddNewTile

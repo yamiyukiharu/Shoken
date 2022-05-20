@@ -31,3 +31,10 @@ export type TGym = {
     images: string[];
     equipment: TAllEquipment;
 }
+
+export type TFbGymEntry = {
+    id: string;
+    gym: TGym;
+}
+
+export type TGyms = {[key:string]: TGym}

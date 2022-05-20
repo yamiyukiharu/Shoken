@@ -13,16 +13,16 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { WorkoutsNavProp } from '../../../types';
 import { setCurrentGym } from '../../redux/gyms/gyms.slice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { TGym } from '../../utils/firebase/firestore.utils';
+import { TFbGymEntry } from '../../utils/firebase/types';
 
-const GymSearchEntry: React.FC<{gym: TGym}> = ({gym}) => {
+const GymSearchEntry: React.FC<{gymEntry: TFbGymEntry}> = ({gymEntry}) => {
   const [width, setWidth] = useState(0);
   const navigation = useNavigation<WorkoutsNavProp>()
   const dispatch = useAppDispatch()
-  const {savedGyms} = useAppSelector(state => state.gym)
+  const gym = gymEntry.gym
 
   const onEntryTapped = () => {
-      dispatch(setCurrentGym(gym))
+      dispatch(setCurrentGym(gymEntry))
       navigation.navigate('GymDetailsScreen', {mode:'add'})
   }
 

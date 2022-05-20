@@ -5,6 +5,7 @@ import type {
   TEquipment,
   TGym,
   TUser,
+  TGyms,
 } from '../types';
 
 export const mockGym: TGym = {
@@ -42,8 +43,10 @@ const mockUser:TUser = {
   savedWorkouts: [],
 }
 
-export const getGymsFirestore = async (): Promise<Array<TGym>> => {
-  return [mockGym]
+export const getGymsFirestore = async (): Promise<TGyms> => {
+  return {
+    'mockGym': mockGym
+  }
 };
 
 export const getUserFirestore:(user:FirebaseAuthTypes.User) => Promise<TUser> = async (user) => {

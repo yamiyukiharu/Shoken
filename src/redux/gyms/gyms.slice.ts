@@ -13,13 +13,14 @@ import {
 
 import {  TGym,
   TAllEquipment,
-  TEquipmentCategories} from '../../utils/firebase/types'
+  TEquipmentCategories,
+  TFbGymEntry,
+  TGyms} from '../../utils/firebase/types'
 
 interface TGymState {
-  gyms: Array<TGym>;
-  savedGyms: Array<TGym>;
-  currentGym: TGym;
-  gymInEdit: TGym;
+  gyms: TGyms;
+  currentGym: TFbGymEntry;
+  gymInEdit: TFbGymEntry;
   allEquipment: TAllEquipment;
   createNewGymLoading: boolean;
   getGymsLoading: boolean;
@@ -31,7 +32,7 @@ export type TEditGymEquipment = {
   equipmentName: string;
 };
 
-const emptyGym = {
+const emptyGym:TGym = {
   name: '',
   address: '',
   createdBy: '',
@@ -47,11 +48,15 @@ const emptyGym = {
   },
 }
 
+const emptyGymEntry:TFbGymEntry = {
+  id: 'null',
+  gym: {...emptyGym},
+}
+
 export const gymInitialState: TGymState = {
-  gyms: [],
-  savedGyms: [],
-  currentGym: {...emptyGym},
-  gymInEdit: {...emptyGym},
+  gyms: {},
+  currentGym: {...emptyGymEntry},
+  gymInEdit: {...emptyGymEntry},
   allEquipment: {
     bars: [],
     benches: [],
@@ -102,20 +107,17 @@ const gymsSlice = createSlice({
   name: 'gyms',
   initialState: gymInitialState,
   reducers: {
-    addGym(state:TGymState, action:PayloadAction<TGym>) {
-      state.savedGyms.push(action.payload)
-    },
-    setCurrentGym(state:TGymState, action:PayloadAction<TGym>) {
+    setCurrentGym(state:TGymState, action:PayloadAction<TFbGymEntry>) {
       state.currentGym = action.payload
     },
-    setGymInEdit(state: TGymState, action: PayloadAction<TGym>) {
-      state.gymInEdit = {...state.gymInEdit, ...action.payload};
+    setGymInEdit(state: TGymState, action: PayloadAction<TFbGymEntry>) {
+      state.gymInEdit = action.payload;
     },
     addEquipmentToGym(
       state: TGymState,
       action: PayloadAction<TEditGymEquipment>,
     ) {
-      state.gymInEdit.equipment[action.payload.category].push({
+      state.gymInEdit.gym.equipment[action.payload.category].push({
         name: action.payload.equipmentName,
       });
     },
@@ -123,8 +125,8 @@ const gymsSlice = createSlice({
       state: TGymState,
       action: PayloadAction<TEditGymEquipment>,
     ) {
-      state.gymInEdit.equipment[action.payload.category] =
-        state.gymInEdit.equipment[action.payload.category].filter(
+      state.gymInEdit.gym.equipment[action.payload.category] =
+        state.gymInEdit.gym.equipment[action.payload.category].filter(
           equipment => equipment.name !== action.payload.equipmentName,
         );
     },
@@ -136,10 +138,10 @@ const gymsSlice = createSlice({
     },
     [createNewGym.fulfilled.toString()]: (
       state: TGymState,
-      action: PayloadAction<TGym>,
+      action: PayloadAction<TFbGymEntry>,
     ) => {
       state.createNewGymLoading = false;
-      state.gyms.push(action.payload);
+      state.gyms[action.payload.id] = action.payload.gym;
     },
     [createNewGym.rejected.toString()]: (
       state: TGymState,
@@ -154,7 +156,7 @@ const gymsSlice = createSlice({
     },
     [getGyms.fulfilled.toString()]: (
       state: TGymState,
-      action: PayloadAction<Array<TGym>>,
+      action: PayloadAction<TGyms>,
     ) => {
       state.getGymsLoading = false;
       state.gyms = action.payload;
@@ -184,6 +186,6 @@ const gymsSlice = createSlice({
   },
 });
 
-export const {setGymInEdit, setCurrentGym, addEquipmentToGym, removeEquipmentFromGym, addGym} =
+export const {setGymInEdit, setCurrentGym, addEquipmentToGym, removeEquipmentFromGym} =
   gymsSlice.actions;
 export default gymsSlice.reducer;

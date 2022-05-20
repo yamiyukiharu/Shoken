@@ -37,4 +37,9 @@ export type TFbGymEntry = {
     gym: TGym;
 }
 
+export type TFbUserEntry = {
+    id: string;
+    user: TUser;
+}
+
 export type TGyms = {[key:string]: TGym}

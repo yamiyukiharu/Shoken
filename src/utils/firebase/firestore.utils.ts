@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import { TGym, TAllEquipment, TEquipment, TEquipmentCategories, TUser, TFbGymEntry, TGyms } from './types';
+import { TGym, TAllEquipment, TUser, TFbGymEntry, TGyms, TFbUserEntry } from './types';
 import { emptyUser } from '../../redux/user/user.slice';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
@@ -24,6 +24,11 @@ export const getUserFirestore:(user:FirebaseAuthTypes.User) => Promise<TUser> = 
         throw err
         
     }
+}
+
+export const setUserFirestore:(userEntry: TFbUserEntry) => boolean = (userEntry) => {
+    firestore().collection('users').doc(userEntry.id).set(userEntry.user).catch(err => {console.log(err)})
+    return true
 }
 
 export const createNewGymFirestore = async (gymDetails: TGym):Promise<TFbGymEntry> => {

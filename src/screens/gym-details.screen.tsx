@@ -31,7 +31,7 @@ const GymDetailsScreen = () => {
             <Button
               title="Edit"
               onPress={() => {
-                currentGym && dispatch(setGymInEdit(currentGym));
+                dispatch(setGymInEdit(currentGym));
                 navigation.navigate('GymEditScreen', {mode: 'edit'});
               }}
             />
@@ -42,7 +42,7 @@ const GymDetailsScreen = () => {
             <Button
               title="Add Gym"
               onPress={() => {
-                currentGym && dispatch(addUserGym(currentGym));
+                dispatch(addUserGym(currentGym));
                 navigation.navigate('WorkoutsScreen');
               }}
             />

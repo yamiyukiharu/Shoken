@@ -19,6 +19,7 @@ import {  TGym,
 
 interface TGymState {
   gyms: TGyms;
+  savedGyms: TGyms;
   currentGym: TFbGymEntry;
   gymInEdit: TFbGymEntry;
   allEquipment: TAllEquipment;
@@ -55,6 +56,7 @@ const emptyGymEntry:TFbGymEntry = {
 
 export const gymInitialState: TGymState = {
   gyms: {},
+  savedGyms: {},
   currentGym: {...emptyGymEntry},
   gymInEdit: {...emptyGymEntry},
   allEquipment: {

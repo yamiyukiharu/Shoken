@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -12,26 +12,33 @@ import GymSearchEntry from '../components/gym-search-entry/gym-search-entry.comp
 import {useAppSelector} from '../redux/hooks';
 import {useNavigation} from '@react-navigation/native';
 import {WorkoutsNavProp} from '../../types';
-import { TFbGymEntry } from '../utils/firebase/types';
+import {TFbGymEntry} from '../utils/firebase/types';
 
 const GymAddScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>();
   const {gyms, getGymsLoading} = useAppSelector(state => state.gym);
-  const gymsToDisplay: Array<TFbGymEntry> = Object.keys(gyms).map(id => {
-    return {
-      id: id,
-      gym: gyms[id],
-    };
-  });
+  const [gymsToDisplay, setGymsToDisplay] = useState<Array<TFbGymEntry>>([]);
 
-  navigation.setOptions({
-    headerRight: () => (
-      <Button
-        onPress={() => navigation.navigate('GymEditScreen', {mode: 'new'})}
-        title="Create New"
-      />
-    ),
-  });
+  useEffect(() => {
+    const entries: Array<TFbGymEntry> = Object.keys(gyms).map(id => {
+      return {
+        id: id,
+        gym: gyms[id],
+      };
+    });
+    setGymsToDisplay(entries);
+  }, [gyms]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          onPress={() => navigation.navigate('GymEditScreen', {mode: 'new'})}
+          title="Create New"
+        />
+      ),
+    });
+  }, [])
 
   return (
     <View style={styles.container}>

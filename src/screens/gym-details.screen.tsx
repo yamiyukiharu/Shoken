@@ -1,58 +1,59 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
-import {
-  GymDetailsScreenScreenRouteProp,
-  WorkoutsNavProp,
-} from '../../types';
+import {GymDetailsScreenScreenRouteProp, WorkoutsNavProp} from '../../types';
 import {SliderBox} from 'react-native-image-slider-box';
 import {useAppSelector, useAppDispatch} from '../redux/hooks';
 import {setGymInEdit} from '../redux/gyms/gyms.slice';
-import { addUserGym } from '../redux/user/user.slice';
+import {addUserGym} from '../redux/user/user.slice';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import {useWindowDimensions} from 'react-native';
 import EquipmentCategories from '../components/equipment-categories/equipment-categories.component';
-import { TEquipmentCategories } from '../utils/firebase/types';
+import {TEquipmentCategories} from '../utils/firebase/types';
 
 const GymDetailsScreen = () => {
   const dispatch = useAppDispatch();
   const {currentGym} = useAppSelector(state => state.gym);
 
   const route = useRoute<GymDetailsScreenScreenRouteProp>();
-  const categories = Object.keys(currentGym.gym.equipment) as Array<TEquipmentCategories> 
+  const categories = Object.keys(
+    currentGym.gym.equipment,
+  ) as Array<TEquipmentCategories>;
   const navigation = useNavigation<WorkoutsNavProp>();
 
   // set the top right button type depending on edit or create new mode
-  navigation.setOptions({
-    headerRight: () => {
-      switch (route.params.mode) {
-        case 'edit':
-          return (
-            <Button
-              title="Edit"
-              onPress={() => {
-                dispatch(setGymInEdit(currentGym));
-                navigation.navigate('GymEditScreen', {mode: 'edit'});
-              }}
-            />
-          );
-          break;
-        case 'add':
-          return (
-            <Button
-              title="Add Gym"
-              onPress={() => {
-                dispatch(addUserGym(currentGym));
-                navigation.navigate('WorkoutsScreen');
-              }}
-            />
-          );
-          break;
-        default:
-          break;
-      }
-    },
-  });
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        switch (route.params.mode) {
+          case 'edit':
+            return (
+              <Button
+                title="Edit"
+                onPress={() => {
+                  dispatch(setGymInEdit(currentGym));
+                  navigation.navigate('GymEditScreen', {mode: 'edit'});
+                }}
+              />
+            );
+            break;
+          case 'add':
+            return (
+              <Button
+                title="Add Gym"
+                onPress={() => {
+                  dispatch(addUserGym(currentGym));
+                  navigation.navigate('WorkoutsScreen');
+                }}
+              />
+            );
+            break;
+          default:
+            break;
+        }
+      },
+    });
+  }, []);
 
   // boilerplate code for tab-view
   const [index, setIndex] = React.useState(0);
@@ -61,7 +62,7 @@ const GymDetailsScreen = () => {
     {key: 'Info', title: 'Info'},
   ]);
 
-  const InfoTab = () => 
+  const InfoTab = () => (
     <View style={{flex: 1, height: 800}}>
       <Text>Hello</Text>
       <Text>Hello</Text>
@@ -69,16 +70,14 @@ const GymDetailsScreen = () => {
       <Text>Hello</Text>
       <Text>Hello</Text>
       <Text>Hello</Text>
-    </View>;
-  
+    </View>
+  );
 
-  const EquipmentTab = () => 
+  const EquipmentTab = () => (
     <View style={styles.tabContainer}>
-      {
-        <EquipmentCategories categories={categories} mode='view'/>
-      }
-      
-    </View>;
+      {<EquipmentCategories categories={categories} mode="view" />}
+    </View>
+  );
 
   const renderScene = SceneMap({
     Equipment: EquipmentTab,
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
   tabContainer: {
     margin: 15,
     alignItems: 'center',
-  }
+  },
 });
 
 export default GymDetailsScreen;

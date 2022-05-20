@@ -58,6 +58,7 @@ const WorkoutsScreen = () => {
             renderItem={({item}) =>
               item === null ? (
                 <ShokenTile
+                  accessibilityLabel='add new gym'
                   addNew={true}
                   style={styles.gymTile}
                   onPress={() => {
@@ -66,6 +67,7 @@ const WorkoutsScreen = () => {
                 />
               ) : (
                 <ShokenTile
+                  accessibilityLabel={item.gym.name}
                   addNew={false}
                   details={item.gym.name}
                   style={styles.gymTile}

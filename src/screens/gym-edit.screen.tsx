@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet, Modal, Button, Alert} from 'react-native';
 import NormalButton from '../components/normal-button/normal-button.component';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -7,27 +7,30 @@ import MyImagePicker from '../components/image-picker/image-picker.component';
 
 import {useAppSelector, useAppDispatch} from '../redux/hooks';
 import {gymInitialState, setGymInEdit} from '../redux/gyms/gyms.slice';
-import {
-  WorkoutsNavProp,
-  GymEditScreenRouteProp,
-} from '../../types';
+import {WorkoutsNavProp, GymEditScreenRouteProp} from '../../types';
 
 const GymEditScreen: React.FC = () => {
   const navigation = useNavigation<WorkoutsNavProp>();
   const route = useRoute<GymEditScreenRouteProp>();
   const dispatch = useAppDispatch();
   const {gymInEdit} = useAppSelector(state => state.gym);
+  const gym = gymInEdit.gym
 
-  navigation.setOptions(
-    route.params.mode === 'new'
-      ? {
-          headerTitle: 'Create New Gym',
-        }
-      : {headerTitle: 'Edit Gym'},
-  );
+  useEffect(() => {
+    navigation.setOptions(
+      route.params.mode === 'new'
+        ? {
+            headerTitle: 'Create New Gym',
+          }
+        : {headerTitle: 'Edit Gym'},
+    );
+  }, []);
 
-  const onGymNameChange: (text: string) => void = text => {
-    dispatch(setGymInEdit({...gymInEdit, name: text}));
+  const onGymNameChange: (text: string) => void = (text) => {
+    dispatch(setGymInEdit({
+      id: gymInEdit.id,
+      gym: {...gym, name: text}
+    }));
   };
 
   return (
@@ -36,7 +39,7 @@ const GymEditScreen: React.FC = () => {
       <View style={styles.formContainer}>
         <Text> Gym Name: * </Text>
         <MyTextInput
-          value={gymInEdit.name}
+          value={gym.name}
           placeholder="Enter gym name..."
           onChangeText={onGymNameChange}
         />

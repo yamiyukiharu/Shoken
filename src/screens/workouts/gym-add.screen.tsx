@@ -13,28 +13,33 @@ import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {useNavigation} from '@react-navigation/native';
 import {WorkoutsNavProp} from '../../../types';
 import {TFbGymEntry} from '../../utils/firebase/types';
-import { getGyms, resetGymInEdit } from '../../redux/gyms/gyms.slice';
+import { getGyms, resetGymInEdit, setGymSearchString } from '../../redux/gyms/gyms.slice';
 
 const GymAddScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>();
   const dispatch = useAppDispatch()
-  const {gyms, getGymsLoading} = useAppSelector(state => state.gym);
+  const {gyms, getGymsLoading, gymSearchString} = useAppSelector(state => state.gym);
   const [gymsToDisplay, setGymsToDisplay] = useState<Array<TFbGymEntry>>([]);
 
+  // get all gyms from database
   useEffect(() => {
     dispatch(getGyms());
+    dispatch(setGymSearchString(''))
   }, []);
 
+  // filter out gyms to display
   useEffect(() => {
-    const entries: Array<TFbGymEntry> = Object.keys(gyms).map(id => {
+    let entries: Array<TFbGymEntry> = Object.keys(gyms).map(id => {
       return {
         id: id,
         gym: gyms[id],
       };
     });
+    entries = entries.filter(entry => entry.gym.name.toLowerCase().includes(gymSearchString))
     setGymsToDisplay(entries);
-  }, [gyms]);
+  }, [gyms, gymSearchString]);
 
+  // top right button to create new gym
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -48,9 +53,13 @@ const GymAddScreen = () => {
     });
   }, [])
 
+  const onSearchStringChange = (text:string) => {
+    dispatch(setGymSearchString(text))
+  }
+
   return (
     <View style={styles.container}>
-      <SearchBar />
+      <SearchBar placeholder='Search Gyms' onChangeText={onSearchStringChange}/>
       {getGymsLoading ? (
         <ActivityIndicator size="large" />
       ) : (

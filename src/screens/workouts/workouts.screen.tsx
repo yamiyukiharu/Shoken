@@ -45,7 +45,6 @@ const WorkoutsScreen = () => {
       <ScrollView
         contentContainerStyle={{flexGrow: 1}}
         keyboardShouldPersistTaps="handled">
-        <SearchBar />
         <Text style={styles.sectionTitle}>My Gyms</Text>
         {getGymsLoading ? (
           <ActivityIndicator size="large" />
@@ -101,6 +100,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     marginHorizontal: 20,
+    marginVertical: 10,
   },
   gymSlider: {
     paddingLeft: 10,

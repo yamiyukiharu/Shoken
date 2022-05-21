@@ -1,30 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {FlatList, View} from 'react-native';
 
 import SearchBar from '../../components/search-bar/search-bar.component';
 import EquipmentSearchEntry from '../../components/equipment-search-entry/equipment-search-entry.component';
 
-import {useAppSelector} from '../../redux/hooks';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {StyleSheet} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 
 import {GymAddEquipmentListScreenRouteProp} from '../../../types';
-import type {TEquipmentCategories} from '../../utils/firebase/types';
+import type {TEquipment, TEquipmentCategories} from '../../utils/firebase/types';
+import { setEquipmentSearchString } from '../../redux/gyms/gyms.slice';
 
 const GymAddEquipmentListScreen = () => {
   const route = useRoute<GymAddEquipmentListScreenRouteProp>();
-  const {gymInEdit, currentGym, allEquipment} = useAppSelector(state => state.gym);
+  const dispatch = useAppDispatch()
+  const {gymInEdit, currentGym, allEquipment, equipmentSearchString} = useAppSelector(state => state.gym);
   const equipmentCategory = route.params
     .equipmentCategory as TEquipmentCategories;
   const mode = route.params.mode
-  const equipment = mode === 'edit' ? allEquipment[equipmentCategory] : currentGym.gym.equipment[equipmentCategory]
+  const [equipmentToShow, setEquipmentToShow] = useState<Array<TEquipment>>([]) 
+
+  // filter equipment to display
+  useEffect(() => {
+    let equipment = mode === 'edit' ? allEquipment[equipmentCategory] : currentGym.gym.equipment[equipmentCategory]
+    equipment = equipment.filter(item => item.name.includes(equipmentSearchString))
+    console.log(equipmentSearchString)
+    setEquipmentToShow(equipment)
+  }, [equipmentSearchString])
+
+  // clear search field on mount
+  useEffect(() => {
+    dispatch(setEquipmentSearchString(''))
+  }, [])
+
+  const onSearchStringChange = (text:string) => {
+    dispatch(setEquipmentSearchString(text))
+  }
 
   return (
     <View>
-      <SearchBar />
+      <SearchBar placeholder='Search Equipment' onChangeText={onSearchStringChange}/>
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={equipment}
+        data={equipmentToShow}
         renderItem={({item}) => {
           const isAdded =
             gymInEdit.gym.equipment[equipmentCategory].filter(

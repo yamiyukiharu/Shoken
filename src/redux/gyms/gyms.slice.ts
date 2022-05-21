@@ -12,11 +12,13 @@ import {
   updateGymFirestore,
 } from '../../utils/firebase/firestore.utils';
 
-import {  TGym,
+import {
+  TGym,
   TAllEquipment,
   TEquipmentCategories,
   TFbGymEntry,
-  TGyms} from '../../utils/firebase/types'
+  TGyms,
+} from '../../utils/firebase/types';
 
 interface TGymState {
   gyms: TGyms;
@@ -27,6 +29,8 @@ interface TGymState {
   createNewGymLoading: boolean;
   getGymsLoading: boolean;
   getAllEquipmentLoading: boolean;
+  gymSearchString: string;
+  equipmentSearchString: string;
 }
 
 export type TEditGymEquipment = {
@@ -34,7 +38,7 @@ export type TEditGymEquipment = {
   equipmentName: string;
 };
 
-const emptyGym:TGym = {
+const emptyGym: TGym = {
   name: '',
   address: '',
   createdBy: '',
@@ -48,12 +52,12 @@ const emptyGym:TGym = {
     racks: [],
     dumbbells: [],
   },
-}
+};
 
-const emptyGymEntry:TFbGymEntry = {
+const emptyGymEntry: TFbGymEntry = {
   id: '',
   gym: {...emptyGym},
-}
+};
 
 export const gymInitialState: TGymState = {
   gyms: {},
@@ -71,6 +75,8 @@ export const gymInitialState: TGymState = {
   createNewGymLoading: false,
   getGymsLoading: false,
   getAllEquipmentLoading: false,
+  gymSearchString: '',
+  equipmentSearchString: '',
 };
 
 export const createNewGym = createAsyncThunk(
@@ -121,8 +127,8 @@ const gymsSlice = createSlice({
   name: 'gyms',
   initialState: gymInitialState,
   reducers: {
-    setCurrentGym(state:TGymState, action:PayloadAction<TFbGymEntry>) {
-      state.currentGym = action.payload
+    setCurrentGym(state: TGymState, action: PayloadAction<TFbGymEntry>) {
+      state.currentGym = action.payload;
     },
     setGymInEdit(state: TGymState, action: PayloadAction<TFbGymEntry>) {
       state.gymInEdit = action.payload;
@@ -147,6 +153,12 @@ const gymsSlice = createSlice({
           equipment => equipment.name !== action.payload.equipmentName,
         );
     },
+    setGymSearchString(state: TGymState, action: PayloadAction<string>) {
+      state.gymSearchString = action.payload.toLowerCase();
+    },
+    setEquipmentSearchString(state: TGymState, action: PayloadAction<string>) {
+      state.equipmentSearchString = action.payload.toLowerCase();
+    },
   },
   extraReducers: {
     //createNewGym
@@ -159,8 +171,8 @@ const gymsSlice = createSlice({
     ) => {
       state.createNewGymLoading = false;
       state.gyms[action.payload.id] = action.payload.gym;
-      state.currentGym
-      state.gymInEdit = {...state.gymInEdit, id: action.payload.id}
+      state.currentGym;
+      state.gymInEdit = {...state.gymInEdit, id: action.payload.id};
     },
     [createNewGym.rejected.toString()]: (
       state: TGymState,
@@ -180,7 +192,10 @@ const gymsSlice = createSlice({
       state.getGymsLoading = false;
       state.gyms = action.payload;
     },
-    [getGyms.rejected.toString()]: (state: TGymState, action: PayloadAction<string>) => {
+    [getGyms.rejected.toString()]: (
+      state: TGymState,
+      action: PayloadAction<string>,
+    ) => {
       state.getGymsLoading = false;
       console.log(action.payload);
     },
@@ -189,7 +204,7 @@ const gymsSlice = createSlice({
       state: TGymState,
       action: PayloadAction<TFbGymEntry>,
     ) => {
-      state.gyms[action.payload.id] = action.payload.gym
+      state.gyms[action.payload.id] = action.payload.gym;
     },
     //getAllEquipment
     [getAllEquipment.pending.toString()]: (state: TGymState) => {
@@ -212,6 +227,13 @@ const gymsSlice = createSlice({
   },
 });
 
-export const {setGymInEdit, resetGymInEdit, setCurrentGym, addEquipmentToGym, removeEquipmentFromGym} =
-  gymsSlice.actions;
+export const {
+  setGymSearchString,
+  setEquipmentSearchString,
+  setGymInEdit,
+  resetGymInEdit,
+  setCurrentGym,
+  addEquipmentToGym,
+  removeEquipmentFromGym,
+} = gymsSlice.actions;
 export default gymsSlice.reducer;

@@ -3,12 +3,18 @@ import { View, StyleSheet, TextInput } from 'react-native';
 
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+type Props = {
+    placeholder: string;
+    onChangeText: (text:string) => void;
+}
 
-const SearchBar = () => {
+const SearchBar:React.FC<Props> = (props) => {
+
+
     return (
         <View style={styles.container}>
             <MaterialIcon name={'magnify'} size={30}/>
-            <TextInput style={styles.searchText} placeholder='Search workouts'/>
+            <TextInput style={styles.searchText} {...props}/>
         </View>
     )
 }

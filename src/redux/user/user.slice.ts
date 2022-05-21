@@ -67,10 +67,32 @@ export const addUserGym = createAsyncThunk(
       return user;
 
     } catch (err) {
-      return rejectWithValue('Error setting data');
+      return rejectWithValue('Error adding user gym');
     }
   },
 );
+
+export const removeUserGym = createAsyncThunk(
+  'user/removeUserGym',
+  async (gymEntry: TFbGymEntry, {getState, rejectWithValue}) => {
+    try {
+      const state: TUserState = getState().user as TUserState;
+      const user: TUser = {
+        ...state.user,
+        savedGyms: [...state.user.savedGyms],
+      };
+      user.savedGyms = user.savedGyms.filter(gymId => gymId !== gymEntry.id)
+      setUserFirestore({
+        id: state.uid,
+        user: user,
+      });
+      return user;
+    } catch (err) {
+      return rejectWithValue('Error removing user gym');
+      
+    }
+  }
+)
 
 const userSlice = createSlice({
   name: 'user',
@@ -104,6 +126,12 @@ const userSlice = createSlice({
       return
     },
     [addUserGym.fulfilled.toString()]: (
+      state: TUserState,
+      action: PayloadAction<TUser>,
+    ) => {
+      state.user = action.payload;
+    },
+    [removeUserGym.fulfilled.toString()]: (
       state: TUserState,
       action: PayloadAction<TUser>,
     ) => {

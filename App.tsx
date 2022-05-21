@@ -2,24 +2,23 @@ import React, {useState, useEffect} from 'react';
 import {Provider} from 'react-redux';
 import {store} from './src/redux/store';
 import {Button} from 'react-native';
+import {MenuProvider} from 'react-native-popup-menu';
 
-import {
-  NavigationContainer,
-} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 import SignInScreen from './src/screens/sign-in.screen';
 import HomeScreen from './src/screens/home.screen';
-import { WorkoutsStackScreen } from './src/screens/navigation-stacks/workout-stack';
+import {WorkoutsStackScreen} from './src/screens/navigation-stacks/workout-stack';
 
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import type {WorkoutStackParamList} from './types';
-import { useAppDispatch, useAppSelector } from './src/redux/hooks';
-import { setUser, resetUser } from './src/redux/user/user.slice';
+import {useAppDispatch, useAppSelector} from './src/redux/hooks';
+import {setUser, resetUser} from './src/redux/user/user.slice';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -27,16 +26,17 @@ const NutritionStack = createNativeStackNavigator();
 const PlannerStack = createNativeStackNavigator();
 const CommunityStack = createNativeStackNavigator();
 
-
 const AppBody = () => {
-  const dispatch = useAppDispatch()
-  const {isSignedIn} = useAppSelector(state => state.user)
+  const dispatch = useAppDispatch();
+  const {isSignedIn} = useAppSelector(state => state.user);
 
-  const onAuthStateChanged:(user:FirebaseAuthTypes.User | null) => void = (user) => {
+  const onAuthStateChanged: (
+    user: FirebaseAuthTypes.User | null,
+  ) => void = user => {
     if (user) {
-      dispatch(setUser(user))
+      dispatch(setUser(user));
     } else {
-      dispatch(resetUser())
+      dispatch(resetUser());
     }
   };
 
@@ -44,7 +44,6 @@ const AppBody = () => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
-
 
   if (!isSignedIn) {
     return <SignInScreen />;
@@ -107,7 +106,9 @@ const AppBody = () => {
 const App = () => {
   return (
     <Provider store={store}>
-      <AppBody />
+      <MenuProvider>
+        <AppBody />
+      </MenuProvider>
     </Provider>
   );
 };

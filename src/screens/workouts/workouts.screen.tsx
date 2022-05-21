@@ -41,9 +41,8 @@ const WorkoutsScreen = () => {
   }, [gyms, user]);
 
   return (
-    <View>
+    <View style={styles.container}>
       <ScrollView
-        contentContainerStyle={{flexGrow: 1}}
         keyboardShouldPersistTaps="handled">
         <Text style={styles.sectionTitle}>My Gyms</Text>
         {getGymsLoading ? (
@@ -95,6 +94,7 @@ const WorkoutsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
+    flexGrow: 1,
   },
   sectionTitle: {
     fontWeight: 'bold',

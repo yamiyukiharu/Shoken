@@ -5,11 +5,18 @@ import {GymDetailsScreenScreenRouteProp, WorkoutsNavProp} from '../../../types';
 import {SliderBox} from 'react-native-image-slider-box';
 import {useAppSelector, useAppDispatch} from '../../redux/hooks';
 import {setGymInEdit} from '../../redux/gyms/gyms.slice';
-import {addUserGym} from '../../redux/user/user.slice';
+import {addUserGym, removeUserGym} from '../../redux/user/user.slice';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import {useWindowDimensions} from 'react-native';
 import EquipmentCategories from '../../components/equipment-categories/equipment-categories.component';
 import {TEquipmentCategories} from '../../utils/firebase/types';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 
 const GymDetailsScreen = () => {
   const dispatch = useAppDispatch();
@@ -20,6 +27,16 @@ const GymDetailsScreen = () => {
   const categories = Object.keys(gym.equipment) as Array<TEquipmentCategories>;
   const navigation = useNavigation<WorkoutsNavProp>();
 
+  const onEditTapped = () => {
+    dispatch(setGymInEdit(currentGym))
+    navigation.navigate('GymEditScreen', {mode: 'edit'})
+  }
+
+  const onRemoveTapped = () => {
+    dispatch(removeUserGym(currentGym))
+    navigation.navigate('WorkoutsScreen')
+  }
+
   // set the top right button type depending on edit or create new mode
   useEffect(() => {
     navigation.setOptions({
@@ -27,13 +44,26 @@ const GymDetailsScreen = () => {
         switch (route.params.mode) {
           case 'edit':
             return (
-              <Button
-                title="Edit"
-                onPress={() => {
-                  dispatch(setGymInEdit(currentGym));
-                  navigation.navigate('GymEditScreen', {mode: 'edit'});
-                }}
-              />
+              // <Button
+              //   title="Edit"
+              //   onPress={() => {
+              //     dispatch(setGymInEdit(currentGym));
+              //     navigation.navigate('GymEditScreen', {mode: 'edit'});
+              //   }}
+              // />
+              <Menu>
+              <MenuTrigger>
+                <MaterialIcon name={'dots-horizontal'} size={28} color={'#007AFF'} />
+                </MenuTrigger>
+              <MenuOptions optionsContainerStyle={styles.menuContainer}>
+                <MenuOption onSelect={onEditTapped}> 
+                  <Text style={styles.menuOption}>Edit</Text>
+                </MenuOption>
+                <MenuOption onSelect={onRemoveTapped} >
+                  <Text style={styles.menuOption}>Remove</Text>
+                </MenuOption>
+              </MenuOptions>
+            </Menu>
             );
             break;
           case 'add':
@@ -158,6 +188,17 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     margin: 15,
   },
+  menuOption: {
+    fontSize: 14,
+    padding: 10,
+  },
+  menuContainer : {
+    shadowColor: 'black',
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 5,
+    borderRadius: 10
+  }
 });
 
 export default GymDetailsScreen;

@@ -36,7 +36,6 @@ const MyImagePicker: React.FC = () => {
 
     const openCamera = async () => {
       const res = await launchCamera(options, response => {
-        console.log(response);
         if (response.assets) {
           response.assets[0].uri &&
           dispatch(setGymInEdit({...gymInEdit, images: [response.assets[0].uri]}))

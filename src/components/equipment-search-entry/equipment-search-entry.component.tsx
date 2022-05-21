@@ -8,7 +8,7 @@ import {
   addEquipmentToGym,
   removeEquipmentFromGym,
 } from '../../redux/gyms/gyms.slice';
-import type {TEquipmentCategories} from '../../utils/firebase/firestore.utils';
+import type {TEquipmentCategories} from '../../utils/firebase/types';
 
 interface Props {
   equipmentName: string;

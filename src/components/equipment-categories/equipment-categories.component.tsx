@@ -22,17 +22,15 @@ type Props = {
 const EquipmentCategories:React.FC<Props> = ({categories, mode}) => {
     const {gymInEdit, currentGym} = useAppSelector(state => state.gym)
     const navigation = useNavigation<WorkoutsNavProp>()
-    const gym = currentGym.gym
 
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
         numColumns={2}
         showsVerticalScrollIndicator={false}
         data={categories}
         renderItem={({item}) => {
           const category = item as TEquipmentCategories;
-          console.log(item)
           if (mode === 'view') {
             return (
                 <ShokenTile
@@ -46,8 +44,8 @@ const EquipmentCategories:React.FC<Props> = ({categories, mode}) => {
                   }
                   title={item}
                   details={`${
-                    gym.equipment[category]
-                      ? gym.equipment[category].length.toString()
+                    currentGym.gym.equipment[category]
+                      ? currentGym.gym.equipment[category].length.toString()
                       : '0'
                   } Equipment`}
                 />
@@ -65,8 +63,8 @@ const EquipmentCategories:React.FC<Props> = ({categories, mode}) => {
                   }
                   title={item}
                   details={`${
-                    gym.equipment[category]
-                      ? gym.equipment[category].length.toString()
+                    gymInEdit.gym.equipment[category]
+                      ? gymInEdit.gym.equipment[category].length.toString()
                       : '0'
                   } added`}
                 />
@@ -85,14 +83,6 @@ const styles = StyleSheet.create({
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-    },
-    buttonsContainer: {
-      flexDirection: 'row',
-      marginTop: 'auto',
-      marginBottom: 40,
-    },
-    button: {
-      marginLeft: 20,
     },
     tile: {
       height: 150,

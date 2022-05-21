@@ -1,15 +1,15 @@
 import React from 'react';
 import {FlatList, View} from 'react-native';
 
-import SearchBar from '../components/search-bar/search-bar.component';
-import EquipmentSearchEntry from '../components/equipment-search-entry/equipment-search-entry.component';
+import SearchBar from '../../components/search-bar/search-bar.component';
+import EquipmentSearchEntry from '../../components/equipment-search-entry/equipment-search-entry.component';
 
-import {useAppSelector} from '../redux/hooks';
+import {useAppSelector} from '../../redux/hooks';
 import {StyleSheet} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 
-import {GymAddEquipmentListScreenRouteProp} from '../../types';
-import type {TEquipmentCategories} from '../utils/firebase/firestore.utils';
+import {GymAddEquipmentListScreenRouteProp} from '../../../types';
+import type {TEquipmentCategories} from '../../utils/firebase/types';
 
 const GymAddEquipmentListScreen = () => {
   const route = useRoute<GymAddEquipmentListScreenRouteProp>();
@@ -17,7 +17,7 @@ const GymAddEquipmentListScreen = () => {
   const equipmentCategory = route.params
     .equipmentCategory as TEquipmentCategories;
   const mode = route.params.mode
-  const equipment = mode === 'edit' ? allEquipment[equipmentCategory] : currentGym.equipment[equipmentCategory]
+  const equipment = mode === 'edit' ? allEquipment[equipmentCategory] : currentGym.gym.equipment[equipmentCategory]
 
   return (
     <View>
@@ -27,7 +27,7 @@ const GymAddEquipmentListScreen = () => {
         data={equipment}
         renderItem={({item}) => {
           const isAdded =
-            gymInEdit.equipment[equipmentCategory].filter(
+            gymInEdit.gym.equipment[equipmentCategory].filter(
               equipment => equipment.name === item.name,
             ).length > 0;
           return (

@@ -6,16 +6,18 @@ import {
   Button,
   ActivityIndicator,
 } from 'react-native';
-import SearchBar from '../components/search-bar/search-bar.component';
-import GymSearchEntry from '../components/gym-search-entry/gym-search-entry.component';
+import SearchBar from '../../components/search-bar/search-bar.component';
+import GymSearchEntry from '../../components/gym-search-entry/gym-search-entry.component';
 
-import {useAppSelector} from '../redux/hooks';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {useNavigation} from '@react-navigation/native';
-import {WorkoutsNavProp} from '../../types';
-import {TFbGymEntry} from '../utils/firebase/types';
+import {WorkoutsNavProp} from '../../../types';
+import {TFbGymEntry} from '../../utils/firebase/types';
+import { resetGymInEdit } from '../../redux/gyms/gyms.slice';
 
 const GymAddScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>();
+  const dispatch = useAppDispatch()
   const {gyms, getGymsLoading} = useAppSelector(state => state.gym);
   const [gymsToDisplay, setGymsToDisplay] = useState<Array<TFbGymEntry>>([]);
 
@@ -33,7 +35,9 @@ const GymAddScreen = () => {
     navigation.setOptions({
       headerRight: () => (
         <Button
-          onPress={() => navigation.navigate('GymEditScreen', {mode: 'new'})}
+          onPress={() => {
+            dispatch(resetGymInEdit())
+            navigation.navigate('GymEditScreen', {mode: 'new'})}}
           title="Create New"
         />
       ),

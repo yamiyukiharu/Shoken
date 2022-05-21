@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -8,16 +8,19 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {useAppSelector, useAppDispatch} from '../redux/hooks';
-import {getAllEquipment} from '../redux/gyms/gyms.slice';
-import EquipmentCategories from '../components/equipment-categories/equipment-categories.component';
-import NormalButton from '../components/normal-button/normal-button.component';
-import { TEquipmentCategories } from '../utils/firebase/firestore.utils';
-import { WorkoutsNavProp } from '../../types';
+import {useAppSelector, useAppDispatch} from '../../redux/hooks';
+import {createNewGym, getAllEquipment, updateGym} from '../../redux/gyms/gyms.slice';
+import EquipmentCategories from '../../components/equipment-categories/equipment-categories.component';
+import NormalButton from '../../components/normal-button/normal-button.component';
+import { TEquipmentCategories } from '../../utils/firebase/types';
+import { WorkoutsNavProp } from '../../../types';
+import { addUserGym } from '../../redux/user/user.slice';
 
 export const GymAddEquipmentCategoriesScreen = () => {
+  const [done, setDone] = useState(false)
   const navigation = useNavigation<WorkoutsNavProp>();
   const dispatch = useAppDispatch();
+  const {gymInEdit} = useAppSelector(state => state.gym)
 
   const {allEquipment, getAllEquipmentLoading} = useAppSelector(
     state => state.gym,
@@ -27,6 +30,13 @@ export const GymAddEquipmentCategoriesScreen = () => {
   useEffect(() => {
     dispatch(getAllEquipment());
   }, []);
+
+  useEffect(() => {
+    if (done) {
+      dispatch(addUserGym(gymInEdit))
+      navigation.navigate('WorkoutsScreen')
+    }
+  }, [gymInEdit])
 
   return (
     <View style={styles.container}>
@@ -46,8 +56,18 @@ export const GymAddEquipmentCategoriesScreen = () => {
         />
         <NormalButton
           style={styles.button}
-          text={'Next'}
-          onPress={() => navigation.navigate('GymAddEquipmentCategoriesScreen')}
+          text={'Done'}
+          onPress={() => {
+            if (gymInEdit.id === '') {
+              dispatch(createNewGym(gymInEdit.gym))
+              setDone(true)
+
+            } else {
+              //if editing exiting gym
+              dispatch(updateGym(gymInEdit))
+              navigation.navigate('WorkoutsScreen')
+            }
+            }}
         />
       </View>
     </View>

@@ -9,6 +9,7 @@ import {
   createNewGymFirestore,
   getGymsFirestore,
   getEquipmentFirestore,
+  updateGymFirestore,
 } from '../../utils/firebase/firestore.utils';
 
 import {  TGym,
@@ -50,7 +51,7 @@ const emptyGym:TGym = {
 }
 
 const emptyGymEntry:TFbGymEntry = {
-  id: 'null',
+  id: '',
   gym: {...emptyGym},
 }
 
@@ -77,6 +78,17 @@ export const createNewGym = createAsyncThunk(
   async (gymDetails: TGym, {rejectWithValue}) => {
     try {
       return await createNewGymFirestore(gymDetails);
+    } catch (err) {
+      return rejectWithValue('Error creating new gym');
+    }
+  },
+);
+
+export const updateGym = createAsyncThunk(
+  'gyms/updateGym',
+  async (gymDetails: TFbGymEntry, {rejectWithValue}) => {
+    try {
+      return await updateGymFirestore(gymDetails);
     } catch (err) {
       return rejectWithValue('Error creating new gym');
     }
@@ -115,6 +127,9 @@ const gymsSlice = createSlice({
     setGymInEdit(state: TGymState, action: PayloadAction<TFbGymEntry>) {
       state.gymInEdit = action.payload;
     },
+    resetGymInEdit(state: TGymState) {
+      state.gymInEdit = {...emptyGymEntry};
+    },
     addEquipmentToGym(
       state: TGymState,
       action: PayloadAction<TEditGymEquipment>,
@@ -144,6 +159,8 @@ const gymsSlice = createSlice({
     ) => {
       state.createNewGymLoading = false;
       state.gyms[action.payload.id] = action.payload.gym;
+      state.currentGym
+      state.gymInEdit = {...state.gymInEdit, id: action.payload.id}
     },
     [createNewGym.rejected.toString()]: (
       state: TGymState,
@@ -167,6 +184,13 @@ const gymsSlice = createSlice({
       state.getGymsLoading = false;
       console.log(action.payload);
     },
+    // updateGym
+    [updateGym.fulfilled.toString()]: (
+      state: TGymState,
+      action: PayloadAction<TFbGymEntry>,
+    ) => {
+      state.gyms[action.payload.id] = action.payload.gym
+    },
     //getAllEquipment
     [getAllEquipment.pending.toString()]: (state: TGymState) => {
       state.getAllEquipmentLoading = true;
@@ -188,6 +212,6 @@ const gymsSlice = createSlice({
   },
 });
 
-export const {setGymInEdit, setCurrentGym, addEquipmentToGym, removeEquipmentFromGym} =
+export const {setGymInEdit, resetGymInEdit, setCurrentGym, addEquipmentToGym, removeEquipmentFromGym} =
   gymsSlice.actions;
 export default gymsSlice.reducer;

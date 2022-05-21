@@ -51,22 +51,22 @@ export const addUserGym = createAsyncThunk(
   'user/addUserGym',
   async (gymEntry: TFbGymEntry, {getState, rejectWithValue}) => {
     try {
-      console.log('try')
       const state: TUserState = getState().user as TUserState;
-      console.log(state)
       const user: TUser = {
         ...state.user,
-        savedGyms: [...state.user.savedGyms, gymEntry.id],
+        savedGyms: [...state.user.savedGyms],
       };
+      // only make changes if id is not in savedGyms
+      if (!state.user.savedGyms.includes(gymEntry.id)) {
+        user.savedGyms = [...state.user.savedGyms, gymEntry.id];
+      }
       setUserFirestore({
         id: state.uid,
         user: user,
       });
-      console.log(user)
-
       return user;
+
     } catch (err) {
-      console.log(err)
       return rejectWithValue('Error setting data');
     }
   },
@@ -99,6 +99,9 @@ const userSlice = createSlice({
     [setUser.rejected.toString()]: (state: TUserState) => {
       state.isSigningIn = false;
       state.isSignedIn = false;
+    },
+    [addUserGym.pending.toString()]: (state: TUserState) => {
+      return
     },
     [addUserGym.fulfilled.toString()]: (
       state: TUserState,

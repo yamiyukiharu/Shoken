@@ -43,9 +43,18 @@ export const createNewGymFirestore = async (gymDetails: TGym):Promise<TFbGymEntr
     }
 }
 
+export const updateGymFirestore = async (gymEntry: TFbGymEntry):Promise<TFbGymEntry> => {
+    try {
+        await firestore().collection('gyms').doc(gymEntry.id).set(gymEntry.gym)
+        return gymEntry
+    } catch (err) {
+        throw err
+    }
+}
+
 export const getGymsFirestore = async ():Promise<TGyms> => {
     try {
-        const querySnapshot = await firestore().collection('gyms').get({source: 'cache'});
+        const querySnapshot = await firestore().collection('gyms').get();
         let gyms:TGyms = {}
         querySnapshot.forEach(documentSnapshot => {
             gyms[documentSnapshot.id] = documentSnapshot.data() as TGym

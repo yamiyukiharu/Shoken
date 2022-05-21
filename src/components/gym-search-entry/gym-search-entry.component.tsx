@@ -28,7 +28,7 @@ const GymSearchEntry: React.FC<{gymEntry: TFbGymEntry}> = ({gymEntry}) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onEntryTapped}>
+      <TouchableOpacity onPress={onEntryTapped} accessible={true} accessibilityLabel={gym.name + ' entry'}>
         <View style={styles.topRow}>
           <Text style={styles.title}>{gym.name}</Text>
           <MaterialIcon name={'arrow-forward-ios'} size={30} />

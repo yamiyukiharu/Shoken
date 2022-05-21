@@ -1,20 +1,20 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
-import {GymDetailsScreenScreenRouteProp, WorkoutsNavProp} from '../../types';
+import {GymDetailsScreenScreenRouteProp, WorkoutsNavProp} from '../../../types';
 import {SliderBox} from 'react-native-image-slider-box';
-import {useAppSelector, useAppDispatch} from '../redux/hooks';
-import {setGymInEdit} from '../redux/gyms/gyms.slice';
-import {addUserGym} from '../redux/user/user.slice';
+import {useAppSelector, useAppDispatch} from '../../redux/hooks';
+import {setGymInEdit} from '../../redux/gyms/gyms.slice';
+import {addUserGym} from '../../redux/user/user.slice';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import {useWindowDimensions} from 'react-native';
-import EquipmentCategories from '../components/equipment-categories/equipment-categories.component';
-import {TEquipmentCategories} from '../utils/firebase/types';
+import EquipmentCategories from '../../components/equipment-categories/equipment-categories.component';
+import {TEquipmentCategories} from '../../utils/firebase/types';
 
 const GymDetailsScreen = () => {
   const dispatch = useAppDispatch();
   const {currentGym} = useAppSelector(state => state.gym);
-
+  const {user} = useAppSelector(state => state.user);
   const route = useRoute<GymDetailsScreenScreenRouteProp>();
   const categories = Object.keys(
     currentGym.gym.equipment,
@@ -38,15 +38,17 @@ const GymDetailsScreen = () => {
             );
             break;
           case 'add':
-            return (
-              <Button
-                title="Add Gym"
-                onPress={() => {
-                  dispatch(addUserGym(currentGym));
-                  navigation.navigate('WorkoutsScreen');
-                }}
-              />
-            );
+            if (!user.savedGyms.includes(currentGym.id)) {
+              return (
+                <Button
+                  title="Add Gym"
+                  onPress={() => {
+                    dispatch(addUserGym(currentGym));
+                    navigation.navigate('WorkoutsScreen');
+                  }}
+                />
+              );
+            }
             break;
           default:
             break;
@@ -58,12 +60,12 @@ const GymDetailsScreen = () => {
   // boilerplate code for tab-view
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'Equipment', title: 'Equipment'},
     {key: 'Info', title: 'Info'},
+    {key: 'Equipment', title: 'Equipment'},
   ]);
 
   const InfoTab = () => (
-    <View style={{flex: 1, height: 800}}>
+    <View style={styles.tabContainer}>
       <Text>Hello</Text>
       <Text>Hello</Text>
       <Text>Hello</Text>
@@ -80,8 +82,8 @@ const GymDetailsScreen = () => {
   );
 
   const renderScene = SceneMap({
-    Equipment: EquipmentTab,
     Info: InfoTab,
+    Equipment: EquipmentTab,
   });
 
   const renderTabBar = props => (
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     justifyContent: 'center',
-    flex: 1,
+    flexGrow: 1,
   },
   title: {
     fontWeight: 'bold',
@@ -121,6 +123,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   tabContainer: {
+    flexDirection: 'column',
+    flexGrow: 1,
     margin: 15,
     alignItems: 'center',
   },

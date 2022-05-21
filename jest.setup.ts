@@ -1,4 +1,5 @@
 import * as ReactNative from 'react-native';
+import { View } from 'react-native';
 import 'react-native-gesture-handler/jestSetup';
 
 global.console = {

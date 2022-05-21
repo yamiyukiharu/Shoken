@@ -13,9 +13,10 @@ export const mockGym: TGym = {
   address: 'Blk 12, St 23, 45678 Singapore',
   createdBy: 'mockUser',
   size: 2000,
-  images: [
-    'https://www.google.com/url?sa=i&url=https%3A%2F%2Femilypost.com%2Fadvice%2Fdos-and-donts-at-the-gym&psig=AOvVaw3o34vnmaliSESfi-ZkWooy&ust=1653025285293000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCNDPjZvt6vcCFQAAAAAdAAAAABAO',
-  ],
+  // images: [
+  //   'https://www.google.com/url?sa=i&url=https%3A%2F%2Femilypost.com%2Fadvice%2Fdos-and-donts-at-the-gym&psig=AOvVaw3o34vnmaliSESfi-ZkWooy&ust=1653025285293000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCNDPjZvt6vcCFQAAAAAdAAAAABAO',
+  // ],
+  images: [],
   equipment: {
     bars: [
       {

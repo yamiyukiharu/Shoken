@@ -58,10 +58,7 @@ export const getGymsFirestore = async ():Promise<TGyms> => {
         let gyms:TGyms = {}
         querySnapshot.forEach(documentSnapshot => {
             gyms[documentSnapshot.id] = documentSnapshot.data() as TGym
-            // manually insert a blank image for gyms with no images
-            if (gyms[documentSnapshot.id].images.length === 0) {
-                gyms[documentSnapshot.id].images = [require('../../../assets/images/placeholder-image.png')]
-            }
+
         })
         return gyms;
     } catch (err) {

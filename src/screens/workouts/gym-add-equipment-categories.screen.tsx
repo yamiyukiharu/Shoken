@@ -12,7 +12,7 @@ import {useAppSelector, useAppDispatch} from '../../redux/hooks';
 import {createNewGym, getAllEquipment, updateGym} from '../../redux/gyms/gyms.slice';
 import EquipmentCategories from '../../components/equipment-categories/equipment-categories.component';
 import NormalButton from '../../components/normal-button/normal-button.component';
-import { TEquipmentCategories } from '../../utils/firebase/types';
+import { TEquipmentCategories, TGym } from '../../utils/firebase/types';
 import { WorkoutsNavProp } from '../../../types';
 import { addUserGym } from '../../redux/user/user.slice';
 
@@ -21,6 +21,7 @@ export const GymAddEquipmentCategoriesScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>();
   const dispatch = useAppDispatch();
   const {gymInEdit} = useAppSelector(state => state.gym)
+  const {user} = useAppSelector(state => state.user)
 
   const {allEquipment, getAllEquipmentLoading} = useAppSelector(
     state => state.gym,
@@ -59,7 +60,8 @@ export const GymAddEquipmentCategoriesScreen = () => {
           text={'Done'}
           onPress={() => {
             if (gymInEdit.id === '') {
-              dispatch(createNewGym(gymInEdit.gym))
+              const newGym:TGym = {...gymInEdit.gym, createdBy:user.name}
+              dispatch(createNewGym(newGym))
               setDone(true)
 
             } else {

@@ -16,9 +16,8 @@ const GymDetailsScreen = () => {
   const {currentGym} = useAppSelector(state => state.gym);
   const {user} = useAppSelector(state => state.user);
   const route = useRoute<GymDetailsScreenScreenRouteProp>();
-  const categories = Object.keys(
-    currentGym.gym.equipment,
-  ) as Array<TEquipmentCategories>;
+  const gym = currentGym.gym;
+  const categories = Object.keys(gym.equipment) as Array<TEquipmentCategories>;
   const navigation = useNavigation<WorkoutsNavProp>();
 
   // set the top right button type depending on edit or create new mode
@@ -65,18 +64,25 @@ const GymDetailsScreen = () => {
   ]);
 
   const InfoTab = () => (
-    <View style={styles.tabContainer}>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
+    <View style={styles.infoTabContainer}>
+      <View style={styles.row}>
+        <Text style={styles.subtitle}>Created By:</Text>
+        <Text>{gym.createdBy}</Text>
+      </View>
+      <View style={styles.row}>
+        <Text style={styles.subtitle}>City:</Text>
+        <Text>{gym.address}</Text>
+      </View>
+
+      <View style={styles.row}>
+        <Text style={styles.subtitle}>Size:</Text>
+        <Text>{gym.size}</Text>
+      </View>
     </View>
   );
 
   const EquipmentTab = () => (
-    <View style={styles.tabContainer}>
+    <View style={styles.EquipmentTabContainer}>
       {<EquipmentCategories categories={categories} mode="view" />}
     </View>
   );
@@ -97,8 +103,16 @@ const GymDetailsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <SliderBox sliderBoxHeight={200} images={currentGym.gym.images} />
-      <Text style={styles.title}>{currentGym.gym.name}</Text>
+      <SliderBox
+        sliderBoxHeight={200}
+        images={
+          // manually insert a blank image for gyms with no images
+          gym.images.length === 0
+            ? [require('../../../assets/images/placeholder-image.png')]
+            : gym.images
+        }
+      />
+      <Text style={styles.title}>{gym.name}</Text>
       <TabView
         navigationState={{index, routes}}
         renderScene={renderScene}
@@ -122,11 +136,27 @@ const styles = StyleSheet.create({
     padding: 15,
     marginLeft: 10,
   },
-  tabContainer: {
+  subtitle: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    marginVertical: 10,
+  },
+  row: {
+    flexDirection: 'row',
+    marginHorizontal: 30,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  EquipmentTabContainer: {
     flexDirection: 'column',
     flexGrow: 1,
     margin: 15,
     alignItems: 'center',
+  },
+  infoTabContainer: {
+    flexDirection: 'column',
+    flexGrow: 1,
+    margin: 15,
   },
 });
 

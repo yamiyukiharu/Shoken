@@ -12,7 +12,7 @@ export type TUser = {
 }
 
 // WORKOUTS SECTION
-export type TEquipmentCategories = 'bars'|'benches'|'cardio'|'dumbbells'|'machines'|'racks'
+export type TEquipmentCategories = 'bars'|'benches'|'cardio'|'dumbbells'|'machines'|'racks'|'cableAttachment'|'others'
 
 type dict<TValue> = {[key in TEquipmentCategories]: TValue}
 

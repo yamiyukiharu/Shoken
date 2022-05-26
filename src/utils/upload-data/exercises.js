@@ -734,6 +734,7 @@ var getExerciseName = function (exercicseVariantArray) {
                 // joins the variant names together
                 // insert spaces at the right places
                 var name = '';
+                var equipment = [];
                 if (exercicseVariant.variant === '') {
                     name = subvariant.name;
                 }
@@ -743,16 +744,25 @@ var getExerciseName = function (exercicseVariantArray) {
                 else {
                     name = "".concat(subvariant.name, " ").concat(exercicseVariant.variant);
                 }
+                // handle equipment
+                if (subvariant.equipment) {
+                    equipment.push.apply(equipment, subvariant.equipment);
+                }
+                if (exercicseVariant.equipment) {
+                    equipment.push.apply(equipment, exercicseVariant.equipment);
+                }
                 result.push({
                     id: __spreadArray([index], subvariant.id, true),
-                    name: name
+                    name: name,
+                    equipment: equipment
                 });
             });
         }
         else {
             result.push({
                 id: [0],
-                name: exercicseVariant.variant
+                name: exercicseVariant.variant,
+                equipment: exercicseVariant.equipment
             });
         }
     });

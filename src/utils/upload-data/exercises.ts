@@ -782,6 +782,7 @@ type TMuscleExercises = {
 type TestType = Array<{
   id: Array<number>;
   name: string;
+  equipment?: Array<string>;
 }>
 
 const getExerciseName: (
@@ -800,6 +801,7 @@ const getExerciseName: (
         // joins the variant names together
         // insert spaces at the right places
         let name = ''
+        let equipment = []
         if (exercicseVariant.variant === '') {
           name = subvariant.name
         } else if(subvariant.name === '') {
@@ -807,16 +809,27 @@ const getExerciseName: (
         } else {
           name = `${subvariant.name} ${exercicseVariant.variant}`
         }
+
+        // handle equipment
+        if (subvariant.equipment) {
+          equipment.push(...subvariant.equipment)
+        }
+        if (exercicseVariant.equipment) {
+          equipment.push(...exercicseVariant.equipment)
+        }
+
         result.push({
           id: [index, ...subvariant.id],
-          name: name
+          name: name,
+          equipment: equipment
         });
       });
     } 
     else {
       result.push({
         id: [0],
-        name: exercicseVariant.variant
+        name: exercicseVariant.variant,
+        equipment: exercicseVariant.equipment
       });
     }
   });

@@ -725,27 +725,38 @@ var arms = {
     }
 };
 var getExerciseName = function (exercicseVariantArray) {
-    var exerciseNames = [];
-    exercicseVariantArray.forEach(function (exercicseVariant) {
+    var result = [];
+    // recursive loop over every variant and subvariant
+    exercicseVariantArray.forEach(function (exercicseVariant, index) {
         if (exercicseVariant.variation) {
-            var names = getExerciseName(exercicseVariant.variation);
-            names.forEach(function (name) {
+            var data = getExerciseName(exercicseVariant.variation);
+            data.forEach(function (subvariant) {
+                // joins the variant names together
+                // insert spaces at the right places
+                var name = '';
                 if (exercicseVariant.variant === '') {
-                    exerciseNames.push(name);
+                    name = subvariant.name;
                 }
-                else if (name === '') {
-                    exerciseNames.push(exercicseVariant.variant);
+                else if (subvariant.name === '') {
+                    name = exercicseVariant.variant;
                 }
                 else {
-                    exerciseNames.push("".concat(name, " ").concat(exercicseVariant.variant));
+                    name = "".concat(subvariant.name, " ").concat(exercicseVariant.variant);
                 }
+                result.push({
+                    id: __spreadArray([index], subvariant.id, true),
+                    name: name
+                });
             });
         }
         else {
-            exerciseNames.push(exercicseVariant.variant);
+            result.push({
+                id: [0],
+                name: exercicseVariant.variant
+            });
         }
     });
-    return exerciseNames;
+    return result;
 };
 console.log(getExerciseName(shoulders.frontDelt.exercises[0].variation));
 var generateMuscleExercises = function (group) {

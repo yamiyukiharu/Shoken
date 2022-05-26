@@ -771,38 +771,57 @@ const arms: TExerciseGroup = {
 
 import {addCollectionAndDocuments} from './index';
 
-export type TAllExercises = {
-  [key in TMuscleGroup]: {};
-};
 
-export type TMuscleExercises = {
-  [key: string]: {};
-};
+type TMuscleExercises = {
+  [key: string]: {
+    name: string;
+    equipment: Array<string>;
+  }
+}
+
+type TestType = Array<{
+  id: Array<number>;
+  name: string;
+}>
 
 const getExerciseName: (
   exercicseVariantArray: TExerciseVariations,
-) => Array<string> = exercicseVariantArray => {
-  // recursive loop over every variant and subvariant 
-  const exerciseNames: Array<string> = [];
-  exercicseVariantArray.forEach(exercicseVariant => {
+) => TestType = exercicseVariantArray => {
+
+  const result: TestType = [];
+
+  // recursive loop over every variant and subvariant
+  exercicseVariantArray.forEach((exercicseVariant, index) => {
+
     if (exercicseVariant.variation) {
-      const names = getExerciseName(exercicseVariant.variation);
-      names.forEach(name => {
+      const data = getExerciseName(exercicseVariant.variation);
+
+      data.forEach((subvariant) => {
         // joins the variant names together
         // insert spaces at the right places
+        let name = ''
         if (exercicseVariant.variant === '') {
-          exerciseNames.push(name);
-        } else if(name === '') {
-          exerciseNames.push(exercicseVariant.variant);
+          name = subvariant.name
+        } else if(subvariant.name === '') {
+          name = exercicseVariant.variant
         } else {
-          exerciseNames.push(`${name} ${exercicseVariant.variant}`);
+          name = `${subvariant.name} ${exercicseVariant.variant}`
         }
+        result.push({
+          id: [index, ...subvariant.id],
+          name: name
+        });
       });
-    } else {
-      exerciseNames.push(exercicseVariant.variant);
+    } 
+    else {
+      result.push({
+        id: [0],
+        name: exercicseVariant.variant
+      });
     }
   });
-  return exerciseNames;
+  
+  return result;
 };
 
 console.log(getExerciseName(shoulders.frontDelt.exercises[0].variation));

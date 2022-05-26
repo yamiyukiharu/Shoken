@@ -1,4 +1,4 @@
-import { TAllEquipment } from "./firebase/types";
+import { TAllEquipment } from "../firebase/types";
 
 const equipmentDb:TAllEquipment = {
     dumbbells: [
@@ -47,6 +47,10 @@ const equipmentDb:TAllEquipment = {
         { name: 'seated dip machine'},
         { name: 'incline fly machine'},
         { name: 'incline bench press machine'},
+        { name: 'assisted pull-up/dip machine'},
+        { name: 'tricep pushdown machine'},
+        { name: ''},
+        { name: ''},
         { name: ''},
         { name: ''},
         { name: ''},
@@ -56,7 +60,7 @@ const equipmentDb:TAllEquipment = {
         { name: 'cable double d row bar' },
         { name: 'cable multi exercise revolving bar' },
         { name: 'cable tricep rope' },
-        { name: 'cable tricep pressdown bar' },
+        { name: 'cable v-bar' },
         { name: 'cable straight bar' },
         { name: 'cable barbell' },
         { name: 'cable row bar' },

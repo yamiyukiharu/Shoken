@@ -1,41 +1,41 @@
-import {KeyboardAvoidingViewBase} from 'react-native';
-
-type TMuscleGroup =
+export type TMuscleGroup =
   | 'shoulders'
-  | 'upper arms'
+  | 'arms'
   | 'forearms'
   | 'back'
   | 'chest'
   | 'waist'
   | 'hips'
-  | 'thighs'
-  | 'calves'
+  | 'legs'
   | 'others';
-type TWorkoutGroup = {
+
+export type TExerciseGroup = {
   [key: string]: {
     scientificName: string;
-    workouts: Array<TWorkout>;
+    exercises: Array<TExercise>;
   };
 };
 
-type TWorkoutVariation = {
+type TExerciseVariations = Array<TExerciseVariation>;
+
+type TExerciseVariation = {
   variant: string;
-  equipment?: Array<Array<string>>;
+  equipment?: Array<string>;
   images?: Array<string>;
   notes?: string;
   video?: string;
-  variation?: Array<TWorkoutVariation>;
+  variation?: TExerciseVariations;
 };
 
-type TWorkout = {
+export type TExercise = {
   name: string;
-  equipment?: Array<Array<string>>;
-  variation: Array<TWorkoutVariation>;
+  equipment?: Array<string>;
+  variation: TExerciseVariations;
 };
 
 // ================== SHOULDERS ==================
 
-const overheadPressPoseVariation: Array<TWorkoutVariation> = [
+const overheadPressPoseVariation: TExerciseVariations = [
   // standing
   {
     variant: 'standing',
@@ -43,7 +43,7 @@ const overheadPressPoseVariation: Array<TWorkoutVariation> = [
   // seated
   {
     variant: 'seated',
-    equipment: [['adjustable bench', 'upright bench']],
+    equipment: ['adjustable bench, upright bench'],
     variation: [
       // recline
       {
@@ -57,7 +57,7 @@ const overheadPressPoseVariation: Array<TWorkoutVariation> = [
   },
 ];
 
-const frontRaisePoseVariation: Array<TWorkoutVariation> = [
+const frontRaisePoseVariation: Array<TExerciseVariation> = [
   // standing
   {
     variant: 'standing',
@@ -65,7 +65,7 @@ const frontRaisePoseVariation: Array<TWorkoutVariation> = [
   // incline
   {
     variant: 'incline',
-    equipment: [['adjustable bench', 'upright bench']],
+    equipment: ['adjustable bench, upright bench'],
     variation: [
       // forward
       {
@@ -79,7 +79,7 @@ const frontRaisePoseVariation: Array<TWorkoutVariation> = [
   },
 ];
 
-const rearLateralRaisePoseVariation: Array<TWorkoutVariation> = [
+const rearLateralRaisePoseVariation: TExerciseVariations = [
   // standing
   {
     variant: 'standing',
@@ -87,14 +87,14 @@ const rearLateralRaisePoseVariation: Array<TWorkoutVariation> = [
   // seated
   {
     variant: 'seated',
-    equipment: [['adjustable bench', 'upright bench', 'flat bench']],
+    equipment: ['adjustable bench, upright bench, flat bench'],
   },
 ];
 
-export const shoulders: TWorkoutGroup = {
+const shoulders: TExerciseGroup = {
   frontDelt: {
     scientificName: 'anterior deltoid',
-    workouts: [
+    exercises: [
       // overhead/shoulder press
       {
         name: 'overhead/shoulder press',
@@ -102,13 +102,13 @@ export const shoulders: TWorkoutGroup = {
           // barbell
           {
             variant: 'barbell',
-            equipment: [['fixed barbell', 'olympic barbell', 'smith machine']],
+            equipment: ['fixed barbell, olympic barbell, smith machine'],
             variation: overheadPressPoseVariation,
           },
           // dumbbell
           {
             variant: 'dumbbell',
-            equipment: [['fixed dumbbell']],
+            equipment: ['fixed dumbbell'],
             variation: [
               // normal
               {
@@ -127,18 +127,18 @@ export const shoulders: TWorkoutGroup = {
           // cable
           {
             variant: 'cable',
-            equipment: [['cable pulley machine', 'cable crossover machine']],
+            equipment: ['cable pulley machine, cable crossover machine'],
             variation: [
               // bar
               {
                 variant: 'bar',
-                equipment: [['cable barbell']],
+                equipment: ['cable barbell'],
                 variation: overheadPressPoseVariation,
               },
               // hand grip
               {
                 variant: 'hand grip',
-                equipment: [['hand grip']],
+                equipment: ['hand grip'],
                 variation: [
                   ...overheadPressPoseVariation,
                   //twisting overhead
@@ -153,19 +153,15 @@ export const shoulders: TWorkoutGroup = {
           // machine
           {
             variant: 'machine',
-            equipment: [['shoulder press machine', 'hammer strength machine']],
+            equipment: ['shoulder press machine, hammer strength machine'],
             variation: [
               // normal
               {
                 variant: '',
-
-                variation: overheadPressPoseVariation,
               },
               // parallel grip
               {
                 variant: 'parallel grip',
-
-                variation: overheadPressPoseVariation,
               },
             ],
           },
@@ -178,29 +174,29 @@ export const shoulders: TWorkoutGroup = {
           // barbell
           {
             variant: 'barbell',
-            equipment: [['fixed barbell', 'olympic barbell', 'smith machine']],
+            equipment: ['fixed barbell, olympic barbell, smith machine'],
             variation: frontRaisePoseVariation,
           },
           // dumbbell
           {
             variant: 'dumbbell',
-            equipment: [['fixed dumbbell']],
+            equipment: ['fixed dumbbell'],
             variation: frontRaisePoseVariation,
           },
           // cable
           {
             variant: 'cable',
-            equipment: [['cable pulley machine', 'cable crossover machine']],
+            equipment: ['cable pulley machine, cable crossover machine'],
             variation: [
               // bar
               {
                 variant: 'bar',
-                equipment: [['cable barbell']],
+                equipment: ['cable barbell'],
               },
               // hand grip
               {
                 variant: 'hand grip',
-                equipment: [['hand grip']],
+                equipment: ['hand grip'],
               },
             ],
           },
@@ -209,7 +205,7 @@ export const shoulders: TWorkoutGroup = {
       // arnold press
       {
         name: 'arnold press',
-        equipment: [['fixed dumbbell']],
+        equipment: ['fixed dumbbell'],
         variation: [
           // standing
           {
@@ -218,7 +214,7 @@ export const shoulders: TWorkoutGroup = {
           // seated
           {
             variant: 'seated',
-            equipment: [['adjustable bench', 'upright bench', 'flat bench']],
+            equipment: ['adjustable bench, upright bench, flat bench'],
           },
         ],
       },
@@ -226,7 +222,7 @@ export const shoulders: TWorkoutGroup = {
   },
   midDelt: {
     scientificName: 'lateral deltoid',
-    workouts: [
+    exercises: [
       // lateral raise
       {
         name: 'lateral raise',
@@ -235,14 +231,14 @@ export const shoulders: TWorkoutGroup = {
           {
             variant: 'cable',
             equipment: [
-              ['cable crossover machine', 'cable pulley machine'],
-              ['cable hand grip'],
+              'cable crossover machine, cable pulley machine',
+              'cable hand grip',
             ],
           },
           // dumbbell
           {
             variant: 'dumbbell',
-            equipment: [['fixed dumbbell']],
+            equipment: ['fixed dumbbell'],
             variation: [
               // bent arm
               {
@@ -255,9 +251,7 @@ export const shoulders: TWorkoutGroup = {
                   // seated
                   {
                     variant: 'seated',
-                    equipment: [
-                      ['adjustable bench', 'upright bench', 'flat bench'],
-                    ],
+                    equipment: ['adjustable bench, upright bench, flat bench'],
                   },
                 ],
               },
@@ -272,9 +266,7 @@ export const shoulders: TWorkoutGroup = {
                   // seated
                   {
                     variant: 'seated',
-                    equipment: [
-                      ['adjustable bench', 'upright bench', 'flat bench'],
-                    ],
+                    equipment: ['adjustable bench, upright bench, flat bench'],
                   },
                   // leaning
                   {
@@ -287,7 +279,7 @@ export const shoulders: TWorkoutGroup = {
           // machine
           {
             variant: 'machine',
-            equipment: [['lateral raise machine']],
+            equipment: ['lateral raise machine'],
           },
         ],
       },
@@ -295,7 +287,7 @@ export const shoulders: TWorkoutGroup = {
   },
   rearDelt: {
     scientificName: 'posterior deltoid',
-    workouts: [
+    exercises: [
       // rear delt row
       {
         name: 'rear delt row',
@@ -303,32 +295,32 @@ export const shoulders: TWorkoutGroup = {
           // barbell
           {
             variant: 'barbell',
-            equipment: [['fixed barbell', 'olympic barbell', 'smith machine']],
+            equipment: ['fixed barbell, olympic barbell, smith machine'],
           },
           // dumbbell
           {
             variant: 'dumbbell',
-            equipment: [['fixed dumbbell'], ['adjustable bench', 'flat bench']],
+            equipment: ['fixed dumbbell', 'adjustable bench, flat bench'],
           },
           // cable
           {
             variant: 'cable',
-            equipment: [['cable crossover machine', 'cable pulley machine']],
+            equipment: ['cable crossover machine, cable pulley machine'],
             variation: [
               // seated
               {
                 variant: 'seated',
-                equipment: [['cable row machine']],
+                equipment: ['cable row machine'],
                 variation: [
                   // row bar
                   {
                     variant: '',
-                    equipment: [['cable row bar']],
+                    equipment: ['cable row bar'],
                   },
                   // one arm
                   {
                     variant: 'one arm',
-                    equipment: [['cable hand grip', 'cable double d row bar']],
+                    equipment: ['cable hand grip, cable double d row bar'],
                   },
                 ],
               },
@@ -339,12 +331,12 @@ export const shoulders: TWorkoutGroup = {
                   // row bar
                   {
                     variant: '',
-                    equipment: [['cable row bar']],
+                    equipment: ['cable row bar'],
                   },
                   // rope
                   {
                     variant: 'rope',
-                    equipment: [['cable tricep rope']],
+                    equipment: ['cable tricep rope'],
                   },
                 ],
               },
@@ -357,19 +349,19 @@ export const shoulders: TWorkoutGroup = {
               // incline
               {
                 variant: 'incline',
-                equipment: [['incline lever row machine']],
+                equipment: ['incline lever row machine'],
               },
               // t-bar
               {
                 variant: 't-bar',
-                equipment: [['t-bar row platform']],
+                equipment: ['t-bar row platform'],
               },
             ],
           },
           // machine
           {
             variant: 'machine',
-            equipment: [['seated row machine']],
+            equipment: ['seated row machine'],
           },
         ],
       },
@@ -380,12 +372,12 @@ export const shoulders: TWorkoutGroup = {
           // barbell
           {
             variant: 'barbell',
-            equipment: [['fixed barbell', 'olympic barbell', 'smith machine']],
+            equipment: ['fixed barbell, olympic barbell, smith machine'],
           },
           // dumbbell
           {
             variant: 'dumbbell',
-            equipment: [['fixed dumbbell']],
+            equipment: ['fixed dumbbell'],
           },
         ],
       },
@@ -397,23 +389,21 @@ export const shoulders: TWorkoutGroup = {
           {
             variant: 'cable',
             equipment: [
-              ['cable crossover machine', 'cable pulley machine'],
-              ['cable hand grip'],
+              'cable crossover machine, cable pulley machine',
+              'cable hand grip',
             ],
             variation: rearLateralRaisePoseVariation,
           },
           // dumbbell
           {
             variant: 'dumbbell',
-            equipment: [['fixed dumbbell']],
+            equipment: ['fixed dumbbell'],
             variation: rearLateralRaisePoseVariation,
           },
           // machine
           {
             variant: 'machine',
-            equipment: [
-              ['rear lateral raise machine', 'lateral raise machine'],
-            ],
+            equipment: ['rear lateral raise machine, lateral raise machine'],
           },
         ],
       },
@@ -425,8 +415,8 @@ export const shoulders: TWorkoutGroup = {
           {
             variant: 'cable',
             equipment: [
-              ['cable crossover machine', 'cable pulley machine'],
-              ['cable hand grip'],
+              'cable crossover machine, cable pulley machine',
+              'cable hand grip',
             ],
             variation: [
               // one arm
@@ -436,14 +426,14 @@ export const shoulders: TWorkoutGroup = {
               // supine
               {
                 variant: 'supine',
-                equipment: [['adjustable bench', 'flat bench']],
+                equipment: ['adjustable bench, flat bench'],
               },
             ],
           },
           // machine
           {
             variant: 'machine',
-            equipment: [['chest/pec fly machine', 'pec deck machine']],
+            equipment: ['chest/pec fly machine, pec deck machine'],
           },
         ],
       },
@@ -451,8 +441,8 @@ export const shoulders: TWorkoutGroup = {
       {
         name: 'standing cross row',
         equipment: [
-          ['cable crossover machine', 'cable pulley machine'],
-          ['cable hand grip'],
+          'cable crossover machine, cable pulley machine',
+          'cable hand grip',
         ],
         variation: [
           // two arms
@@ -471,41 +461,36 @@ export const shoulders: TWorkoutGroup = {
 
 // ================== CHEST ==================
 
-const benchPressLoadVariation: Array<TWorkoutVariation> = [
+const benchPressLoadVariation: TExerciseVariations = [
   // barbell
   {
     variant: 'barbell',
-    equipment: [['fixed barbell', 'olympic barbell', 'smith machine']],
+    equipment: ['fixed barbell, olympic barbell, smith machine'],
   },
   // dumbbell
   {
     variant: 'dumbbell',
-    equipment: [['fixed dumbbell']],
+    equipment: ['fixed dumbbell'],
   },
   // cable
   {
     variant: 'cable',
     equipment: [
-      ['cable crossover machine', 'cable pulley machine'],
-      ['cable hand grip', 'cable barbell'],
+      'cable crossover machine, cable pulley machine',
+      'cable hand grip, cable barbell',
     ],
   },
 ];
 
-export const chest: TWorkoutGroup = {
+const chest: TExerciseGroup = {
   midChest: {
     scientificName: 'pectoralis major, sternal',
-    workouts: [
+    exercises: [
       // bench press
       {
         name: 'bench press',
         equipment: [
-          [
-            'flat bench',
-            'flat bench press',
-            'adjustable bench',
-            'adjustable bench press',
-          ],
+          'flat bench, flat bench press, adjustable bench, adjustable bench press',
         ],
         // barbell
         // dumbbell
@@ -519,20 +504,20 @@ export const chest: TWorkoutGroup = {
           // dumbbell
           {
             variant: 'dumbbell',
-            equipment: [['fixed dumbbell']],
+            equipment: ['fixed dumbbell'],
           },
           // cable
           {
             variant: 'cable',
             equipment: [
-              ['cable crossover machine', 'cable pulley machine'],
-              ['cable hand grip'],
+              'cable crossover machine, cable pulley machine',
+              'cable hand grip',
             ],
           },
           // machine
           {
             variant: 'machine',
-            equipment: [['chest/pec fly machine']],
+            equipment: ['chest/pec fly machine'],
           },
         ],
       },
@@ -543,7 +528,7 @@ export const chest: TWorkoutGroup = {
           // default
           {
             variant: '',
-            equipment: [['chest press machine', 'bench press machine']],
+            equipment: ['chest press machine, bench press machine'],
           },
         ],
       },
@@ -551,12 +536,12 @@ export const chest: TWorkoutGroup = {
   },
   upperChest: {
     scientificName: 'pectoralis major, clavicular',
-    workouts: [
+    exercises: [
       // incline bench press
       {
         name: 'incline bench press',
         equipment: [
-          ['incline/decline bench', 'incline bench press', 'adjustable bench'],
+          'incline/decline bench, incline bench press, adjustable bench',
         ],
         // barbell
         // dumbbell
@@ -571,20 +556,16 @@ export const chest: TWorkoutGroup = {
           {
             variant: 'dumbbell',
             equipment: [
-              ['fixed dumbbell'],
-              [
-                'incline/decline bench',
-                'incline bench press',
-                'adjustable bench',
-              ],
+              'fixed dumbbell',
+              'incline/decline bench, incline bench press adjustable bench',
             ],
           },
           // cable
           {
             variant: 'cable',
             equipment: [
-              ['cable crossover machine', 'cable pulley machine'],
-              ['cable hand grip', 'cable barbell'],
+              'cable crossover machine, cable pulley machine',
+              'cable hand grip, cable barbell',
             ],
             variation: [
               // standing
@@ -595,11 +576,7 @@ export const chest: TWorkoutGroup = {
               {
                 variant: 'seated',
                 equipment: [
-                  [
-                    'incline/decline bench',
-                    'incline bench press',
-                    'adjustable bench',
-                  ],
+                  'incline/decline bench, incline bench press, adjustable bench',
                 ],
               },
             ],
@@ -607,33 +584,31 @@ export const chest: TWorkoutGroup = {
           // machine
           {
             variant: 'machine',
-            equipment: [['incline fly machine']],
+            equipment: ['incline fly machine'],
           },
         ],
       },
       // machine incline bench press
       {
         name: 'machine incline bench press',
-        equipment: [['incline bench press machine']],
+        equipment: ['incline bench press machine'],
         variation: [],
       },
     ],
   },
   lowerChest: {
     scientificName: 'pectoralis minor',
-    workouts: [
+    exercises: [
       // decline bench press
       {
         name: 'decline bench press',
-        equipment: [
-          ['incline/decline bench', 'decline bench', 'abdominal bench'],
-        ],
+        equipment: ['incline/decline bench, decline bench, abdominal bench'],
         variation: benchPressLoadVariation,
       },
       // striaght bar dip
       {
         name: 'straight bar dip',
-        equipment: [['smith machine']],
+        equipment: ['smith machine'],
         variation: [],
       },
       // chest dip
@@ -643,12 +618,12 @@ export const chest: TWorkoutGroup = {
           // bodyweight/weighted
           {
             variant: 'bodyweight',
-            equipment: [['dipping station', 'power rack']],
+            equipment: ['dipping station, power tower'],
           },
           // machine
           {
             variant: 'machine',
-            equipment: [['seated dip machine']],
+            equipment: ['seated dip machine'],
           },
         ],
       },
@@ -660,19 +635,15 @@ export const chest: TWorkoutGroup = {
           {
             variant: 'dumbbell',
             equipment: [
-              ['fixed dumbbell'],
-              ['incline/decline bench', 'decline bench', 'abdominal bench'],
+              'fixed dumbbell',
+              'incline/decline bench, decline bench, abdominal bench',
             ],
           },
           // cable
           {
             variant: 'cable',
             equipment: [
-              [
-                'cable crossover machine',
-                'cable pulley machine',
-                'cable hand grip',
-              ],
+              'cable crossover machine, cable pulley machine, cable hand grip',
             ],
           },
         ],
@@ -681,4 +652,158 @@ export const chest: TWorkoutGroup = {
   },
 };
 
-// ================== CHEST ==================
+// ================== BACK ==================
+// ================== ARMS ==================
+
+const arms: TExerciseGroup = {
+  triceps: {
+    scientificName: 'triceps brachii',
+    exercises: [
+      // triceps dips
+      {
+        name: 'tricep dips',
+        variation: [
+          // bench
+          {
+            variant: 'bench',
+            equipment: ['flat bench, adjustable bench'],
+          },
+          // assisted
+          {
+            variant: 'assisted',
+            equipment: ['assisted pull-up/dip machine'],
+          },
+          // bodyweight/weighted
+          {
+            variant: 'bodyweight/weighted',
+            equipment: ['dipping station, power tower'],
+          },
+        ],
+      },
+      // close grip bench press
+      {
+        name: 'close grip bench press',
+        equipment: [
+          'flat bench press, adjustable bench press, flat bench, adjustable bench',
+        ],
+        variation: [
+          // barbell
+          {
+            variant: 'barbell',
+            equipment: ['fixed barbell, olympic barbell, ez bar, smith machine'],
+          },
+          // dumbbell
+          {
+            variant: 'dumbbell',
+            equipment: ['fixed dumbbell'],
+          },
+        ],
+      },
+      // jm bench press
+      {
+        name: 'jm bench press',
+        equipment: [
+          'flat bench press, adjustable bench press, flat bench, adjustable bench',
+          'fixed barbell, olympic barbell, ez bar',
+        ],
+        variation: [
+          {
+            variant: '',
+          },
+        ],
+      },
+      // triceps extension
+        // dumbbell
+        // barbell
+        // machine
+        // cable overhead
+          // straight bar
+          // rope
+          // single arm
+      // triceps kickback
+      // triceps pushdown
+      {
+        name: 'pushdown',
+        variation: [
+          // machine
+          {
+            variant: 'machine',
+            equipment: ['tricep pushdown machine']
+          },
+          // cable
+          {
+            variant: 'cable',
+            equipment: ['cable crossover machine, cable pulley machine'],
+            variation: [
+              // straight bar
+              {
+                variant: 'straight bar',
+                equipment: ['cable straight bar'],
+                variation: [
+                  // forward grip
+                    // upright
+                    // forward lean
+                  // reverse grip
+                    // upright
+                    // forward lean
+                ]
+              }
+              // rope
+
+              // v-bar
+
+              // single arm
+            ]
+          }
+        ]
+      }
+    ],
+  },
+};
+
+// ================== HIPS ==================
+// ================== LEGS ==================
+// ================== WAIST ==================
+
+import {addCollectionAndDocuments} from './index';
+
+export type TAllExercises = {
+  [key in TMuscleGroup]: {};
+};
+
+export type TMuscleExercises = {
+  [key: string]: {};
+};
+
+const getExerciseName: (
+  exercicseVariantArray: TExerciseVariations,
+) => Array<string> = exercicseVariantArray => {
+  const exerciseNames: Array<string> = [];
+  exercicseVariantArray.forEach(exercicseVariant => {
+    if (exercicseVariant.variation) {
+      const names = getExerciseName(exercicseVariant.variation);
+      names.forEach(name => {
+        if (name === '') {
+          exerciseNames.push(exercicseVariant.variant);
+        } else {
+          exerciseNames.push(`${name} ${exercicseVariant.variant}`);
+        }
+      });
+    } else {
+      exerciseNames.push(exercicseVariant.variant);
+    }
+  });
+  return exerciseNames;
+};
+
+console.log(getExerciseName(shoulders.frontDelt.exercises[0].variation));
+
+const generateMuscleExercises = (group: TExerciseGroup) => {
+  const allExercises: TMuscleExercises = {};
+  for (const muscle in group) {
+    allExercises[muscle] = {};
+  }
+};
+
+// addCollectionAndDocuments('test', 'shoulders', shoulders);
+// addCollectionAndDocuments('test', 'chest', chest);

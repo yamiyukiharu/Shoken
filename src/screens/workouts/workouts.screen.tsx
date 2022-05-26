@@ -17,6 +17,7 @@ import {WorkoutsNavProp} from '../../../types';
 import {TFbGymEntry} from '../../utils/firebase/types';
 import ShokenTile from '../../components/shoken-tile/shoken-tile.component';
 import {setCurrentGym} from '../../redux/gyms/gyms.slice';
+import { uploadData } from '../../utils/upload-data';
 
 const WorkoutsScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>();
@@ -39,6 +40,10 @@ const WorkoutsScreen = () => {
     })
     setGymsToDisplay(entries)
   }, [gyms, user]);
+
+  useEffect(() => {
+    // TODO: fetch workout info from database
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -81,9 +86,10 @@ const WorkoutsScreen = () => {
         <Text style={styles.sectionTitle}>Workouts</Text>
         <View style={styles.workoutContainer}>
           <ShokenTile
-            addNew={true}
+            addNew={false}
             style={styles.workoutTile}
-            onPress={() => navigation.navigate('Workouts-edit')}
+            title={''}
+            onPress={() => uploadData()}
           />
         </View>
       </ScrollView>

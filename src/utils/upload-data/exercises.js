@@ -126,13 +126,11 @@ var shoulders = {
                         variation: [
                             // normal
                             {
-                                variant: '',
-                                variation: overheadPressPoseVariation
+                                variant: ''
                             },
                             // parallel grip
                             {
-                                variant: 'parallel grip',
-                                variation: overheadPressPoseVariation
+                                variant: 'parallel grip'
                             },
                         ]
                     },
@@ -544,7 +542,7 @@ var chest = {
                             {
                                 variant: 'seated',
                                 equipment: [
-                                    'incline/decline bench, incline bench press, adjustable bench'
+                                    'incline/decline bench, incline bench press, adjustable bench',
                                 ]
                             },
                         ]
@@ -570,9 +568,7 @@ var chest = {
             // decline bench press
             {
                 name: 'decline bench press',
-                equipment: [
-                    'incline/decline bench, decline bench, abdominal bench',
-                ],
+                equipment: ['incline/decline bench, decline bench, abdominal bench'],
                 variation: benchPressLoadVariation
             },
             // striaght bar dip
@@ -588,7 +584,7 @@ var chest = {
                     // bodyweight/weighted
                     {
                         variant: 'bodyweight',
-                        equipment: ['dipping station, power rack']
+                        equipment: ['dipping station, power tower']
                     },
                     // machine
                     {
@@ -621,13 +617,128 @@ var chest = {
         ]
     }
 };
+// ================== BACK ==================
+// ================== ARMS ==================
+var arms = {
+    triceps: {
+        scientificName: 'triceps brachii',
+        exercises: [
+            // triceps dips
+            {
+                name: 'tricep dips',
+                variation: [
+                    // bench
+                    {
+                        variant: 'bench',
+                        equipment: ['flat bench, adjustable bench']
+                    },
+                    // assisted
+                    {
+                        variant: 'assisted',
+                        equipment: ['assisted pull-up/dip machine']
+                    },
+                    // bodyweight/weighted
+                    {
+                        variant: 'bodyweight/weighted',
+                        equipment: ['dipping station, power tower']
+                    },
+                ]
+            },
+            // close grip bench press
+            {
+                name: 'close grip bench press',
+                equipment: [
+                    'flat bench press, adjustable bench press, flat bench, adjustable bench',
+                ],
+                variation: [
+                    // barbell
+                    {
+                        variant: 'barbell',
+                        equipment: [
+                            'fixed barbell, olympic barbell, ez bar, smith machine',
+                        ]
+                    },
+                    // dumbbell
+                    {
+                        variant: 'dumbbell',
+                        equipment: ['fixed dumbbell']
+                    },
+                ]
+            },
+            // jm bench press
+            {
+                name: 'jm bench press',
+                equipment: [
+                    'flat bench press, adjustable bench press, flat bench, adjustable bench',
+                    'fixed barbell, olympic barbell, ez bar',
+                ],
+                variation: [
+                    {
+                        variant: ''
+                    },
+                ]
+            },
+            // triceps extension
+            // dumbbell
+            // barbell
+            // machine
+            // cable overhead
+            // straight bar
+            // rope
+            // single arm
+            // triceps kickback
+            // triceps pushdown
+            {
+                name: 'pushdown',
+                variation: [
+                    // machine
+                    {
+                        variant: 'machine',
+                        equipment: ['tricep pushdown machine']
+                    },
+                    // cable
+                    {
+                        variant: 'cable',
+                        equipment: ['cable crossover machine, cable pulley machine'],
+                        variation: [
+                            // straight bar
+                            {
+                                variant: 'straight bar',
+                                equipment: ['cable straight bar'],
+                                variation: [
+                                // forward grip
+                                // upright
+                                // forward lean
+                                // reverse grip
+                                // upright
+                                // forward lean
+                                ]
+                            },
+                            // rope
+                            // v-bar
+                            // single arm
+                        ]
+                    },
+                ]
+            },
+        ]
+    }
+};
 var getExerciseName = function (exercicseVariantArray) {
     var exerciseNames = [];
     exercicseVariantArray.forEach(function (exercicseVariant) {
         if (exercicseVariant.variation) {
             var names = getExerciseName(exercicseVariant.variation);
             names.forEach(function (name) {
-                exerciseNames.push(exercicseVariant.variant, name);
+                if (exercicseVariant.variant === '') {
+                    exerciseNames.push(name);
+                }
+                else if (name === '') {
+                    exerciseNames.push(exercicseVariant.variant);
+                }
+                else {
+                    exerciseNames.push("".concat(name, " ").concat(exercicseVariant.variant));
+                }
             });
         }
         else {

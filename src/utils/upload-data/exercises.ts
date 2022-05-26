@@ -9,15 +9,6 @@ export type TMuscleGroup =
   | 'legs'
   | 'others';
 
-export type TExerciseGroup = {
-  [key: string]: {
-    scientificName: string;
-    exercises: Array<TExercise>;
-  };
-};
-
-type TExerciseVariations = Array<TExerciseVariation>;
-
 type TExerciseVariation = {
   variant: string;
   equipment?: Array<string>;
@@ -27,10 +18,21 @@ type TExerciseVariation = {
   variation?: TExerciseVariations;
 };
 
+type TExerciseVariations = Array<TExerciseVariation>;
+
 export type TExercise = {
   name: string;
   equipment?: Array<string>;
   variation: TExerciseVariations;
+};
+
+type TExercises = Array<TExercise>;
+
+export type TExerciseGroup = {
+  [key: string]: {
+    scientificName: string;
+    exercises: TExercises;
+  };
 };
 
 // ================== SHOULDERS ==================
@@ -690,7 +692,9 @@ const arms: TExerciseGroup = {
           // barbell
           {
             variant: 'barbell',
-            equipment: ['fixed barbell, olympic barbell, ez bar, smith machine'],
+            equipment: [
+              'fixed barbell, olympic barbell, ez bar, smith machine',
+            ],
           },
           // dumbbell
           {
@@ -713,13 +717,13 @@ const arms: TExerciseGroup = {
         ],
       },
       // triceps extension
-        // dumbbell
-        // barbell
-        // machine
-        // cable overhead
-          // straight bar
-          // rope
-          // single arm
+      // dumbbell
+      // barbell
+      // machine
+      // cable overhead
+      // straight bar
+      // rope
+      // single arm
       // triceps kickback
       // triceps pushdown
       {
@@ -728,7 +732,7 @@ const arms: TExerciseGroup = {
           // machine
           {
             variant: 'machine',
-            equipment: ['tricep pushdown machine']
+            equipment: ['tricep pushdown machine'],
           },
           // cable
           {
@@ -741,22 +745,22 @@ const arms: TExerciseGroup = {
                 equipment: ['cable straight bar'],
                 variation: [
                   // forward grip
-                    // upright
-                    // forward lean
+                  // upright
+                  // forward lean
                   // reverse grip
-                    // upright
-                    // forward lean
-                ]
-              }
+                  // upright
+                  // forward lean
+                ],
+              },
               // rope
 
               // v-bar
 
               // single arm
-            ]
-          }
-        ]
-      }
+            ],
+          },
+        ],
+      },
     ],
   },
 };
@@ -778,12 +782,17 @@ export type TMuscleExercises = {
 const getExerciseName: (
   exercicseVariantArray: TExerciseVariations,
 ) => Array<string> = exercicseVariantArray => {
+  // recursive loop over every variant and subvariant 
   const exerciseNames: Array<string> = [];
   exercicseVariantArray.forEach(exercicseVariant => {
     if (exercicseVariant.variation) {
       const names = getExerciseName(exercicseVariant.variation);
       names.forEach(name => {
-        if (name === '') {
+        // joins the variant names together
+        // insert spaces at the right places
+        if (exercicseVariant.variant === '') {
+          exerciseNames.push(name);
+        } else if(name === '') {
           exerciseNames.push(exercicseVariant.variant);
         } else {
           exerciseNames.push(`${name} ${exercicseVariant.variant}`);

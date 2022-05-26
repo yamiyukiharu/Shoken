@@ -67,9 +67,9 @@ var shoulders = {
     frontDelt: {
         scientificName: 'anterior deltoid',
         exercises: [
-            // overhead/shoulder press
+            // overhead press
             {
-                name: 'overhead/shoulder press',
+                name: 'overhead press',
                 variation: [
                     // barbell
                     {
@@ -724,12 +724,12 @@ var arms = {
         ]
     }
 };
-var getExerciseName = function (exercicseVariantArray) {
+var flattenExerciseVariations = function (exercicseVariantArray) {
     var result = [];
     // recursive loop over every variant and subvariant
     exercicseVariantArray.forEach(function (exercicseVariant, index) {
         if (exercicseVariant.variation) {
-            var data = getExerciseName(exercicseVariant.variation);
+            var data = flattenExerciseVariations(exercicseVariant.variation);
             data.forEach(function (subvariant) {
                 // joins the variant names together
                 // insert spaces at the right places
@@ -760,7 +760,7 @@ var getExerciseName = function (exercicseVariantArray) {
         }
         else {
             result.push({
-                id: [0],
+                id: [index],
                 name: exercicseVariant.variant,
                 equipment: exercicseVariant.equipment
             });
@@ -768,12 +768,25 @@ var getExerciseName = function (exercicseVariantArray) {
     });
     return result;
 };
-console.log(getExerciseName(shoulders.frontDelt.exercises[0].variation));
-var generateMuscleExercises = function (group) {
-    var allExercises = {};
-    for (var muscle in group) {
-        allExercises[muscle] = {};
-    }
+var flattenExercises = function (exercises) {
+    var result = {};
+    exercises.forEach(function (exercise, index) {
+        var variations = flattenExerciseVariations(exercise.variation);
+        variations.forEach(function (variant) {
+            var uid = '';
+            variant.id.forEach(function (digit) { return uid += digit.toString(); });
+            uid = index.toString() + uid;
+            if (Object.keys(result).includes(uid)) {
+                throw 'clash!';
+            }
+            result[uid] = {
+                name: variant.name + ' ' + exercise.name,
+                equipment: variant.equipment
+            };
+        });
+    });
+    return result;
 };
+console.log(flattenExercises(shoulders.frontDelt.exercises));
 // addCollectionAndDocuments('test', 'shoulders', shoulders);
 // addCollectionAndDocuments('test', 'chest', chest);

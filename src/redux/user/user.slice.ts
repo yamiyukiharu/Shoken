@@ -6,52 +6,13 @@ import {
 } from '../../utils/firebase/firestore.utils';
 import {TFbGymEntry, TFbUserEntry, TUser} from '../../utils/firebase/types';
 
+
 type TUserState = {
   user: TUser;
   uid: string;
   isSigningIn: boolean;
   isSignedIn: boolean;
 };
-
-type TExerciseHistory = {
-  date: string;
-  time: string;
-  sets: Array<{
-    weight: string;
-    reps: number;
-  }>
-}
-
-type TExerciseId = string;
-
-type TUserExerciseHistory = {
-  [key: TExerciseId]: Array<TExerciseHistory>
-}
-
-type TMuscleName = string;
-
-type TWorkoutTemplate = {
-  name: string;
-  gym: string;
-  muscles: Array<TMuscleName>;
-  exercises: {
-    // muscle name
-    [key: TMuscleName]: {
-      id: TExerciseId; // encoded exercise id
-      sets: number;
-    }
-  }
-}
-
-type TWorkoutHistory = {
-  workoutTemplate: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-  exercises: Array<TExerciseId>
-}
-
-type TUserWorkoutHistory = Array<TWorkoutHistory>
 
 export const emptyUser: TUser = {
   name: '',
@@ -60,7 +21,9 @@ export const emptyUser: TUser = {
   image: '',
   level: 0,
   savedGyms: [],
-  savedWorkouts: [],  
+  savedWorkouts: [],
+  exerciseHistory: {},
+  workoutHistory: [],
   email: '',
   providerId: '',
 };

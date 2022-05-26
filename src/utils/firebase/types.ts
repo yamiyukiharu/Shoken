@@ -33,6 +33,19 @@ type TWorkoutHistory = {
   exercises: Array<TExerciseId>;
 };
 
+export type TFlattenedExerciseVariations = Array<{
+    id: Array<number>;
+    name: string;
+    equipment?: Array<string>;
+  }>;
+  
+ export type TFlattenedExercises = {
+    [key: string]: {
+      name: string;
+      equipment?: Array<string>;
+    }
+  }
+
 // =================== USER ====================
 
 type TUserExerciseHistory = {
@@ -47,8 +60,8 @@ export type TUser = {
   level: number;
   savedGyms: Array<string>;
   savedWorkouts: Array<TWorkoutTemplate>;
-  exerciseHistory: Array<TWorkoutHistory>;
-  workoutHistory: TUserExerciseHistory;
+  workoutHistory: Array<TWorkoutHistory>;
+  exerciseHistory: TUserExerciseHistory;
 
   email: string;
   providerId: string;

@@ -1,3 +1,5 @@
+import { TFlattenedExercises, TFlattenedExerciseVariations } from '../firebase/types';
+
 export type TMuscleGroup =
   | 'shoulders'
   | 'arms'
@@ -97,9 +99,9 @@ const shoulders: TExerciseGroup = {
   frontDelt: {
     scientificName: 'anterior deltoid',
     exercises: [
-      // overhead/shoulder press
+      // overhead press
       {
-        name: 'overhead/shoulder press',
+        name: 'overhead press',
         variation: [
           // barbell
           {
@@ -771,80 +773,86 @@ const arms: TExerciseGroup = {
 
 import {addCollectionAndDocuments} from './index';
 
-
-type TMuscleExercises = {
-  [key: string]: {
-    name: string;
-    equipment: Array<string>;
-  }
-}
-
-type TestType = Array<{
-  id: Array<number>;
-  name: string;
-  equipment?: Array<string>;
-}>
-
-const getExerciseName: (
+const flattenExerciseVariations: (
   exercicseVariantArray: TExerciseVariations,
-) => TestType = exercicseVariantArray => {
-
-  const result: TestType = [];
+) => TFlattenedExerciseVariations = exercicseVariantArray => {
+  const result: TFlattenedExerciseVariations = [];
 
   // recursive loop over every variant and subvariant
   exercicseVariantArray.forEach((exercicseVariant, index) => {
-
     if (exercicseVariant.variation) {
-      const data = getExerciseName(exercicseVariant.variation);
+      const data = flattenExerciseVariations(exercicseVariant.variation);
 
-      data.forEach((subvariant) => {
+      data.forEach(subvariant => {
         // joins the variant names together
         // insert spaces at the right places
-        let name = ''
-        let equipment = []
+        let name = '';
+        let equipment = [];
         if (exercicseVariant.variant === '') {
-          name = subvariant.name
-        } else if(subvariant.name === '') {
-          name = exercicseVariant.variant
+          name = subvariant.name;
+        } else if (subvariant.name === '') {
+          name = exercicseVariant.variant;
         } else {
-          name = `${subvariant.name} ${exercicseVariant.variant}`
+          name = `${subvariant.name} ${exercicseVariant.variant}`;
         }
 
         // handle equipment
         if (subvariant.equipment) {
-          equipment.push(...subvariant.equipment)
+          equipment.push(...subvariant.equipment);
         }
         if (exercicseVariant.equipment) {
-          equipment.push(...exercicseVariant.equipment)
+          equipment.push(...exercicseVariant.equipment);
         }
 
         result.push({
           id: [index, ...subvariant.id],
           name: name,
-          equipment: equipment
+          equipment: equipment,
         });
       });
-    } 
-    else {
+    } else {
       result.push({
-        id: [0],
+        id: [index],
         name: exercicseVariant.variant,
-        equipment: exercicseVariant.equipment
+        equipment: exercicseVariant.equipment,
       });
     }
   });
-  
+
   return result;
 };
 
-console.log(getExerciseName(shoulders.frontDelt.exercises[0].variation));
 
-const generateMuscleExercises = (group: TExerciseGroup) => {
-  const allExercises: TMuscleExercises = {};
-  for (const muscle in group) {
-    allExercises[muscle] = {};
-  }
+const flattenExercises: (
+  exercises: TExercises,
+) => TFlattenedExercises = (exercises) => {
+
+  const result: TFlattenedExercises = {}
+
+  exercises.forEach((exercise, index) => {
+    let variations = flattenExerciseVariations(exercise.variation)
+
+    variations.forEach((variant) => {
+      let uid = ''
+      variant.id.forEach(digit => uid += digit.toString()) 
+      uid = index.toString() + uid
+
+      if (Object.keys(result).includes(uid)) {
+        throw 'clash!'
+      }
+      result[uid] = {
+        name: variant.name + ' ' + exercise.name,
+        equipment: variant.equipment
+      }
+    })
+  })
+  return result;
 };
+
+console.log(
+  flattenExercises(shoulders.frontDelt.exercises)
+);
+
 
 // addCollectionAndDocuments('test', 'shoulders', shoulders);
 // addCollectionAndDocuments('test', 'chest', chest);

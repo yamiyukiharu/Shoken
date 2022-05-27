@@ -1,6 +1,6 @@
-import { TFlattenedExercises, TFlattenedExerciseVariations } from '../firebase/types';
+import { TAllFlattenedExercises, TFlattenedExercises, TFlattenedExerciseVariations } from '../firebase/types';
 
-export type TMuscleGroup =
+export type TMuscleCategory =
   | 'shoulders'
   | 'arms'
   | 'forearms'
@@ -30,7 +30,7 @@ export type TExercise = {
 
 type TExercises = Array<TExercise>;
 
-export type TExerciseGroup = {
+export type TMuscleGroup = {
   [key: string]: {
     scientificName: string;
     exercises: TExercises;
@@ -95,7 +95,7 @@ const rearLateralRaisePoseVariation: TExerciseVariations = [
   },
 ];
 
-const shoulders: TExerciseGroup = {
+const shoulders: TMuscleGroup = {
   frontDelt: {
     scientificName: 'anterior deltoid',
     exercises: [
@@ -486,7 +486,7 @@ const benchPressLoadVariation: TExerciseVariations = [
   },
 ];
 
-const chest: TExerciseGroup = {
+const chest: TMuscleGroup = {
   midChest: {
     scientificName: 'pectoralis major, sternal',
     exercises: [
@@ -659,7 +659,7 @@ const chest: TExerciseGroup = {
 // ================== BACK ==================
 // ================== ARMS ==================
 
-const arms: TExerciseGroup = {
+const arms: TMuscleGroup = {
   triceps: {
     scientificName: 'triceps brachii',
     exercises: [
@@ -822,7 +822,6 @@ const flattenExerciseVariations: (
   return result;
 };
 
-
 const flattenExercises: (
   exercises: TExercises,
 ) => TFlattenedExercises = (exercises) => {
@@ -849,8 +848,17 @@ const flattenExercises: (
   return result;
 };
 
+const flattenAllExercises: (muscleGroup:TMuscleGroup) => TAllFlattenedExercises = () => {
+  const result:TAllFlattenedExercises = {}
+  Object.keys(shoulders).forEach(muscle => {
+    const data = flattenExercises(shoulders[muscle].exercises)
+    result[muscle] = data
+  })
+  return result
+}
+
 console.log(
-  flattenExercises(shoulders.frontDelt.exercises)
+  flattenAllExercises(shoulders)
 );
 
 

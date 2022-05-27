@@ -44,6 +44,10 @@ export type TFlattenedExerciseVariations = Array<{
       name: string;
       equipment?: Array<string>;
     }
+}
+
+export type TAllFlattenedExercises = {
+    [key: TMuscleName]: TFlattenedExercises
   }
 
 // =================== USER ====================

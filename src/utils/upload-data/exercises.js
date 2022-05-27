@@ -787,6 +787,14 @@ var flattenExercises = function (exercises) {
     });
     return result;
 };
-console.log(flattenExercises(shoulders.frontDelt.exercises));
+var flattenAllExercises = function () {
+    var result = {};
+    Object.keys(shoulders).forEach(function (muscle) {
+        var data = flattenExercises(shoulders[muscle].exercises);
+        result[muscle] = data;
+    });
+    return result;
+};
+console.log(flattenAllExercises(shoulders));
 // addCollectionAndDocuments('test', 'shoulders', shoulders);
 // addCollectionAndDocuments('test', 'chest', chest);

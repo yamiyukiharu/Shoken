@@ -9,6 +9,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 exports.__esModule = true;
+exports.allExercises = void 0;
 // ================== SHOULDERS ==================
 var overheadPressPoseVariation = [
     // standing
@@ -618,6 +619,32 @@ var chest = {
     }
 };
 // ================== BACK ==================
+var back = {
+    generalBack: {
+        scientificName: 'back',
+        exercises: []
+    },
+    lats: {
+        scientificName: 'latissimus dorsi, teres major',
+        exercises: []
+    },
+    upperTraps: {
+        scientificName: 'upper trapezius',
+        exercises: []
+    },
+    middleTraps: {
+        scientificName: 'middle trapezius',
+        exercises: []
+    },
+    lowerTraps: {
+        scientificName: 'lower trapezius',
+        exercises: []
+    },
+    rotatorCuffs: {
+        scientificName: 'supraspinatus, infraspinatus, subscapularis, teres minor',
+        exercises: []
+    }
+};
 // ================== ARMS ==================
 var arms = {
     triceps: {
@@ -722,15 +749,85 @@ var arms = {
                 ]
             },
         ]
+    },
+    biceps: {
+        scientificName: 'biceps brachii, brachialis',
+        exercises: []
+    },
+    forearms: {
+        scientificName: 'brachioradialis, pronators, supinators, flexors, extensors',
+        exercises: []
     }
+};
+// ================== HIPS ==================
+var hips = {
+    glutes: {
+        scientificName: 'Gluteus Maximus',
+        exercises: []
+    },
+    hipAbductors: {
+        scientificName: 'gluteus medius, gluteus minimus',
+        exercises: []
+    },
+    hipFlexors: {
+        scientificName: 'iliopsoas, sartorius, rectus femoris, tensor fasciae latae, pectineus',
+        exercises: []
+    }
+};
+// ================== LEGS ==================
+var legs = {
+    quads: {
+        scientificName: 'quadriceps',
+        exercises: []
+    },
+    hamstrings: {
+        scientificName: 'hamstrings',
+        exercises: []
+    },
+    hipAdductors: {
+        scientificName: 'adductors, pectineus, gracilis',
+        exercises: []
+    },
+    calf: {
+        scientificName: 'gastrocnemius, soleus, tibialis anterior',
+        exercises: []
+    }
+};
+// ================== WAIST ==================
+var waist = {
+    abs: {
+        scientificName: 'rectus abdominis',
+        exercises: []
+    },
+    obliques: {
+        scientificName: 'obliques',
+        exercises: []
+    },
+    lowerBack: {
+        scientificName: 'erector spinae',
+        exercises: []
+    }
+};
+// ================= OTHERS ===================
+var others = {};
+// ================= ALL ===================
+exports.allExercises = {
+    shoulders: shoulders,
+    chest: chest,
+    arms: arms,
+    back: back,
+    waist: waist,
+    hips: hips,
+    legs: legs,
+    others: others
 };
 var flattenExerciseVariations = function (exercicseVariantArray) {
     var result = [];
     // recursive loop over every variant and subvariant
     exercicseVariantArray.forEach(function (exercicseVariant, index) {
         if (exercicseVariant.variation) {
-            var data = flattenExerciseVariations(exercicseVariant.variation);
-            data.forEach(function (subvariant) {
+            var data_1 = flattenExerciseVariations(exercicseVariant.variation);
+            data_1.forEach(function (subvariant) {
                 // joins the variant names together
                 // insert spaces at the right places
                 var name = '';
@@ -787,14 +884,21 @@ var flattenExercises = function (exercises) {
     });
     return result;
 };
-var flattenAllExercises = function () {
+var flattenAllExercises = function (allExercises) {
     var result = {};
-    Object.keys(shoulders).forEach(function (muscle) {
-        var data = flattenExercises(shoulders[muscle].exercises);
-        result[muscle] = data;
+    var muscleCategories = Object.keys(allExercises);
+    muscleCategories.forEach(function (muscleCategory) {
+        var muscles = Object.keys(allExercises[muscleCategory]);
+        result[muscleCategory] = {};
+        muscles.forEach(function (muscle) {
+            result[muscleCategory][muscle] = flattenExercises(allExercises[muscleCategory][muscle].exercises);
+        });
     });
     return result;
 };
-console.log(flattenAllExercises(shoulders));
+var fs = require("fs");
+var data = flattenAllExercises(exports.allExercises);
+var jsonData = JSON.stringify(data);
+fs.writeFileSync('flattened_exercises.json', jsonData);
 // addCollectionAndDocuments('test', 'shoulders', shoulders);
 // addCollectionAndDocuments('test', 'chest', chest);

@@ -1,5 +1,31 @@
 // =================== EXERCISE & WORKOUTS ====================
 
+export type TExerciseVariation = {
+  variant: string;
+  equipment?: Array<string>;
+  images?: Array<string>;
+  notes?: string;
+  video?: string;
+  variation?: TExerciseVariations;
+};
+
+export type TExerciseVariations = Array<TExerciseVariation>;
+
+export type TExercise = {
+  name: string;
+  equipment?: Array<string>;
+  variation: TExerciseVariations;
+};
+
+export type TExercises = Array<TExercise>;
+
+export type TMuscleGroup = {
+  [key: string]: {
+    scientificName: string;
+    exercises: TExercises;
+  };
+};
+
 type TExerciseHistory = {
   date: string;
   time: string;
@@ -34,21 +60,35 @@ type TWorkoutHistory = {
 };
 
 export type TFlattenedExerciseVariations = Array<{
-    id: Array<number>;
+  id: Array<number>;
+  name: string;
+  equipment?: Array<string>;
+}>;
+
+export type TFlattenedExercises = {
+  [key: string]: {
     name: string;
     equipment?: Array<string>;
-  }>;
-  
- export type TFlattenedExercises = {
-    [key: string]: {
-      name: string;
-      equipment?: Array<string>;
-    }
-}
+  };
+};
 
 export type TAllFlattenedExercises = {
-    [key: TMuscleName]: TFlattenedExercises
-  }
+  [key: TMuscleName]: TFlattenedExercises;
+};
+
+export type TMuscleCategory =
+  | 'shoulders'
+  | 'arms'
+  | 'back'
+  | 'chest'
+  | 'waist'
+  | 'hips'
+  | 'legs'
+  | 'others';
+
+export type TAllExercises = {
+  [key in TMuscleCategory]: TMuscleGroup;
+};
 
 // =================== USER ====================
 

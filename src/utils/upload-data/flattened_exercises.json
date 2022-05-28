@@ -1,0 +1,590 @@
+{
+    "shoulders": {
+        "frontDelt": {
+            "20": {
+                "name": "standing arnold press"
+            },
+            "21": {
+                "name": "seated arnold press",
+                "equipment": [
+                    "adjustable bench, upright bench, flat bench"
+                ]
+            },
+            "100": {
+                "name": "standing barbell front raise",
+                "equipment": [
+                    "fixed barbell, olympic barbell, smith machine"
+                ]
+            },
+            "110": {
+                "name": "standing dumbbell front raise",
+                "equipment": [
+                    "fixed dumbbell"
+                ]
+            },
+            "120": {
+                "name": "bar cable front raise",
+                "equipment": [
+                    "cable barbell",
+                    "cable pulley machine, cable crossover machine"
+                ]
+            },
+            "121": {
+                "name": "hand grip cable front raise",
+                "equipment": [
+                    "hand grip",
+                    "cable pulley machine, cable crossover machine"
+                ]
+            },
+            "1010": {
+                "name": "forward incline barbell front raise",
+                "equipment": [
+                    "adjustable bench, upright bench",
+                    "fixed barbell, olympic barbell, smith machine"
+                ]
+            },
+            "1011": {
+                "name": "backward incline barbell front raise",
+                "equipment": [
+                    "adjustable bench, upright bench",
+                    "fixed barbell, olympic barbell, smith machine"
+                ]
+            },
+            "1110": {
+                "name": "forward incline dumbbell front raise",
+                "equipment": [
+                    "adjustable bench, upright bench",
+                    "fixed dumbbell"
+                ]
+            },
+            "1111": {
+                "name": "backward incline dumbbell front raise",
+                "equipment": [
+                    "adjustable bench, upright bench",
+                    "fixed dumbbell"
+                ]
+            },
+            "000": {
+                "name": "standing barbell overhead press",
+                "equipment": [
+                    "fixed barbell, olympic barbell, smith machine"
+                ]
+            },
+            "0010": {
+                "name": "recline seated barbell overhead press",
+                "equipment": [
+                    "adjustable bench, upright bench",
+                    "fixed barbell, olympic barbell, smith machine"
+                ]
+            },
+            "0011": {
+                "name": "upright seated barbell overhead press",
+                "equipment": [
+                    "adjustable bench, upright bench",
+                    "fixed barbell, olympic barbell, smith machine"
+                ]
+            },
+            "0100": {
+                "name": "standing dumbbell overhead press",
+                "equipment": [
+                    "fixed dumbbell"
+                ]
+            },
+            "01010": {
+                "name": "recline seated dumbbell overhead press",
+                "equipment": [
+                    "adjustable bench, upright bench",
+                    "fixed dumbbell"
+                ]
+            },
+            "01011": {
+                "name": "upright seated dumbbell overhead press",
+                "equipment": [
+                    "adjustable bench, upright bench",
+                    "fixed dumbbell"
+                ]
+            },
+            "0110": {
+                "name": "standing parallel grip dumbbell overhead press",
+                "equipment": [
+                    "fixed dumbbell"
+                ]
+            },
+            "01110": {
+                "name": "recline seated parallel grip dumbbell overhead press",
+                "equipment": [
+                    "adjustable bench, upright bench",
+                    "fixed dumbbell"
+                ]
+            },
+            "01111": {
+                "name": "upright seated parallel grip dumbbell overhead press",
+                "equipment": [
+                    "adjustable bench, upright bench",
+                    "fixed dumbbell"
+                ]
+            },
+            "0200": {
+                "name": "standing bar cable overhead press",
+                "equipment": [
+                    "cable barbell",
+                    "cable pulley machine, cable crossover machine"
+                ]
+            },
+            "02010": {
+                "name": "recline seated bar cable overhead press",
+                "equipment": [
+                    "adjustable bench, upright bench",
+                    "cable barbell",
+                    "cable pulley machine, cable crossover machine"
+                ]
+            },
+            "02011": {
+                "name": "upright seated bar cable overhead press",
+                "equipment": [
+                    "adjustable bench, upright bench",
+                    "cable barbell",
+                    "cable pulley machine, cable crossover machine"
+                ]
+            },
+            "0210": {
+                "name": "standing hand grip cable overhead press",
+                "equipment": [
+                    "hand grip",
+                    "cable pulley machine, cable crossover machine"
+                ]
+            },
+            "02110": {
+                "name": "recline seated hand grip cable overhead press",
+                "equipment": [
+                    "adjustable bench, upright bench",
+                    "hand grip",
+                    "cable pulley machine, cable crossover machine"
+                ]
+            },
+            "02111": {
+                "name": "upright seated hand grip cable overhead press",
+                "equipment": [
+                    "adjustable bench, upright bench",
+                    "hand grip",
+                    "cable pulley machine, cable crossover machine"
+                ]
+            },
+            "0212": {
+                "name": "twisting overhead hand grip cable overhead press",
+                "equipment": [
+                    "hand grip",
+                    "cable pulley machine, cable crossover machine"
+                ]
+            },
+            "030": {
+                "name": "machine overhead press",
+                "equipment": [
+                    "shoulder press machine, hammer strength machine"
+                ]
+            },
+            "031": {
+                "name": "parallel grip machine overhead press",
+                "equipment": [
+                    "shoulder press machine, hammer strength machine"
+                ]
+            }
+        },
+        "midDelt": {
+            "00": {
+                "name": "cable lateral raise",
+                "equipment": [
+                    "cable crossover machine, cable pulley machine",
+                    "cable hand grip"
+                ]
+            },
+            "0100": {
+                "name": "standing bent arm dumbbell lateral raise",
+                "equipment": [
+                    "fixed dumbbell"
+                ]
+            },
+            "0101": {
+                "name": "seated bent arm dumbbell lateral raise",
+                "equipment": [
+                    "adjustable bench, upright bench, flat bench",
+                    "fixed dumbbell"
+                ]
+            },
+            "0110": {
+                "name": "standing straight arm dumbbell lateral raise",
+                "equipment": [
+                    "fixed dumbbell"
+                ]
+            },
+            "0111": {
+                "name": "seated straight arm dumbbell lateral raise",
+                "equipment": [
+                    "adjustable bench, upright bench, flat bench",
+                    "fixed dumbbell"
+                ]
+            },
+            "0112": {
+                "name": "leaned straight arm dumbbell lateral raise",
+                "equipment": [
+                    "fixed dumbbell"
+                ]
+            },
+            "02": {
+                "name": "machine lateral raise",
+                "equipment": [
+                    "lateral raise machine"
+                ]
+            }
+        },
+        "rearDelt": {
+            "10": {
+                "name": "barbell rear delt raise",
+                "equipment": [
+                    "fixed barbell, olympic barbell, smith machine"
+                ]
+            },
+            "11": {
+                "name": "dumbbell rear delt raise",
+                "equipment": [
+                    "fixed dumbbell"
+                ]
+            },
+            "22": {
+                "name": "machine rear lateral raise",
+                "equipment": [
+                    "rear lateral raise machine, lateral raise machine"
+                ]
+            },
+            "31": {
+                "name": "machine reverse fly",
+                "equipment": [
+                    "chest/pec fly machine, pec deck machine"
+                ]
+            },
+            "40": {
+                "name": " standing cross row"
+            },
+            "41": {
+                "name": "one arm standing cross row"
+            },
+            "200": {
+                "name": "standing cable rear lateral raise",
+                "equipment": [
+                    "cable crossover machine, cable pulley machine",
+                    "cable hand grip"
+                ]
+            },
+            "201": {
+                "name": "seated cable rear lateral raise",
+                "equipment": [
+                    "adjustable bench, upright bench, flat bench",
+                    "cable crossover machine, cable pulley machine",
+                    "cable hand grip"
+                ]
+            },
+            "210": {
+                "name": "standing dumbbell rear lateral raise",
+                "equipment": [
+                    "fixed dumbbell"
+                ]
+            },
+            "211": {
+                "name": "seated dumbbell rear lateral raise",
+                "equipment": [
+                    "adjustable bench, upright bench, flat bench",
+                    "fixed dumbbell"
+                ]
+            },
+            "300": {
+                "name": "one arm cable reverse fly",
+                "equipment": [
+                    "cable crossover machine, cable pulley machine",
+                    "cable hand grip"
+                ]
+            },
+            "301": {
+                "name": "supine cable reverse fly",
+                "equipment": [
+                    "adjustable bench, flat bench",
+                    "cable crossover machine, cable pulley machine",
+                    "cable hand grip"
+                ]
+            },
+            "00": {
+                "name": "barbell rear delt row",
+                "equipment": [
+                    "fixed barbell, olympic barbell, smith machine"
+                ]
+            },
+            "01": {
+                "name": "dumbbell rear delt row",
+                "equipment": [
+                    "fixed dumbbell",
+                    "adjustable bench, flat bench"
+                ]
+            },
+            "0200": {
+                "name": "seated cable rear delt row",
+                "equipment": [
+                    "cable row bar",
+                    "cable row machine",
+                    "cable crossover machine, cable pulley machine"
+                ]
+            },
+            "0201": {
+                "name": "one arm seated cable rear delt row",
+                "equipment": [
+                    "cable hand grip, cable double d row bar",
+                    "cable row machine",
+                    "cable crossover machine, cable pulley machine"
+                ]
+            },
+            "0210": {
+                "name": "standing cable rear delt row",
+                "equipment": [
+                    "cable row bar",
+                    "cable crossover machine, cable pulley machine"
+                ]
+            },
+            "0211": {
+                "name": "rope standing cable rear delt row",
+                "equipment": [
+                    "cable tricep rope",
+                    "cable crossover machine, cable pulley machine"
+                ]
+            },
+            "030": {
+                "name": "incline lever rear delt row",
+                "equipment": [
+                    "incline lever row machine"
+                ]
+            },
+            "031": {
+                "name": "t-bar lever rear delt row",
+                "equipment": [
+                    "t-bar row platform"
+                ]
+            },
+            "04": {
+                "name": "machine rear delt row",
+                "equipment": [
+                    "seated row machine"
+                ]
+            }
+        }
+    },
+    "chest": {
+        "midChest": {
+            "10": {
+                "name": "dumbbell fly",
+                "equipment": [
+                    "fixed dumbbell"
+                ]
+            },
+            "11": {
+                "name": "cable fly",
+                "equipment": [
+                    "cable crossover machine, cable pulley machine",
+                    "cable hand grip"
+                ]
+            },
+            "12": {
+                "name": "machine fly",
+                "equipment": [
+                    "chest/pec fly machine"
+                ]
+            },
+            "20": {
+                "name": " machine chest/bench press",
+                "equipment": [
+                    "chest press machine, bench press machine"
+                ]
+            },
+            "00": {
+                "name": "barbell bench press",
+                "equipment": [
+                    "fixed barbell, olympic barbell, smith machine"
+                ]
+            },
+            "01": {
+                "name": "dumbbell bench press",
+                "equipment": [
+                    "fixed dumbbell"
+                ]
+            },
+            "02": {
+                "name": "cable bench press",
+                "equipment": [
+                    "cable crossover machine, cable pulley machine",
+                    "cable hand grip, cable barbell"
+                ]
+            }
+        },
+        "upperChest": {
+            "10": {
+                "name": "dumbbell incline fly",
+                "equipment": [
+                    "fixed dumbbell",
+                    "incline/decline bench, incline bench press adjustable bench"
+                ]
+            },
+            "12": {
+                "name": "machine incline fly",
+                "equipment": [
+                    "incline fly machine"
+                ]
+            },
+            "110": {
+                "name": "standing cable incline fly",
+                "equipment": [
+                    "cable crossover machine, cable pulley machine",
+                    "cable hand grip, cable barbell"
+                ]
+            },
+            "111": {
+                "name": "seated cable incline fly",
+                "equipment": [
+                    "incline/decline bench, incline bench press, adjustable bench",
+                    "cable crossover machine, cable pulley machine",
+                    "cable hand grip, cable barbell"
+                ]
+            },
+            "00": {
+                "name": "barbell incline bench press",
+                "equipment": [
+                    "fixed barbell, olympic barbell, smith machine"
+                ]
+            },
+            "01": {
+                "name": "dumbbell incline bench press",
+                "equipment": [
+                    "fixed dumbbell"
+                ]
+            },
+            "02": {
+                "name": "cable incline bench press",
+                "equipment": [
+                    "cable crossover machine, cable pulley machine",
+                    "cable hand grip, cable barbell"
+                ]
+            }
+        },
+        "lowerChest": {
+            "20": {
+                "name": "bodyweight chest dip",
+                "equipment": [
+                    "dipping station, power tower"
+                ]
+            },
+            "21": {
+                "name": "machine chest dip",
+                "equipment": [
+                    "seated dip machine"
+                ]
+            },
+            "30": {
+                "name": "dumbbell decline fly",
+                "equipment": [
+                    "fixed dumbbell",
+                    "incline/decline bench, decline bench, abdominal bench"
+                ]
+            },
+            "31": {
+                "name": "cable decline fly",
+                "equipment": [
+                    "cable crossover machine, cable pulley machine, cable hand grip"
+                ]
+            },
+            "00": {
+                "name": "barbell decline bench press",
+                "equipment": [
+                    "fixed barbell, olympic barbell, smith machine"
+                ]
+            },
+            "01": {
+                "name": "dumbbell decline bench press",
+                "equipment": [
+                    "fixed dumbbell"
+                ]
+            },
+            "02": {
+                "name": "cable decline bench press",
+                "equipment": [
+                    "cable crossover machine, cable pulley machine",
+                    "cable hand grip, cable barbell"
+                ]
+            }
+        }
+    },
+    "arms": {
+        "triceps": {
+            "10": {
+                "name": "barbell close grip bench press",
+                "equipment": [
+                    "fixed barbell, olympic barbell, ez bar, smith machine"
+                ]
+            },
+            "11": {
+                "name": "dumbbell close grip bench press",
+                "equipment": [
+                    "fixed dumbbell"
+                ]
+            },
+            "20": {
+                "name": " jm bench press"
+            },
+            "30": {
+                "name": "machine pushdown",
+                "equipment": [
+                    "tricep pushdown machine"
+                ]
+            },
+            "00": {
+                "name": "bench tricep dips",
+                "equipment": [
+                    "flat bench, adjustable bench"
+                ]
+            },
+            "01": {
+                "name": "assisted tricep dips",
+                "equipment": [
+                    "assisted pull-up/dip machine"
+                ]
+            },
+            "02": {
+                "name": "bodyweight/weighted tricep dips",
+                "equipment": [
+                    "dipping station, power tower"
+                ]
+            }
+        },
+        "biceps": {},
+        "forearms": {}
+    },
+    "back": {
+        "generalBack": {},
+        "lats": {},
+        "upperTraps": {},
+        "middleTraps": {},
+        "lowerTraps": {},
+        "rotatorCuffs": {}
+    },
+    "waist": {
+        "abs": {},
+        "obliques": {},
+        "lowerBack": {}
+    },
+    "hips": {
+        "glutes": {},
+        "hipAbductors": {},
+        "hipFlexors": {}
+    },
+    "legs": {
+        "quads": {},
+        "hamstrings": {},
+        "hipAdductors": {},
+        "calf": {}
+    },
+    "others": {}
+}

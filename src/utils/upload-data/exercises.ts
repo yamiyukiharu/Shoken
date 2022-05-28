@@ -1,41 +1,4 @@
-import { TAllFlattenedExercises, TFlattenedExercises, TFlattenedExerciseVariations } from '../firebase/types';
-
-export type TMuscleCategory =
-  | 'shoulders'
-  | 'arms'
-  | 'forearms'
-  | 'back'
-  | 'chest'
-  | 'waist'
-  | 'hips'
-  | 'legs'
-  | 'others';
-
-type TExerciseVariation = {
-  variant: string;
-  equipment?: Array<string>;
-  images?: Array<string>;
-  notes?: string;
-  video?: string;
-  variation?: TExerciseVariations;
-};
-
-type TExerciseVariations = Array<TExerciseVariation>;
-
-export type TExercise = {
-  name: string;
-  equipment?: Array<string>;
-  variation: TExerciseVariations;
-};
-
-type TExercises = Array<TExercise>;
-
-export type TMuscleGroup = {
-  [key: string]: {
-    scientificName: string;
-    exercises: TExercises;
-  };
-};
+import { TAllExercises, TAllFlattenedExercises, TExercises, TExerciseVariations, TFlattenedExercises, TFlattenedExerciseVariations, TMuscleCategory, TMuscleGroup } from '../firebase/types';
 
 // ================== SHOULDERS ==================
 
@@ -61,7 +24,7 @@ const overheadPressPoseVariation: TExerciseVariations = [
   },
 ];
 
-const frontRaisePoseVariation: Array<TExerciseVariation> = [
+const frontRaisePoseVariation: TExerciseVariations = [
   // standing
   {
     variant: 'standing',
@@ -657,6 +620,34 @@ const chest: TMuscleGroup = {
 };
 
 // ================== BACK ==================
+
+const back: TMuscleGroup = {
+  generalBack: {
+    scientificName: 'back',
+    exercises: []
+  },
+  lats: {
+    scientificName: 'latissimus dorsi, teres major',
+    exercises: [],
+  },
+  upperTraps: {
+    scientificName: 'upper trapezius',
+    exercises: [],
+  },
+  middleTraps: {
+    scientificName: 'middle trapezius',
+    exercises: [],
+  },
+  lowerTraps: {
+    scientificName: 'lower trapezius',
+    exercises: [],
+  },
+  rotatorCuffs: {
+    scientificName: 'supraspinatus, infraspinatus, subscapularis, teres minor',
+    exercises: []
+  }
+}
+
 // ================== ARMS ==================
 
 const arms: TMuscleGroup = {
@@ -765,11 +756,90 @@ const arms: TMuscleGroup = {
       },
     ],
   },
+  biceps: {
+    scientificName: 'biceps brachii, brachialis',
+    exercises: []
+  },
+  forearms: {
+    scientificName: 'brachioradialis, pronators, supinators, flexors, extensors',
+    exercises: []
+  }
 };
 
 // ================== HIPS ==================
+
+const hips: TMuscleGroup = {
+  glutes: {
+    scientificName: 'Gluteus Maximus',
+    exercises: []
+  },
+  hipAbductors: {
+    scientificName: 'gluteus medius, gluteus minimus',
+    exercises: []
+  },
+  hipFlexors: {
+    scientificName: 'iliopsoas, sartorius, rectus femoris, tensor fasciae latae, pectineus',
+    exercises: []
+  },
+
+}
+
 // ================== LEGS ==================
+
+const legs: TMuscleGroup = {
+  quads: {
+    scientificName: 'quadriceps',
+    exercises: []
+  },
+  hamstrings: {
+    scientificName: 'hamstrings',
+    exercises: []
+  },
+  hipAdductors: {
+    scientificName: 'adductors, pectineus, gracilis',
+    exercises: []
+  },
+  calf: {
+    scientificName: 'gastrocnemius, soleus, tibialis anterior',
+    exercises: []
+  }
+}
+
 // ================== WAIST ==================
+
+const waist: TMuscleGroup = {
+  abs: {
+    scientificName: 'rectus abdominis',
+    exercises: []
+  },
+  obliques: {
+    scientificName: 'obliques',
+    exercises: []
+  },
+  lowerBack: {
+    scientificName: 'erector spinae',
+    exercises: []
+  }
+}
+
+// ================= OTHERS ===================
+
+const others: TMuscleGroup = {
+
+}
+
+// ================= ALL ===================
+
+export const allExercises: TAllExercises = {
+  shoulders: shoulders,
+  chest: chest,
+  arms: arms,
+  back: back,
+  waist: waist,
+  hips: hips,
+  legs: legs,
+  others: others,
+}
 
 import {addCollectionAndDocuments} from './index';
 
@@ -848,18 +918,27 @@ const flattenExercises: (
   return result;
 };
 
-const flattenAllExercises: (muscleGroup:TMuscleGroup) => TAllFlattenedExercises = () => {
+const flattenAllExercises: (allExercises:TAllExercises) => TAllFlattenedExercises = (allExercises) => {
   const result:TAllFlattenedExercises = {}
-  Object.keys(shoulders).forEach(muscle => {
-    const data = flattenExercises(shoulders[muscle].exercises)
-    result[muscle] = data
+
+  const muscleCategories = Object.keys(allExercises) as Array<TMuscleCategory>
+  muscleCategories.forEach(muscleCategory => {
+    const muscles = Object.keys(allExercises[muscleCategory])
+    
+    result[muscleCategory] = {}
+    muscles.forEach(muscle => {
+      result[muscleCategory][muscle] = flattenExercises(allExercises[muscleCategory][muscle].exercises)
+    })
   })
+
   return result
 }
 
-console.log(
-  flattenAllExercises(shoulders)
-);
+import * as fs from 'fs'
+
+const data = flattenAllExercises(allExercises)
+const jsonData = JSON.stringify(data)
+fs.writeFileSync('flattened_exercises.json', jsonData)
 
 
 // addCollectionAndDocuments('test', 'shoulders', shoulders);

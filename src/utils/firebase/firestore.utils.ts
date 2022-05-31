@@ -2,19 +2,19 @@ import firestore from '@react-native-firebase/firestore';
 import { TGym, TAllEquipment, TUser, TFbGymEntry, TGyms, TFbUserEntry, TAllFlattenedExercises, TAllExercises } from './types';
 import { emptyUser } from '../../redux/user/user.slice';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { flattenAllExercises, allExercises } from '../upload-data/exercises';
+import { allExercises } from '../exercises';
 
 // ================== EXERCISES =======================
 
 // TODO: replace with call to firebase
 export const getAllExercisesFirestore = async ():Promise<TAllFlattenedExercises> => {
-    const data = flattenAllExercises(allExercises)
-    return data
+    return allExercises
 }
 
 // TODO: replace with call to firebase
 export const getAllFlattenedExercises = async ():Promise<TAllExercises> => {
-    return allExercises
+    const data = flattenAllExercises(allExercises)
+    return data
 } 
 
 // ==================== USER =========================

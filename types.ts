@@ -16,6 +16,9 @@ export type WorkoutStackParamList = {
     GymDetailsScreen: {
       mode: 'add' | 'edit';
     }
+    ExerciseSubCategoryScreen: {
+      muscles: Array<string>;
+    }
   };
 
 
@@ -25,3 +28,4 @@ export type WorkoutsNavProp = NativeStackNavigationProp<WorkoutStackParamList>
 export type GymAddEquipmentListScreenRouteProp = RouteProp<WorkoutStackParamList, 'GymAddEquipmentListScreen'>
 export type GymDetailsScreenScreenRouteProp = RouteProp<WorkoutStackParamList, 'GymDetailsScreen'>
 export type GymEditScreenRouteProp = RouteProp<WorkoutStackParamList, 'GymEditScreen'>
+export type ExerciseSubCategoryScreenRouteProp = RouteProp<WorkoutStackParamList, 'ExerciseSubCategoryScreen'>

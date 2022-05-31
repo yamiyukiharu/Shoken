@@ -33,7 +33,7 @@ const overheadPressPoseVariation: Array<TExerciseVariation> = [
   },
 ];
 
-const frontRaisePoseVariation: TExerciseVariations = [
+const frontRaisePoseVariation: Array<TExerciseVariation> = [
   // standing
   {
     variant: 'standing',
@@ -55,7 +55,7 @@ const frontRaisePoseVariation: TExerciseVariations = [
   },
 ];
 
-const rearLateralRaisePoseVariation: TExerciseVariations = [
+const rearLateralRaisePoseVariation: Array<TExerciseVariation> = [
   // standing
   {
     variant: 'standing',
@@ -437,7 +437,7 @@ const shoulders: TMuscleGroup = {
 
 // ================== CHEST ==================
 
-const benchPressLoadVariation: TExerciseVariations = [
+const benchPressLoadVariation: Array<TExerciseVariation> = [
   // barbell
   {
     variant: 'barbell',
@@ -849,10 +849,10 @@ export const allExercises: TAllExercises = {
   others: others,
 };
 
-import {addCollectionAndDocuments} from './index';
+
 
 const flattenExerciseVariations: (
-  exercicseVariantArray: TExerciseVariations,
+  exercicseVariantArray: Array<TExerciseVariation>,
 ) => TFlattenedExerciseVariations = exercicseVariantArray => {
   const result: TFlattenedExerciseVariations = [];
 
@@ -945,11 +945,4 @@ export const flattenAllExercises: (
   return result;
 };
 
-import * as fs from 'fs';
 
-const data = flattenAllExercises(allExercises);
-const jsonData = JSON.stringify(data);
-fs.writeFileSync('flattened_exercises.json', jsonData);
-
-// addCollectionAndDocuments('test', 'shoulders', shoulders);
-// addCollectionAndDocuments('test', 'chest', chest);

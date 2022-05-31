@@ -25,7 +25,7 @@ const ShokenTile: React.FC<Props> = props => {
     <TouchableOpacity
       accessible={true}
       {...props}
-      style={[styles.container, props.style]}>
+      style={[props.style, styles.container]}>
       {props.title && (
         <Text style={styles.title}>
           {props.title && props.title.toLocaleUpperCase()}
@@ -41,7 +41,7 @@ const ShokenTile: React.FC<Props> = props => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
     marginHorizontal: 10,
     marginVertical: 10,
@@ -59,11 +59,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    marginBottom: 'auto',
   },
   details: {
     fontSize: 14,
-    marginTop: 'auto',
   },
 });
 

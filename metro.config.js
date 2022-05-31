@@ -4,6 +4,7 @@
  *
  * @format
  */
+ const exclusionList = require('metro-config/src/defaults/exclusionList');
 
 module.exports = {
   transformer: {
@@ -16,5 +17,6 @@ module.exports = {
   },
   resolver: {
     sourceExts: ['jsx', 'js', 'ts', 'tsx', 'mjs'], //add here
+    blacklistRE: exclusionList(['src/utils/upload-data'])
   },
 };

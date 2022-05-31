@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import gymsReducer from "./gyms/gyms.slice";
-import userSlice from "./user/user.slice";
+import userReducer from "./user/user.slice";
+import workoutsReducer from './workouts/workouts.slice'
 
 export const store = configureStore({
     reducer: {
         gym: gymsReducer,
-        user: userSlice,
+        user: userReducer,
+        workouts: workoutsReducer,
     },
     // middleware: (getDefaultMiddleware) => [...getDefaultMiddleware({immutableCheck: false})],
     

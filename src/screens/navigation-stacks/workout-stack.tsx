@@ -6,10 +6,10 @@ import WorkoutsScreen from '../workouts/workouts.screen';
 import WorkoutEditScreen from '../workout-edit.screen';
 import GymAddScreen from '../workouts/gym-add.screen';
 import GymEditScreen from '../workouts/gym-edit.screen';
-import GymAddEquipmentCategoriesScreen from '../workouts/gym-add-equipment-categories.screen';
-import GymAddEquipmentListScreen from '../workouts/gym-add-equipment-list.screen';
+import GymEquipmentCategoriesScreen from '../workouts/gym-equipment-categories.screen';
+import GymEquipmentListScreen from '../workouts/gym-equipment-list.screen';
 import GymDetailsScreen from '../workouts/gym-details.screen';
-import ExerciseSubCategoryScreen from '../workouts/exercise-sub-categories.screen';
+import ExerciseSubcategoryScreen from '../workouts/exercise-subcategories.screen';
 
 const WorkoutsStack = createNativeStackNavigator<WorkoutStackParamList>();
 
@@ -49,22 +49,22 @@ export const WorkoutsStackScreen = () => {
         })}
       />
       <WorkoutsStack.Screen
-        name="GymAddEquipmentCategoriesScreen"
-        component={GymAddEquipmentCategoriesScreen}
+        name="GymEquipmentCategoriesScreen"
+        component={GymEquipmentCategoriesScreen}
         options={() => ({
           headerTitle: 'Add Equipment',
         })}
       />
       <WorkoutsStack.Screen
-        name="GymAddEquipmentListScreen"
-        component={GymAddEquipmentListScreen}
+        name="GymEquipmentListScreen"
+        component={GymEquipmentListScreen}
         options={() => ({
           headerTitle: 'Add Equipment',
         })}
       />
       <WorkoutsStack.Screen
-        name="ExerciseSubCategoryScreen"
-        component={ExerciseSubCategoryScreen}
+        name="ExerciseSubcategoryScreen"
+        component={ExerciseSubcategoryScreen}
         options={() => ({
           headerTitle: 'Exercises',
         })}

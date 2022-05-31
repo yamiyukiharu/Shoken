@@ -7,15 +7,15 @@ import { allExercises } from '../exercises';
 // ================== EXERCISES =======================
 
 // TODO: replace with call to firebase
-export const getAllExercisesFirestore = async ():Promise<TAllFlattenedExercises> => {
+export const getAllExercisesFirestore = async ():Promise<TAllExercises> => {
     return allExercises
 }
 
 // TODO: replace with call to firebase
-export const getAllFlattenedExercises = async ():Promise<TAllExercises> => {
-    const data = flattenAllExercises(allExercises)
-    return data
-} 
+// export const getAllFlattenedExercises = async ():Promise<TAllFlattenedExercises> => {
+//     const data = flattenAllExercises(allExercises)
+//     return data
+// } 
 
 // ==================== USER =========================
 

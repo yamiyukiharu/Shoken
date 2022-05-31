@@ -100,7 +100,7 @@ const WorkoutsScreen = () => {
                 style={styles.exerciseTile}
                 onPress={() =>
                   navigation.navigate(
-                    'ExerciseSubCategoryScreen',
+                    'ExerciseSubcategoryScreen',
                     {
                       muscles: Object.keys(allExercises[category])
                     },

@@ -16,7 +16,8 @@ import { TEquipmentCategories, TGym } from '../../utils/firebase/types';
 import { WorkoutsNavProp } from '../../../types';
 import { addUserGym } from '../../redux/user/user.slice';
 
-export const GymAddEquipmentCategoriesScreen = () => {
+export const GymEquipmentCategoriesScreen = () => {
+
   const [done, setDone] = useState(false)
   const navigation = useNavigation<WorkoutsNavProp>();
   const dispatch = useAppDispatch();
@@ -97,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GymAddEquipmentCategoriesScreen;
+export default GymEquipmentCategoriesScreen;

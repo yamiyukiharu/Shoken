@@ -37,7 +37,7 @@ const EquipmentCategories:React.FC<Props> = ({categories, mode}) => {
                   style={styles.tile}
                   addNew={false}
                   onPress={() =>
-                    navigation.navigate('GymAddEquipmentListScreen', {
+                    navigation.navigate('GymEquipmentListScreen', {
                       equipmentCategory: item,
                       mode: 'view',
                     })
@@ -56,7 +56,7 @@ const EquipmentCategories:React.FC<Props> = ({categories, mode}) => {
                   style={styles.tile}
                   addNew={true}
                   onPress={() =>
-                    navigation.navigate('GymAddEquipmentListScreen', {
+                    navigation.navigate('GymEquipmentListScreen', {
                       equipmentCategory: item,
                       mode: 'edit',
                     })

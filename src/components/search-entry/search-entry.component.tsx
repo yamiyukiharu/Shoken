@@ -11,41 +11,24 @@ import {
 import type {TEquipmentCategories} from '../../utils/firebase/types';
 
 interface Props {
-  equipmentName: string;
-  equipmentCategory: TEquipmentCategories;
+  title: string;
   isEditable: boolean;
   isAdded: boolean;
+  onPlusTapped?: () => void;
+  onCheckTapped?: () => void;
 }
 
-const EquipmentSearchEntry: React.FC<Props> = ({
-  equipmentName,
-  equipmentCategory,
+const SearchEntry: React.FC<Props> = ({
+  title,
   isEditable,
   isAdded,
+  onCheckTapped,
+  onPlusTapped,
 }) => {
-  const dispatch = useAppDispatch();
-
-  const onPlusTapped = () => {
-    dispatch(
-      addEquipmentToGym({
-        category: equipmentCategory,
-        equipmentName: equipmentName,
-      }),
-    );
-  };
-
-  const onCheckTapped = () => {
-    dispatch(
-      removeEquipmentFromGym({
-        category: equipmentCategory,
-        equipmentName: equipmentName,
-      }),
-    );
-  };
 
   return (
     <View style={styles.container}>
-      <Text style={{textTransform: 'capitalize'}}>{equipmentName}</Text>
+      <Text style={{textTransform: 'capitalize'}}>{title}</Text>
 
       {isEditable &&
         (isAdded ? (
@@ -74,4 +57,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EquipmentSearchEntry;
+export default SearchEntry;

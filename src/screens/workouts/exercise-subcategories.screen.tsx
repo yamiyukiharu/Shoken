@@ -2,13 +2,13 @@ import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
-import { ExerciseSubCategoryScreenRouteProp } from '../../../types';
+import { ExerciseSubcategoryScreenRouteProp } from '../../../types';
 import ShokenTile from '../../components/shoken-tile/shoken-tile.component';
 import { unCamelCase } from '../../utils/utils';
 
 
-const ExerciseSubCategoryScreen = () => {
-  const route = useRoute<ExerciseSubCategoryScreenRouteProp>()
+const ExerciseSubcategoryScreen = () => {
+  const route = useRoute<ExerciseSubcategoryScreenRouteProp>()
 
   return (
     <View style={styles.container}>
@@ -25,7 +25,9 @@ const ExerciseSubCategoryScreen = () => {
               style={styles.tile}
               addNew={false}
               accessibilityLabel={item}
-              onPress={() => {}}
+              onPress={() => {
+                
+              }}
             />
           );
         }}
@@ -53,4 +55,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ExerciseSubCategoryScreen;
+export default ExerciseSubcategoryScreen;

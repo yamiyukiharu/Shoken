@@ -90,7 +90,7 @@ const GymEditScreen = () => {
         <NormalButton
           style={styles.button}
           text={'Next'}
-          onPress={() => navigation.navigate('GymAddEquipmentCategoriesScreen')}
+          onPress={() => navigation.navigate('GymEquipmentCategoriesScreen')}
         />
       </View>
     </View>

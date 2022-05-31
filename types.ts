@@ -16,9 +16,8 @@ export type WorkoutStackParamList = {
     GymDetailsScreen: {
       mode: 'add' | 'edit';
     }
-    ExerciseSubcategoryScreen: {
-      muscles: Array<string>;
-    }
+    ExerciseSubcategoryScreen: undefined;
+    ExerciseListScreen: undefined;
   };
 
 

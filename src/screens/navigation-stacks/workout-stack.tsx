@@ -10,6 +10,7 @@ import GymEquipmentCategoriesScreen from '../workouts/gym-equipment-categories.s
 import GymEquipmentListScreen from '../workouts/gym-equipment-list.screen';
 import GymDetailsScreen from '../workouts/gym-details.screen';
 import ExerciseSubcategoryScreen from '../workouts/exercise-subcategories.screen';
+import ExerciseListScreen from '../workouts/exercise-list.screen';
 
 const WorkoutsStack = createNativeStackNavigator<WorkoutStackParamList>();
 
@@ -65,6 +66,13 @@ export const WorkoutsStackScreen = () => {
       <WorkoutsStack.Screen
         name="ExerciseSubcategoryScreen"
         component={ExerciseSubcategoryScreen}
+        options={() => ({
+          headerTitle: 'Exercises',
+        })}
+      />
+      <WorkoutsStack.Screen
+        name="ExerciseListScreen"
+        component={ExerciseListScreen}
         options={() => ({
           headerTitle: 'Exercises',
         })}

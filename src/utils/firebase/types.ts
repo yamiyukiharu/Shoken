@@ -15,7 +15,7 @@ export type TExercise = {
   variation: Array<TExerciseVariation>;
 };
 
-export type TMuscleGroup = {
+export type TMuscle = {
   [key: string]: {
     scientificName: string;
     exercises: Array<TExercise>;
@@ -97,7 +97,7 @@ export type TMuscleCategory =
   | 'others';
 
 export type TAllExercises = {
-  [key in TMuscleCategory]: TMuscleGroup;
+  [key in TMuscleCategory]: TMuscle;
 };
 
 // =================== USER ====================

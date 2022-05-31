@@ -10,14 +10,10 @@ import {
   TAllFlattenedExercises,
   TAllExercises,
   TExercise,
+  TMuscleCategory,
+  TMuscle,
+  TFlattenedExercises,
 } from '../../utils/firebase/types';
-
-type TWorkoutsState = {
-  allExercises: TAllExercises;
-  allFlattenedExercises: TAllFlattenedExercises;
-  currentExercise: TExercise;
-  getAllExercisesLoading: boolean;
-};
 
 const emptyAllExercises: TAllExercises = {
   arms: {},
@@ -41,14 +37,42 @@ const emptyAllFlattenedExercises: TAllFlattenedExercises = {
   waist: {},
 }
 
+type TWorkoutsState = {
+  allExercises: TAllExercises;
+  allFlattenedExercises: TAllFlattenedExercises;
+
+  currentMuscleCategory: TMuscleCategory;
+  currentMuscle: string;
+  currentExercise: TExercise;
+
+  muscleCategories: Array<TMuscleCategory>;
+  muscles: Array<string>
+  exercises: TFlattenedExercises;
+  exerciseList: Array<string>
+
+  getAllExercisesLoading: boolean;
+  exerciseSearchString: string;
+};
+
 const workoutsInitialState: TWorkoutsState = {
   allExercises: {...emptyAllExercises},
   allFlattenedExercises: {...emptyAllFlattenedExercises},
+
   getAllExercisesLoading: false,
+
+  currentMuscleCategory: 'arms',
+  currentMuscle: '',
   currentExercise: {
     name: 'none',
     variation: [],
   },
+
+  exerciseSearchString: '',
+  muscleCategories: [],
+  muscles: [],
+  exercises: {},
+  exerciseList: [],
+
 };
 
 export const getExercises = createAsyncThunk(
@@ -66,7 +90,21 @@ const workoutsSlice = createSlice({
   name: 'workouts',
   initialState: workoutsInitialState,
   reducers: {
-
+    setCurrentMuscleCategory: (state:TWorkoutsState, action: PayloadAction<TMuscleCategory>) => {
+      state.currentMuscleCategory = action.payload
+      state.muscles = Object.keys(state.allExercises[action.payload])
+    },
+    setCurrentMuscle: (state:TWorkoutsState, action: PayloadAction<string>) => {
+      state.currentMuscle = action.payload
+      // set exercises to display
+      state.exercises = state.allFlattenedExercises[state.currentMuscleCategory][state.currentMuscle]
+      state.exerciseList = Object.keys(state.exercises).map(id => state.exercises[id].name)
+    },
+    setExerciseSearchString: (state:TWorkoutsState, action: PayloadAction<string>) => {
+      state.exerciseSearchString = action.payload
+      state.exerciseList = state.exerciseList.filter(name => name.toLocaleLowerCase().includes(action.payload))
+      // filter exercises to display
+    }
   },
   extraReducers: {
     [getExercises.pending.toString()]: (state: TWorkoutsState) => {
@@ -75,6 +113,7 @@ const workoutsSlice = createSlice({
     [getExercises.fulfilled.toString()]: (state: TWorkoutsState, action: PayloadAction<TAllExercises>) => {
       state.allExercises = action.payload
       state.allFlattenedExercises = flattenAllExercises(action.payload)
+      state.muscleCategories = Object.keys(action.payload) as Array<TMuscleCategory>
       state.getAllExercisesLoading = false
     },
     [getExercises.rejected.toString()]: (state: TWorkoutsState) => {
@@ -83,5 +122,5 @@ const workoutsSlice = createSlice({
   }
 })
 
-export const {} = workoutsSlice.actions;
+export const {setExerciseSearchString, setCurrentMuscle, setCurrentMuscleCategory} = workoutsSlice.actions;
 export default workoutsSlice.reducer;

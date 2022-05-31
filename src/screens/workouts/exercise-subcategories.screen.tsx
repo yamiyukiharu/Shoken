@@ -1,14 +1,18 @@
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
-import { ExerciseSubcategoryScreenRouteProp } from '../../../types';
+import { ExerciseSubcategoryScreenRouteProp, WorkoutsNavProp } from '../../../types';
 import ShokenTile from '../../components/shoken-tile/shoken-tile.component';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { setCurrentMuscle } from '../../redux/workouts/workouts.slice';
 import { unCamelCase } from '../../utils/utils';
 
 
 const ExerciseSubcategoryScreen = () => {
-  const route = useRoute<ExerciseSubcategoryScreenRouteProp>()
+  const navigation = useNavigation<WorkoutsNavProp>()
+  const dispatch = useAppDispatch()
+  const {muscles} = useAppSelector(state => state.workouts)
 
   return (
     <View style={styles.container}>
@@ -16,7 +20,7 @@ const ExerciseSubcategoryScreen = () => {
       <FlatList
         numColumns={2}
         showsVerticalScrollIndicator={false}
-        data={[...route.params.muscles, 'All']}
+        data={[...muscles, 'All']}
         renderItem={({item}) => {
           const title = unCamelCase(item)
           return (
@@ -26,7 +30,8 @@ const ExerciseSubcategoryScreen = () => {
               addNew={false}
               accessibilityLabel={item}
               onPress={() => {
-                
+                dispatch(setCurrentMuscle(item))
+                navigation.navigate('ExerciseListScreen')
               }}
             />
           );

@@ -15,10 +15,10 @@ import {getGyms} from '../../redux/gyms/gyms.slice';
 import SearchBar from '../../components/search-bar/search-bar.component';
 import {useNavigation} from '@react-navigation/native';
 import {WorkoutsNavProp} from '../../../types';
-import {TFbGymEntry} from '../../utils/firebase/types';
+import {TFbGymEntry, TMuscleCategory} from '../../utils/firebase/types';
 import ShokenTile from '../../components/shoken-tile/shoken-tile.component';
 import {setCurrentGym} from '../../redux/gyms/gyms.slice';
-import {getExercises} from '../../redux/workouts/workouts.slice';
+import {getExercises, setCurrentMuscleCategory} from '../../redux/workouts/workouts.slice';
 
 const WorkoutsScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>();
@@ -98,14 +98,10 @@ const WorkoutsScreen = () => {
                 addNew={false}
                 title={category}
                 style={styles.exerciseTile}
-                onPress={() =>
-                  navigation.navigate(
-                    'ExerciseSubcategoryScreen',
-                    {
-                      muscles: Object.keys(allExercises[category])
-                    },
-                  )
-                }
+                onPress={() => {
+                  dispatch(setCurrentMuscleCategory(category as TMuscleCategory))
+                  navigation.navigate('ExerciseSubcategoryScreen');
+                }}
               />
             ))
           )}

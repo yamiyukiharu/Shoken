@@ -1,7 +1,24 @@
 import firestore from '@react-native-firebase/firestore';
-import { TGym, TAllEquipment, TUser, TFbGymEntry, TGyms, TFbUserEntry } from './types';
+import { TGym, TAllEquipment, TUser, TFbGymEntry, TGyms, TFbUserEntry, TAllFlattenedExercises, TAllExercises } from './types';
 import { emptyUser } from '../../redux/user/user.slice';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { flattenAllExercises, allExercises } from '../upload-data/exercises';
+
+// ================== EXERCISES =======================
+
+// TODO: replace with call to firebase
+export const getAllExercisesFirestore = async ():Promise<TAllFlattenedExercises> => {
+    const data = flattenAllExercises(allExercises)
+    return data
+}
+
+// TODO: replace with call to firebase
+export const getAllFlattenedExercises = async ():Promise<TAllExercises> => {
+    return allExercises
+} 
+
+// ==================== USER =========================
+
 
 export const getUserFirestore:(user:FirebaseAuthTypes.User) => Promise<TUser> = async (user) => {
     try {
@@ -30,6 +47,8 @@ export const setUserFirestore:(userEntry: TFbUserEntry) => boolean = (userEntry)
     firestore().collection('users').doc(userEntry.id).set(userEntry.user).catch(err => {console.log(err)})
     return true
 }
+
+// =============== GYM & EQUIPMENT ===================
 
 export const createNewGymFirestore = async (gymDetails: TGym):Promise<TFbGymEntry> => {
     try {

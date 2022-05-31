@@ -6,49 +6,57 @@ export type TExerciseVariation = {
   images?: Array<string>;
   notes?: string;
   video?: string;
-  variation?: TExerciseVariations;
+  variation?: Array<TExerciseVariation>;
 };
-
-export type TExerciseVariations = Array<TExerciseVariation>;
 
 export type TExercise = {
   name: string;
   equipment?: Array<string>;
-  variation: TExerciseVariations;
+  variation: Array<TExerciseVariation>;
 };
-
-export type TExercises = Array<TExercise>;
 
 export type TMuscleGroup = {
   [key: string]: {
     scientificName: string;
-    exercises: TExercises;
+    exercises: Array<TExercise>;
   };
 };
 
+type TExerciseSet = Array<{
+  reps: number;
+  weight: string;
+}>;
+
 type TExerciseHistory = {
-  date: string;
-  time: string;
-  sets: Array<{
-    weight: string;
-    reps: number;
-  }>;
+  [key in TMuscleCategory]: {
+    // muscle category
+    // muscle name
+    [key: string]: Array<{
+      id: string; // workout id
+      history: {
+        date: string;
+        time: string;
+        sets: TExerciseSet;
+      };
+    }>;
+  };
 };
 
-type TExerciseId = string;
-type TMuscleName = string;
+type TExerciseEntry = {
+  [key in TMuscleCategory]: {
+    // muscle category
+    // muscle name
+    [key: string]: Array<{
+      id: string; // workout id
+      sets: TExerciseSet;
+    }>;
+  };
+};
 
 type TWorkoutTemplate = {
   name: string;
   gym: string;
-  muscles: Array<TMuscleName>;
-  exercises: {
-    // muscle name
-    [key: TMuscleName]: {
-      id: TExerciseId; // encoded exercise id
-      sets: number;
-    };
-  };
+  exercises: TExerciseEntry;
 };
 
 type TWorkoutHistory = {
@@ -56,7 +64,7 @@ type TWorkoutHistory = {
   date: string;
   startTime: string;
   endTime: string;
-  exercises: Array<TExerciseId>;
+  exercises: TExerciseEntry;
 };
 
 export type TFlattenedExerciseVariations = Array<{
@@ -73,7 +81,9 @@ export type TFlattenedExercises = {
 };
 
 export type TAllFlattenedExercises = {
-  [key: TMuscleName]: TFlattenedExercises;
+  [key in TMuscleCategory]: {
+    [key: string]: TFlattenedExercises;
+  };
 };
 
 export type TMuscleCategory =
@@ -93,7 +103,7 @@ export type TAllExercises = {
 // =================== USER ====================
 
 type TUserExerciseHistory = {
-  [key: TExerciseId]: Array<TExerciseHistory>;
+  [key: string]: Array<TExerciseHistory>;
 };
 
 export type TUser = {

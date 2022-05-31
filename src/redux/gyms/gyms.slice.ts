@@ -38,20 +38,24 @@ export type TEditGymEquipment = {
   equipmentName: string;
 };
 
+const emptyEquipment: TAllEquipment = {
+  bars: [],
+  benches: [],
+  cardio: [],
+  machines: [],
+  racks: [],
+  dumbbells: [],
+  cableAttachment: [],
+  others: [],
+}
+
 const emptyGym: TGym = {
   name: '',
   address: '',
   createdBy: '',
   images: [],
   size: 0,
-  equipment: {
-    bars: [],
-    benches: [],
-    cardio: [],
-    machines: [],
-    racks: [],
-    dumbbells: [],
-  },
+  equipment: {...emptyEquipment},
 };
 
 const emptyGymEntry: TFbGymEntry = {
@@ -64,14 +68,7 @@ export const gymInitialState: TGymState = {
   savedGyms: {},
   currentGym: {...emptyGymEntry},
   gymInEdit: {...emptyGymEntry},
-  allEquipment: {
-    bars: [],
-    benches: [],
-    cardio: [],
-    machines: [],
-    racks: [],
-    dumbbells: [],
-  },
+  allEquipment: {...emptyEquipment},
   createNewGymLoading: false,
   getGymsLoading: false,
   getAllEquipmentLoading: false,

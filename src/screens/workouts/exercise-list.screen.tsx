@@ -1,17 +1,21 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import SearchBar from '../../components/search-bar/search-bar.component';
 import {FlatList} from 'react-native-gesture-handler';
-import { setExerciseSearchString } from '../../redux/workouts/workouts.slice';
+import { setCurrentViewingExercise, setExerciseSearchString } from '../../redux/workouts/workouts.slice';
 import SearchEntry from '../../components/search-entry/search-entry.component';
+import { ExerciseListScreenRouteProp, WorkoutsNavProp } from '../../../types';
 
 const ExerciseListScreen = () => {
 
   const dispatch = useAppDispatch();
-  const {exerciseList} = useAppSelector(state => state.workouts)
+  const {exerciseListDisplay} = useAppSelector(state => state.workouts)
   
+  const route = useRoute<ExerciseListScreenRouteProp>()
+  const navigation = useNavigation<WorkoutsNavProp>()
+
   const onSearchStringChange = (text: string) => {
     dispatch(setExerciseSearchString(text.toLocaleLowerCase()));
   };
@@ -24,10 +28,9 @@ const ExerciseListScreen = () => {
       />
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={exerciseList}
+        data={exerciseListDisplay}
         renderItem={({item}) => {
           const isAdded = false
-          const mode = 'view'
 
           const onPlusTapped = () => {
 
@@ -37,13 +40,20 @@ const ExerciseListScreen = () => {
 
           };
 
+          const onTapped = () => {
+            dispatch(setCurrentViewingExercise(item))
+            navigation.navigate('ExerciseDetailsScreen')
+          }
+
           return (
             <SearchEntry
               title={item}
-              isEditable={mode === 'edit'}
+              isEditable={route.params.mode === 'add'}
+              isClickable={true}
               isAdded={isAdded}
               onPlusTapped={onPlusTapped}
               onCheckTapped={onCheckTapped}
+              onTapped={onTapped}
             />
           );
         }}

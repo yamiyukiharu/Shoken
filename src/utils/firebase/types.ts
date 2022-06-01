@@ -32,7 +32,7 @@ type TExerciseHistory = {
     // muscle category
     // muscle name
     [key: string]: Array<{
-      id: string; // workout id
+      id: string; // exercise id
       history: {
         date: string;
         time: string;
@@ -47,7 +47,7 @@ type TExerciseEntry = {
     // muscle category
     // muscle name
     [key: string]: Array<{
-      id: string; // workout id
+      id: string; // exercise id
       sets: TExerciseSet;
     }>;
   };
@@ -67,13 +67,9 @@ type TWorkoutHistory = {
   exercises: TExerciseEntry;
 };
 
-export type TFlattenedExerciseVariations = Array<{
-  id: Array<number>;
-  name: string;
-  equipment?: Array<string>;
-}>;
 
 export type TFlattenedExercises = {
+  // exercise id
   [key: string]: {
     name: string;
     equipment?: Array<string>;
@@ -82,6 +78,7 @@ export type TFlattenedExercises = {
 
 export type TAllFlattenedExercises = {
   [key in TMuscleCategory]: {
+    // muscle name
     [key: string]: TFlattenedExercises;
   };
 };

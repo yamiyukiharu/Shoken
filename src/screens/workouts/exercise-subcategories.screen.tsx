@@ -12,7 +12,7 @@ import { unCamelCase } from '../../utils/utils';
 const ExerciseSubcategoryScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>()
   const dispatch = useAppDispatch()
-  const {muscles} = useAppSelector(state => state.workouts)
+  const {musclesDisplay} = useAppSelector(state => state.workouts)
 
   return (
     <View style={styles.container}>
@@ -20,7 +20,7 @@ const ExerciseSubcategoryScreen = () => {
       <FlatList
         numColumns={2}
         showsVerticalScrollIndicator={false}
-        data={[...muscles, 'All']}
+        data={[...musclesDisplay, 'All']}
         renderItem={({item}) => {
           const title = unCamelCase(item)
           return (
@@ -31,7 +31,7 @@ const ExerciseSubcategoryScreen = () => {
               accessibilityLabel={item}
               onPress={() => {
                 dispatch(setCurrentMuscle(item))
-                navigation.navigate('ExerciseListScreen')
+                navigation.navigate('ExerciseListScreen', {mode: 'view'})
               }}
             />
           );

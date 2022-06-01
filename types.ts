@@ -17,7 +17,10 @@ export type WorkoutStackParamList = {
       mode: 'add' | 'edit';
     }
     ExerciseSubcategoryScreen: undefined;
-    ExerciseListScreen: undefined;
+    ExerciseListScreen: {
+      mode: 'view' | 'add'
+    };
+    ExerciseDetailsScreen: undefined;
   };
 
 
@@ -28,3 +31,4 @@ export type GymEquipmentListScreenRouteProp = RouteProp<WorkoutStackParamList, '
 export type GymDetailsScreenScreenRouteProp = RouteProp<WorkoutStackParamList, 'GymDetailsScreen'>
 export type GymEditScreenRouteProp = RouteProp<WorkoutStackParamList, 'GymEditScreen'>
 export type ExerciseSubcategoryScreenRouteProp = RouteProp<WorkoutStackParamList, 'ExerciseSubcategoryScreen'>
+export type ExerciseListScreenRouteProp = RouteProp<WorkoutStackParamList, 'ExerciseListScreen'>

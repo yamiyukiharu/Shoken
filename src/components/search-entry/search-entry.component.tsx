@@ -1,7 +1,9 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+
 
 import {useAppDispatch} from '../../redux/hooks';
 import {
@@ -13,34 +15,42 @@ import type {TEquipmentCategories} from '../../utils/firebase/types';
 interface Props {
   title: string;
   isEditable: boolean;
+  isClickable:boolean;
   isAdded: boolean;
   onPlusTapped?: () => void;
   onCheckTapped?: () => void;
+  onTapped?: () => void;
 }
 
 const SearchEntry: React.FC<Props> = ({
   title,
   isEditable,
+  isClickable=false,
   isAdded,
   onCheckTapped,
   onPlusTapped,
+  onTapped,
 }) => {
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onTapped}>
       <Text style={{textTransform: 'capitalize'}}>{title}</Text>
 
-      {isEditable &&
-        (isAdded ? (
-          <TouchableOpacity onPress={onCheckTapped}>
-            <MaterialIcon style={{padding: 10}} name="check" size={20} />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={onPlusTapped}>
-            <MaterialIcon style={{padding: 10}} name="plus" size={20} />
-          </TouchableOpacity>
-        ))}
-    </View>
+      {
+        isEditable ?
+          (isAdded ? (
+            <TouchableOpacity onPress={onCheckTapped}>
+              <MaterialCommunityIcon style={{padding: 10}} name="check" size={20} />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={onPlusTapped}>
+              <MaterialCommunityIcon style={{padding: 10}} name="plus" size={20} />
+            </TouchableOpacity>
+          ))
+          : <MaterialIcon style={{padding: 10}} name="arrow-forward-ios" size={20} />
+      }
+
+    </TouchableOpacity>
   );
 };
 

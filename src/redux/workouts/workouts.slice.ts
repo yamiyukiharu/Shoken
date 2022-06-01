@@ -61,6 +61,7 @@ type TWorkoutsState = {
   musclesDisplay: Array<string>;
   exercisesReverseMap: {[key: string]: string};
   exerciseListDisplay: Array<string>;
+  equipmentListDisplay: Array<string>
 
 
   getAllExercisesLoading: boolean;
@@ -89,6 +90,7 @@ const workoutsInitialState: TWorkoutsState = {
   musclesDisplay: [],
   exercisesReverseMap: {},
   exerciseListDisplay: [],
+  equipmentListDisplay: [],
 };
 
 export const getExercises = createAsyncThunk(
@@ -166,8 +168,13 @@ const workoutsSlice = createSlice({
       const currentVariationEncoding = id.split('').map(char => Number(char))
       state.currentParentExerciseIndex = currentVariationEncoding.shift() || 0
       state.currentVariationEncoding = currentVariationEncoding
+
+      // set the equipment for the exercise
+      state.equipmentListDisplay = state.currentMuscleFlattenedExercises[id].equipment || []
     },
     updateVariation: (state: TWorkoutsState, action:PayloadAction<TVariationUpdate>) => {
+
+      // get the full encoding and exercise from user selected variations
       const {index, value} = action.payload
       let partialEncoding = state.currentVariationEncoding.slice(0,index)
       partialEncoding = [state.currentParentExerciseIndex, ...partialEncoding, value]
@@ -175,16 +182,21 @@ const workoutsSlice = createSlice({
       const fullEncodingstr = Object.keys(state.currentMuscleFlattenedExercises).find(id => {
         const parentExerciseIndex = Number(id[0])
         if (parentExerciseIndex === state.currentParentExerciseIndex) {
-          return id.slice(1).includes(partialEncodingStr.slice(1))
+          // slice(1) since we already checked it with parentExerciseIndex
+          // make sure the substring is at the begining
+          return id.slice(1).indexOf(partialEncodingStr.slice(1)) === 0
         } else {
           return false
         }
-      })
+      }) || ''
       state.currentExerciseName = state.currentMuscleFlattenedExercises[fullEncodingstr].name
       
       const currentVariationEncoding = fullEncodingstr.split('').map(char => Number(char))
       state.currentParentExerciseIndex = currentVariationEncoding.shift() || 0
       state.currentVariationEncoding = currentVariationEncoding
+
+      // set the equipment for the exercise
+      state.equipmentListDisplay = state.currentMuscleFlattenedExercises[fullEncodingstr].equipment || []
 
     }
   },

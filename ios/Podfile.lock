@@ -1025,7 +1025,7 @@ PODS:
     - glog
   - react-native-image-picker (4.8.3):
     - React-Core
-  - react-native-pager-view (5.4.15):
+  - react-native-pager-view (5.4.1):
     - React-Core
   - react-native-safe-area-context (4.2.5):
     - RCT-Folly
@@ -1408,7 +1408,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 218a2503198ff28a085f8e16622a8d8f507c8019
   React-logger: f79dd3cc0f9b44f5611c6c7862badd891a862cf8
   react-native-image-picker: e95b4785b685cfc06609bc50ed6fb55b59990c99
-  react-native-pager-view: b1914469643f40042e65d78cbf3d3dfebd6fb0d9
+  react-native-pager-view: 43f51f45f37ec9715f6c188e4af46ccdf79872e8
   react-native-safe-area-context: ebf8c413eb8b5f7c392a036a315eb7b46b96845f
   react-native-segmented-control: 83a05d42acd1234ad5e061d603c145973a61b5ee
   React-perflogger: 30ab8d6db10e175626069e742eead3ebe8f24fd5

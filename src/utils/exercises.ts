@@ -6,8 +6,8 @@ import {
   TFlattenedExercises,
   TFlattenedExerciseVariations,
   TMuscleCategory,
-  TMuscleGroup,
-} from '../firebase/types';
+  TMuscle,
+} from './firebase/types';
 
 // ================== SHOULDERS ==================
 
@@ -67,7 +67,7 @@ const rearLateralRaisePoseVariation: Array<TExerciseVariation> = [
   },
 ];
 
-const shoulders: TMuscleGroup = {
+const shoulders: TMuscle = {
   frontDelt: {
     scientificName: 'anterior deltoid',
     exercises: [
@@ -458,7 +458,7 @@ const benchPressLoadVariation: Array<TExerciseVariation> = [
   },
 ];
 
-const chest: TMuscleGroup = {
+const chest: TMuscle = {
   midChest: {
     scientificName: 'pectoralis major, sternal',
     exercises: [
@@ -630,7 +630,7 @@ const chest: TMuscleGroup = {
 
 // ================== BACK ==================
 
-const back: TMuscleGroup = {
+const back: TMuscle = {
   generalBack: {
     scientificName: 'back',
     exercises: [],
@@ -659,7 +659,7 @@ const back: TMuscleGroup = {
 
 // ================== ARMS ==================
 
-const arms: TMuscleGroup = {
+const arms: TMuscle = {
   triceps: {
     scientificName: 'triceps brachii',
     exercises: [
@@ -778,7 +778,7 @@ const arms: TMuscleGroup = {
 
 // ================== HIPS ==================
 
-const hips: TMuscleGroup = {
+const hips: TMuscle = {
   glutes: {
     scientificName: 'Gluteus Maximus',
     exercises: [],
@@ -796,7 +796,7 @@ const hips: TMuscleGroup = {
 
 // ================== LEGS ==================
 
-const legs: TMuscleGroup = {
+const legs: TMuscle = {
   quads: {
     scientificName: 'quadriceps',
     exercises: [],
@@ -817,7 +817,7 @@ const legs: TMuscleGroup = {
 
 // ================== WAIST ==================
 
-const waist: TMuscleGroup = {
+const waist: TMuscle = {
   abs: {
     scientificName: 'rectus abdominis',
     exercises: [],
@@ -834,7 +834,7 @@ const waist: TMuscleGroup = {
 
 // ================= OTHERS ===================
 
-const others: TMuscleGroup = {};
+const others: TMuscle = {};
 
 // ================= ALL ===================
 
@@ -849,7 +849,11 @@ export const allExercises: TAllExercises = {
   others: others,
 };
 
-
+type TFlattenedExerciseVariations = Array<{
+  id: Array<number>;
+  name: string;
+  equipment: Array<string>;
+}>
 
 const flattenExerciseVariations: (
   exercicseVariantArray: Array<TExerciseVariation>,
@@ -906,6 +910,7 @@ const flattenExercises: (
   const result: TFlattenedExercises = {};
 
   exercises.forEach((exercise, index) => {
+    exercise
     let variations = flattenExerciseVariations(exercise.variation);
 
     variations.forEach(variant => {

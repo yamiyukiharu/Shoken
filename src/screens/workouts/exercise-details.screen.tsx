@@ -1,142 +1,124 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
-import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
+import {Tabs} from 'react-native-collapsible-tab-view';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import {useNavigation} from '@react-navigation/native';
 import {WorkoutsNavProp} from '../../../types';
 import {updateVariation} from '../../redux/workouts/workouts.slice';
 import ShokenChip from '../../components/shoken-chip/shoken-chip.component';
-import { stringToColour } from '../../utils/utils';
+import {stringToColour} from '../../utils/utils';
 
 type TEquipmentChips = Array<{
   color: string;
   equipment: string;
-}>
+}>;
 
 const ExerciseDetailsScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>();
 
   const dispatch = useAppDispatch();
-  const {equipmentListDisplay, currentParentExercise, currentExerciseName, currentVariationEncoding} =
-    useAppSelector(state => state.workouts);
+  const {
+    equipmentListDisplay,
+    currentParentExercise,
+    currentExerciseName,
+    currentVariationEncoding,
+  } = useAppSelector(state => state.workouts);
 
-  const [equipmentToDisplay, setEquipmentToDisplay] = useState<TEquipmentChips>([])
+  const [equipmentToDisplay, setEquipmentToDisplay] = useState<TEquipmentChips>(
+    [],
+  );
 
   useEffect(() => {
     navigation.setOptions({headerTitle: currentExerciseName});
   }, [currentExerciseName]);
 
   useEffect(() => {
-    const data:TEquipmentChips = []
+    const data: TEquipmentChips = [];
     equipmentListDisplay.forEach(equipmentGroup => {
-      const equipment = equipmentGroup.split(', ')
-      const color = stringToColour(equipment[0])
-      equipment.forEach(name => data.push({
-        color: color,
-        equipment: name,
-      }))
-    })
-    setEquipmentToDisplay(data)
-  }, [equipmentListDisplay])
+      const equipment = equipmentGroup.split(', ');
+      const color = stringToColour(equipment[0]);
+      equipment.forEach(name =>
+        data.push({
+          color: color,
+          equipment: name,
+        }),
+      );
+    });
+    setEquipmentToDisplay(data);
+  }, [equipmentListDisplay]);
 
-  // boilerplate code for tab-view
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {key: 'Record', title: 'My Record'},
-    {key: 'Details', title: 'Details'},
-  ]);
-
-  const recordTab = () => <View style={styles.recordTabContainer}></View>;
-
-  const detailsTab = () => {
-    return (
-      <View style={styles.detailsTabContainer}>
-        <Text style={styles.sectionTitle}>Equipment Required</Text>
-        <View style={styles.chipContainer}>
-          {
-            equipmentToDisplay.map((data, idx) => <ShokenChip style={[styles.chips, {backgroundColor: data.color}]} key={idx} text={data.equipment}/>)
+  const header = () => (
+    <View style={styles.firstRow}>
+      <View style={styles.exerciseImage}></View>
+      <View style={styles.variationContainer}>
+        {currentVariationEncoding.map((variationIndex, index) => {
+          let variation = currentParentExercise.variation;
+          for (let i = 0; i < index; i++) {
+            variation = variation[currentVariationEncoding[i]].variation;
           }
-        </View>
-        <Text style={styles.sectionTitle}>Instructions</Text>
-        <Text style={styles.sectionTitle}>References</Text>
+          const variants = variation.map(variant => variant.variant);
+
+          return (
+            <View>
+              <Text>Variation {index + 1}:</Text>
+              <SegmentedControl
+                key={index}
+                style={styles.segmentedControl}
+                selectedIndex={variationIndex}
+                values={variants}
+                tintColor="#EF07F"
+                onChange={event => {
+                  dispatch(
+                    updateVariation({
+                      index: index,
+                      value: event.nativeEvent.selectedSegmentIndex,
+                    }),
+                  );
+                }}
+              />
+            </View>
+          );
+        })}
       </View>
-    );
-  };
-
-  const renderScene = SceneMap({
-    Record: recordTab,
-    Details: detailsTab,
-  });
-
-  const renderTabBar = props => (
-    <TabBar
-      {...props}
-      indicatorStyle={{backgroundColor: 'black'}}
-      style={{backgroundColor: 'white', marginRight: 100}}
-      labelStyle={{color: 'black', fontSize: 12}}
-    />
+    </View>
   );
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.firstRow}>
-        <View style={styles.exerciseImage}></View>
-
-        <View style={styles.variationContainer}>
-          {currentVariationEncoding.map((variationIndex, index) => {
-            let variation = currentParentExercise.variation;
-            for (let i = 0; i < index; i++) {
-              variation = variation[currentVariationEncoding[i]].variation;
-            }
-            const variants = variation.map(variant => variant.variant);
-
-            return (
-              <View>
-                <Text>Variation {index + 1}:</Text>
-                <SegmentedControl
-                  key={index}
-                  style={styles.segmentedControl}
-                  selectedIndex={variationIndex}
-                  values={variants}
-                  tintColor="#EF07F"
-                  onChange={event => {
-                    dispatch(
-                      updateVariation({
-                        index: index,
-                        value: event.nativeEvent.selectedSegmentIndex,
-                      }),
-                    );
-                  }}
+    <View style={{flexGrow: 1}}>
+      <Tabs.Container renderHeader={header}>
+        <Tabs.Tab name="Details">
+          <Tabs.ScrollView style={styles.detailsTabContainer}>
+            <Text style={styles.sectionTitle}>Equipment Required</Text>
+            <View style={styles.chipContainer}>
+              {equipmentToDisplay.map((data, idx) => (
+                <ShokenChip
+                  style={[styles.chips, {backgroundColor: data.color}]}
+                  key={idx}
+                  text={data.equipment}
                 />
-              </View>
-            );
-          })}
-        </View>
-      </View>
-      <View style={{height: '100%'}}>
-        <TabView
-          navigationState={{index, routes}}
-          renderScene={renderScene}
-          renderTabBar={renderTabBar}
-          onIndexChange={setIndex}
-          style={{backgroundColor: 'white'}}
-        />
-      </View>
+              ))}
+            </View>
+            <Text style={styles.sectionTitle}>Instructions</Text>
+            <Text style={styles.sectionTitle}>References</Text>
+          </Tabs.ScrollView>
+        </Tabs.Tab>
+        <Tabs.Tab name='My Record'>
 
-    </ScrollView>
+        </Tabs.Tab>
+      </Tabs.Container>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {flexDirection: 'column', flex: 1, flexGrow: 1},
+  container: {
+    flexDirection: 'column',
+    flex: 1,
+  },
   firstRow: {
     flexDirection: 'column',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    flex: 1,
-    flexGrow: 1,
     backgroundColor: 'white',
   },
   sectionTitle: {
@@ -171,7 +153,6 @@ const styles = StyleSheet.create({
   detailsTabContainer: {
     flexDirection: 'column',
     flexGrow: 1,
-    flex: 1,
     padding: 20,
   },
   chipContainer: {
@@ -181,7 +162,7 @@ const styles = StyleSheet.create({
   chips: {
     marginHorizontal: 5,
     marginVertical: 5,
-  }
+  },
 });
 
 export default ExerciseDetailsScreen;

@@ -86,6 +86,18 @@ const WorkoutsScreen = () => {
           )}
         </View>
 
+        <Text style={styles.sectionTitle}>Workouts</Text>
+        <View style={styles.exerciseContainer}>
+          <ShokenTile
+            accessibilityLabel='new workout'
+            addNew={true}
+            style={styles.workoutTile}
+            onPress={() => {
+              navigation.navigate('WorkoutNewScreen')
+            }}
+          />
+          
+        </View>
         <Text style={styles.sectionTitle}>Exercises</Text>
         <View style={styles.exerciseContainer}>
           {getAllExercisesLoading ? (
@@ -141,6 +153,10 @@ const styles = StyleSheet.create({
     height: 150,
     width: 150,
   },
+  workoutTile: {
+    height: 120,
+    width: 120,
+  }
 });
 
 export default WorkoutsScreen;

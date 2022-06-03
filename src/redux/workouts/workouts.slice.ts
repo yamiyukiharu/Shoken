@@ -37,12 +37,29 @@ const emptyAllFlattenedExercises: TAllFlattenedExercises = {
   waist: {},
 };
 
-type TVariationEncoding = Array<number>
+const emptyWorkoutMuscleSelection: TWorkoutMuscleSelection = {
+  arms: {},
+  back: {},
+  chest: {},
+  hips: {},
+  legs: {},
+  others: {},
+  shoulders: {},
+  waist: {},
+};
+
+type TVariationEncoding = Array<number>;
 
 type TVariationUpdate = {
   index: number;
   value: number;
-}
+};
+
+export type TWorkoutMuscleSelection = {
+  [key in TMuscleCategory]: {
+    [key: string]: boolean;
+  };
+};
 
 type TWorkoutsState = {
   allExercises: TAllExercises;
@@ -55,14 +72,15 @@ type TWorkoutsState = {
   currentMuscleFlattenedExercises: TFlattenedExercises;
   currentVariationEncoding: TVariationEncoding;
   currentExerciseName: string;
-  
-  // used for ease of displaying 
+
+  // used for ease of displaying
   muscleCategoriesDisplay: Array<TMuscleCategory>;
   musclesDisplay: Array<string>;
   exercisesReverseMap: {[key: string]: string};
   exerciseListDisplay: Array<string>;
-  equipmentListDisplay: Array<string>
+  equipmentListDisplay: Array<string>;
 
+  newWorkoutMuscleSelection: TWorkoutMuscleSelection;
 
   getAllExercisesLoading: boolean;
   exerciseSearchString: string;
@@ -84,6 +102,8 @@ const workoutsInitialState: TWorkoutsState = {
     variation: [],
   },
   currentVariationEncoding: [], // array of variation indexes
+
+  newWorkoutMuscleSelection: emptyWorkoutMuscleSelection,
 
   exerciseSearchString: '',
   muscleCategoriesDisplay: [],
@@ -119,7 +139,7 @@ const workoutsSlice = createSlice({
       state: TWorkoutsState,
       action: PayloadAction<string>,
     ) => {
-      // set the scope of viewing exercises of current muscle 
+      // set the scope of viewing exercises of current muscle
       state.currentMuscle = action.payload;
 
       state.currentMuscleFlattenedExercises =
@@ -128,9 +148,9 @@ const workoutsSlice = createSlice({
         ];
 
       // array of exercise names to display
-      state.exerciseListDisplay = Object.keys(state.currentMuscleFlattenedExercises).map(
-        id => state.currentMuscleFlattenedExercises[id].name,
-      );
+      state.exerciseListDisplay = Object.keys(
+        state.currentMuscleFlattenedExercises,
+      ).map(id => state.currentMuscleFlattenedExercises[id].name);
 
       // construct a reverse map of exercise name to id for easy searching
       const reverseMap: {[key: string]: string} = {};
@@ -156,48 +176,65 @@ const workoutsSlice = createSlice({
       state: TWorkoutsState,
       action: PayloadAction<string>,
     ) => {
-      state.currentExerciseName = action.payload
+      state.currentExerciseName = action.payload;
 
       // get the id for the exercise
-      const id = state.exercisesReverseMap[action.payload]
+      const id = state.exercisesReverseMap[action.payload];
 
       // get the parent exercise with id
-      const index0 = Number(id.charAt(0))
-      state.currentParentExercise = state.allExercises[state.currentMuscleCategory][state.currentMuscle].exercises[index0]
+      const index0 = Number(id.charAt(0));
+      state.currentParentExercise =
+        state.allExercises[state.currentMuscleCategory][
+          state.currentMuscle
+        ].exercises[index0];
       // get indexes to the current variation in the exercise variant data structure
-      const currentVariationEncoding = id.split('').map(char => Number(char))
-      state.currentParentExerciseIndex = currentVariationEncoding.shift() || 0
-      state.currentVariationEncoding = currentVariationEncoding
+      const currentVariationEncoding = id.split('').map(char => Number(char));
+      state.currentParentExerciseIndex = currentVariationEncoding.shift() || 0;
+      state.currentVariationEncoding = currentVariationEncoding;
 
       // set the equipment for the exercise
-      state.equipmentListDisplay = state.currentMuscleFlattenedExercises[id].equipment || []
+      state.equipmentListDisplay =
+        state.currentMuscleFlattenedExercises[id].equipment || [];
     },
-    updateVariation: (state: TWorkoutsState, action:PayloadAction<TVariationUpdate>) => {
-
+    updateVariation: (
+      state: TWorkoutsState,
+      action: PayloadAction<TVariationUpdate>,
+    ) => {
       // get the full encoding and exercise from user selected variations
-      const {index, value} = action.payload
-      let partialEncoding = state.currentVariationEncoding.slice(0,index)
-      partialEncoding = [state.currentParentExerciseIndex, ...partialEncoding, value]
-      const partialEncodingStr = partialEncoding.join('')
-      const fullEncodingstr = Object.keys(state.currentMuscleFlattenedExercises).find(id => {
-        const parentExerciseIndex = Number(id[0])
-        if (parentExerciseIndex === state.currentParentExerciseIndex) {
-          // slice(1) since we already checked it with parentExerciseIndex
-          // make sure the substring is at the begining
-          return id.slice(1).indexOf(partialEncodingStr.slice(1)) === 0
-        } else {
-          return false
-        }
-      }) || ''
-      state.currentExerciseName = state.currentMuscleFlattenedExercises[fullEncodingstr].name
-      
-      const currentVariationEncoding = fullEncodingstr.split('').map(char => Number(char))
-      state.currentParentExerciseIndex = currentVariationEncoding.shift() || 0
-      state.currentVariationEncoding = currentVariationEncoding
+      const {index, value} = action.payload;
+      let partialEncoding = state.currentVariationEncoding.slice(0, index);
+      partialEncoding = [
+        state.currentParentExerciseIndex,
+        ...partialEncoding,
+        value,
+      ];
+      const partialEncodingStr = partialEncoding.join('');
+      const fullEncodingstr =
+        Object.keys(state.currentMuscleFlattenedExercises).find(id => {
+          const parentExerciseIndex = Number(id[0]);
+          if (parentExerciseIndex === state.currentParentExerciseIndex) {
+            // slice(1) since we already checked it with parentExerciseIndex
+            // make sure the substring is at the begining
+            return id.slice(1).indexOf(partialEncodingStr.slice(1)) === 0;
+          } else {
+            return false;
+          }
+        }) || '';
+      state.currentExerciseName =
+        state.currentMuscleFlattenedExercises[fullEncodingstr].name;
+
+      const currentVariationEncoding = fullEncodingstr
+        .split('')
+        .map(char => Number(char));
+      state.currentParentExerciseIndex = currentVariationEncoding.shift() || 0;
+      state.currentVariationEncoding = currentVariationEncoding;
 
       // set the equipment for the exercise
-      state.equipmentListDisplay = state.currentMuscleFlattenedExercises[fullEncodingstr].equipment || []
-
+      state.equipmentListDisplay =
+        state.currentMuscleFlattenedExercises[fullEncodingstr].equipment || [];
+    },
+    setNewWorkoutMuscleSelection: (state:TWorkoutsState, action:PayloadAction<TWorkoutMuscleSelection>) => {
+      state.newWorkoutMuscleSelection = {...state.newWorkoutMuscleSelection, ...action.payload}
     }
   },
   extraReducers: {
@@ -208,11 +245,20 @@ const workoutsSlice = createSlice({
       state: TWorkoutsState,
       action: PayloadAction<TAllExercises>,
     ) => {
+
       state.allExercises = action.payload;
       state.allFlattenedExercises = flattenAllExercises(action.payload);
       state.muscleCategoriesDisplay = Object.keys(
         action.payload,
       ) as Array<TMuscleCategory>;
+
+      // initialize newWorkoutMuscleSelection
+      Object.keys(state.allExercises).forEach(name => {
+        const muscleCategory = name as TMuscleCategory;
+        Object.keys(state.allExercises[muscleCategory]).forEach(muscle => {
+          state.newWorkoutMuscleSelection[muscleCategory][muscle] = false;
+        });
+      });
 
       state.getAllExercisesLoading = false;
     },
@@ -228,5 +274,6 @@ export const {
   setCurrentMuscleCategory,
   setCurrentViewingExercise,
   updateVariation,
+  setNewWorkoutMuscleSelection,
 } = workoutsSlice.actions;
 export default workoutsSlice.reducer;

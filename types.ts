@@ -21,6 +21,7 @@ export type WorkoutStackParamList = {
       mode: 'view' | 'add'
     };
     ExerciseDetailsScreen: undefined;
+    WorkoutNewScreen: undefined;
   };
 
 

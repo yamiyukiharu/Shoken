@@ -904,6 +904,7 @@ const flattenExerciseVariations: (
   return result;
 };
 
+// TODO: fix equipment issue with arnold press (first layer equipment not showing up)
 const flattenExercises: (
   exercises: Array<TExercise>,
 ) => TFlattenedExercises = exercises => {

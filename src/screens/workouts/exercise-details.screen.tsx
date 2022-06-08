@@ -60,10 +60,9 @@ const ExerciseDetailsScreen = () => {
           const variants = variation.map(variant => variant.variant);
 
           return (
-            <View>
+            <View key={index}>
               <Text>Variation {index + 1}:</Text>
               <SegmentedControl
-                key={index}
                 style={styles.segmentedControl}
                 selectedIndex={variationIndex}
                 values={variants}

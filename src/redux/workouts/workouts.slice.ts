@@ -13,31 +13,11 @@ import {
   TMuscleCategory,
   TMuscle,
   TFlattenedExercises,
+  TWorkoutTemplate,
+  TExerciseEntry,
 } from '../../utils/firebase/types';
 
-const emptyAllExercises: TAllExercises = {
-  arms: {},
-  back: {},
-  chest: {},
-  hips: {},
-  legs: {},
-  others: {},
-  shoulders: {},
-  waist: {},
-};
-
-const emptyAllFlattenedExercises: TAllFlattenedExercises = {
-  arms: {},
-  back: {},
-  chest: {},
-  hips: {},
-  legs: {},
-  others: {},
-  shoulders: {},
-  waist: {},
-};
-
-const emptyWorkoutMuscleSelection: TWorkoutMuscleSelection = {
+const emptyAllExercises = {
   arms: {},
   back: {},
   chest: {},
@@ -61,6 +41,11 @@ export type TWorkoutMuscleSelection = {
   };
 };
 
+type TExerciseListDispay = {
+  // exercise name: isAdded
+  [key: string]: boolean;
+};
+
 type TWorkoutsState = {
   allExercises: TAllExercises;
   allFlattenedExercises: TAllFlattenedExercises;
@@ -77,10 +62,11 @@ type TWorkoutsState = {
   muscleCategoriesDisplay: Array<TMuscleCategory>;
   musclesDisplay: Array<string>;
   exercisesReverseMap: {[key: string]: string};
-  exerciseListDisplay: Array<string>;
+  exerciseListDisplay: TExerciseListDispay;
   equipmentListDisplay: Array<string>;
 
   newWorkoutMuscleSelection: TWorkoutMuscleSelection;
+  newWorkoutTemplate: TWorkoutTemplate;
 
   getAllExercisesLoading: boolean;
   exerciseSearchString: string;
@@ -88,7 +74,7 @@ type TWorkoutsState = {
 
 const workoutsInitialState: TWorkoutsState = {
   allExercises: {...emptyAllExercises},
-  allFlattenedExercises: {...emptyAllFlattenedExercises},
+  allFlattenedExercises: {...emptyAllExercises},
 
   getAllExercisesLoading: false,
 
@@ -103,13 +89,18 @@ const workoutsInitialState: TWorkoutsState = {
   },
   currentVariationEncoding: [], // array of variation indexes
 
-  newWorkoutMuscleSelection: emptyWorkoutMuscleSelection,
+  newWorkoutMuscleSelection: {...emptyAllExercises},
+  newWorkoutTemplate: {
+    name: '',
+    gymId: '',
+    exercises: {...emptyAllExercises},
+  },
 
   exerciseSearchString: '',
   muscleCategoriesDisplay: [],
   musclesDisplay: [],
   exercisesReverseMap: {},
-  exerciseListDisplay: [],
+  exerciseListDisplay: {},
   equipmentListDisplay: [],
 };
 
@@ -147,11 +138,6 @@ const workoutsSlice = createSlice({
           state.currentMuscle
         ];
 
-      // array of exercise names to display
-      state.exerciseListDisplay = Object.keys(
-        state.currentMuscleFlattenedExercises,
-      ).map(id => state.currentMuscleFlattenedExercises[id].name);
-
       // construct a reverse map of exercise name to id for easy searching
       const reverseMap: {[key: string]: string} = {};
 
@@ -161,16 +147,37 @@ const workoutsSlice = createSlice({
       });
 
       state.exercisesReverseMap = reverseMap;
+
+      // array of exercise names to display
+      state.exerciseListDisplay = {}
+      Object.keys(state.currentMuscleFlattenedExercises).forEach(id => {
+        const name = state.currentMuscleFlattenedExercises[id].name;
+        
+        // check if exists in newWorkoutTemplate
+        let exercise = undefined
+        try {
+          exercise = state.newWorkoutTemplate.exercises[state.currentMuscleCategory][state.currentMuscle][id]
+          state.exerciseListDisplay[name] = exercise !== undefined;
+        } catch {
+          state.exerciseListDisplay[name] = false;
+        }
+      });
     },
     setExerciseSearchString: (
       state: TWorkoutsState,
       action: PayloadAction<string>,
     ) => {
       state.exerciseSearchString = action.payload;
-      state.exerciseListDisplay = state.exerciseListDisplay.filter(name =>
-        name.toLocaleLowerCase().includes(action.payload),
-      );
+
       // filter exercises to display
+      const filteredExercises: TExerciseListDispay = {};
+      Object.keys(state.exerciseListDisplay).forEach(
+        name =>
+          (filteredExercises[name] = name
+            .toLocaleLowerCase()
+            .includes(action.payload)),
+      );
+      state.exerciseListDisplay = filteredExercises;
     },
     setCurrentViewingExercise: (
       state: TWorkoutsState,
@@ -233,9 +240,74 @@ const workoutsSlice = createSlice({
       state.equipmentListDisplay =
         state.currentMuscleFlattenedExercises[fullEncodingstr].equipment || [];
     },
-    setNewWorkoutMuscleSelection: (state:TWorkoutsState, action:PayloadAction<TWorkoutMuscleSelection>) => {
-      state.newWorkoutMuscleSelection = {...state.newWorkoutMuscleSelection, ...action.payload}
-    }
+    setNewWorkoutMuscleSelection: (
+      state: TWorkoutsState,
+      action: PayloadAction<TWorkoutMuscleSelection>,
+    ) => {
+      state.newWorkoutMuscleSelection = {
+        ...state.newWorkoutMuscleSelection,
+        ...action.payload,
+      };
+    },
+    setNewWorkoutGymId: (
+      state: TWorkoutsState,
+      action: PayloadAction<string>,
+    ) => {
+      state.newWorkoutTemplate.gymId = action.payload;
+    },
+    setNewWorkoutName: (
+      state: TWorkoutsState,
+      action: PayloadAction<string>,
+    ) => {
+      state.newWorkoutTemplate.name = action.payload;
+    },
+    addExerciseToWorkoutTemplate: (
+      state: TWorkoutsState,
+      action: PayloadAction<string>,
+    ) => {
+      // get the id for the exercise
+      const id = state.exercisesReverseMap[action.payload];
+      const exerciseEntry =
+        state.newWorkoutTemplate.exercises[state.currentMuscleCategory][
+          state.currentMuscle
+        ];
+      // no exercises added yet
+      if (exerciseEntry === undefined) {
+        state.newWorkoutTemplate.exercises[state.currentMuscleCategory][
+          state.currentMuscle
+        ] = {};
+      }
+      state.newWorkoutTemplate.exercises[state.currentMuscleCategory][
+        state.currentMuscle
+      ][id] = {
+        notes: '',
+        sets: [],
+      };
+      state.exerciseListDisplay[action.payload] = true
+    },
+    removeExerciseFromWorkoutTemplate: (
+      state: TWorkoutsState,
+      action: PayloadAction<string>,
+    ) => {
+      // get the id for the exercise
+      const id = state.exercisesReverseMap[action.payload];
+
+      delete state.newWorkoutTemplate.exercises[state.currentMuscleCategory][
+        state.currentMuscle
+      ][id];
+
+      state.exerciseListDisplay[action.payload] = false
+    },
+    resetNewWorkout: (state: TWorkoutsState) => {
+      state.newWorkoutTemplate = workoutsInitialState.newWorkoutTemplate;
+      // initialize newWorkoutMuscleSelection
+      Object.keys(state.allExercises).forEach(name => {
+        const muscleCategory = name as TMuscleCategory;
+        Object.keys(state.allExercises[muscleCategory]).forEach(muscle => {
+          state.newWorkoutMuscleSelection[muscleCategory][muscle] = false;
+        });
+      });
+    },
   },
   extraReducers: {
     [getExercises.pending.toString()]: (state: TWorkoutsState) => {
@@ -245,7 +317,6 @@ const workoutsSlice = createSlice({
       state: TWorkoutsState,
       action: PayloadAction<TAllExercises>,
     ) => {
-
       state.allExercises = action.payload;
       state.allFlattenedExercises = flattenAllExercises(action.payload);
       state.muscleCategoriesDisplay = Object.keys(
@@ -275,5 +346,10 @@ export const {
   setCurrentViewingExercise,
   updateVariation,
   setNewWorkoutMuscleSelection,
+  setNewWorkoutGymId,
+  resetNewWorkout,
+  setNewWorkoutName,
+  addExerciseToWorkoutTemplate,
+  removeExerciseFromWorkoutTemplate,
 } = workoutsSlice.actions;
 export default workoutsSlice.reducer;

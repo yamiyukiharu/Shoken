@@ -18,7 +18,8 @@ import {WorkoutsNavProp} from '../../../types';
 import {TFbGymEntry, TMuscleCategory} from '../../utils/firebase/types';
 import ShokenTile from '../../components/shoken-tile/shoken-tile.component';
 import {setCurrentGym} from '../../redux/gyms/gyms.slice';
-import {getExercises, setCurrentMuscleCategory} from '../../redux/workouts/workouts.slice';
+import {getExercises, resetNewWorkout, setCurrentMuscleCategory} from '../../redux/workouts/workouts.slice';
+import ExerciseCategories from '../../components/exercise-categories/exercise-categories.component';
 
 const WorkoutsScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>();
@@ -66,7 +67,7 @@ const WorkoutsScreen = () => {
                     addNew={true}
                     style={styles.gymTile}
                     onPress={() => {
-                      navigation.navigate('GymAddScreen');
+                      navigation.navigate('GymAddScreen', {mode: 'add'});
                     }}
                   />
                 ) : (
@@ -93,31 +94,14 @@ const WorkoutsScreen = () => {
             addNew={true}
             style={styles.workoutTile}
             onPress={() => {
-              navigation.navigate('WorkoutNewScreen')
+              dispatch(resetNewWorkout())
+              navigation.navigate('WorkoutNewScreen', {mode: 'new'})
             }}
           />
           
         </View>
         <Text style={styles.sectionTitle}>Exercises</Text>
-        <View style={styles.exerciseContainer}>
-          {getAllExercisesLoading ? (
-            <ActivityIndicator size="large" />
-          ) : (
-            Object.keys(allExercises).map(category => (
-              <ShokenTile
-                key={category}
-                accessibilityLabel={category}
-                addNew={false}
-                title={category}
-                style={styles.exerciseTile}
-                onPress={() => {
-                  dispatch(setCurrentMuscleCategory(category as TMuscleCategory))
-                  navigation.navigate('ExerciseSubcategoryScreen');
-                }}
-              />
-            ))
-          )}
-        </View>
+        <ExerciseCategories/>
       </ScrollView>
     </View>
   );
@@ -143,20 +127,16 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
   },
+  workoutTile: {
+    height: 120,
+    width: 120,
+  },
   exerciseContainer: {
     flexWrap: 'wrap',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  exerciseTile: {
-    height: 150,
-    width: 150,
-  },
-  workoutTile: {
-    height: 120,
-    width: 120,
-  }
 });
 
 export default WorkoutsScreen;

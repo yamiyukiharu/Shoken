@@ -31,31 +31,35 @@ type TExerciseHistory = {
   [key in TMuscleCategory]: {
     // muscle category
     // muscle name
-    [key: string]: Array<{
-      id: string; // exercise id
-      history: {
+    [key: string]: {
+      // exercise id
+      [key: string]: Array<{
         date: string;
         time: string;
+        notes: string;
         sets: TExerciseSet;
-      };
-    }>;
+      }>;
+    };
   };
 };
 
-type TExerciseEntry = {
+export type TExerciseEntry = {
   [key in TMuscleCategory]: {
     // muscle category
     // muscle name
-    [key: string]: Array<{
-      id: string; // exercise id
-      sets: TExerciseSet;
-    }>;
+    [key: string]: {
+      // exercise id
+      [key: string]: { // sets
+        sets: TExerciseSet;
+        notes: string;
+      };
+    };
   };
 };
 
-type TWorkoutTemplate = {
+export type TWorkoutTemplate = {
   name: string;
-  gym: string;
+  gymId: string;
   exercises: TExerciseEntry;
 };
 
@@ -66,7 +70,6 @@ type TWorkoutHistory = {
   endTime: string;
   exercises: TExerciseEntry;
 };
-
 
 export type TFlattenedExercises = {
   // exercise id
@@ -99,10 +102,6 @@ export type TAllExercises = {
 
 // =================== USER ====================
 
-type TUserExerciseHistory = {
-  [key: string]: Array<TExerciseHistory>;
-};
-
 export type TUser = {
   name: string;
   height: number;
@@ -112,7 +111,7 @@ export type TUser = {
   savedGyms: Array<string>;
   savedWorkouts: Array<TWorkoutTemplate>;
   workoutHistory: Array<TWorkoutHistory>;
-  exerciseHistory: TUserExerciseHistory;
+  exerciseHistory: TExerciseHistory;
 
   email: string;
   providerId: string;

@@ -4,7 +4,6 @@ import {
   Text,
   View,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
 } from 'react-native';
 import {SliderBox} from 'react-native-image-slider-box';
@@ -15,7 +14,12 @@ import { setCurrentGym } from '../../redux/gyms/gyms.slice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { TFbGymEntry } from '../../utils/firebase/types';
 
-const GymSearchEntry: React.FC<{gymEntry: TFbGymEntry}> = ({gymEntry}) => {
+type Props = {
+  gymEntry: TFbGymEntry;
+  onPress?: () => void
+}
+
+const GymSearchEntry: React.FC<Props> = ({gymEntry, onPress}) => {
   const [width, setWidth] = useState(0);
   const navigation = useNavigation<WorkoutsNavProp>()
   const dispatch = useAppDispatch()
@@ -28,7 +32,7 @@ const GymSearchEntry: React.FC<{gymEntry: TFbGymEntry}> = ({gymEntry}) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onEntryTapped} accessible={true} accessibilityLabel={gym.name + ' entry'}>
+      <TouchableOpacity onPress={onPress || onEntryTapped} accessible={true} accessibilityLabel={gym.name + ' entry'}>
         <View style={styles.topRow}>
           <Text style={styles.title}>{gym.name}</Text>
           <MaterialIcon name={'arrow-forward-ios'} size={30} />

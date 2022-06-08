@@ -1,7 +1,7 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
-import {GymDetailsScreenScreenRouteProp, WorkoutsNavProp} from '../../../types';
+import {GymDetailsScreenRouteProp, WorkoutsNavProp} from '../../../types';
 import {SliderBox} from 'react-native-image-slider-box';
 import {useAppSelector, useAppDispatch} from '../../redux/hooks';
 import {setGymInEdit} from '../../redux/gyms/gyms.slice';
@@ -22,7 +22,7 @@ const GymDetailsScreen = () => {
   const dispatch = useAppDispatch();
   const {currentGym} = useAppSelector(state => state.gym);
   const {user} = useAppSelector(state => state.user);
-  const route = useRoute<GymDetailsScreenScreenRouteProp>();
+  const route = useRoute<GymDetailsScreenRouteProp>();
   const gym = currentGym.gym;
   const categories = Object.keys(gym.equipment) as Array<TEquipmentCategories>;
   const navigation = useNavigation<WorkoutsNavProp>();

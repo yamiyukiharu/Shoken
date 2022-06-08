@@ -1,4 +1,5 @@
-import React from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -6,35 +7,68 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  Button,
 } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import {WorkoutNewScreenRouteProp, WorkoutsNavProp} from '../../../types';
 import MuscleSelector from '../../components/muscle-selector/muscle-selector.component';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
-import { setNewWorkoutMuscleSelection } from '../../redux/workouts/workouts.slice';
+import {setNewWorkoutMuscleSelection, setNewWorkoutName} from '../../redux/workouts/workouts.slice';
 import {TMuscleCategory} from '../../utils/firebase/types';
 
 const WorkoutNewScreen = () => {
-  const dispatch = useAppDispatch()
-  const {newWorkoutMuscleSelection} = useAppSelector(state => state.workouts);
+  const dispatch = useAppDispatch();
+  const navigation = useNavigation<WorkoutsNavProp>();
+  const route = useRoute<WorkoutNewScreenRouteProp>()
+  const {newWorkoutMuscleSelection, newWorkoutTemplate} = useAppSelector(
+    state => state.workouts,
+  );
+  const {gyms} = useAppSelector(state => state.gym);
+  const [selectedGym, setSelectedGym] = useState('');
+
+  useEffect(() => {
+    gyms[newWorkoutTemplate.gymId] && setSelectedGym(gyms[newWorkoutTemplate.gymId].name);
+  }, [newWorkoutTemplate.gymId]);
+
+  // top right button to create new gym
+  useEffect(() => {
+    if (route.params.mode === 'new') {
+      navigation.setOptions({
+        headerRight: () => (
+          <Button
+            title="Next"
+            onPress={() => {
+              navigation.navigate('WorkoutAddExerciseScreen');
+            }}
+          />
+        ),
+      });
+    }
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
-      <TextInput style={styles.workoutName} placeholder="Untitled Workout" />
+      <TextInput style={styles.workoutName} placeholder="Untitled Workout" onChangeText={(text) => dispatch(setNewWorkoutName(text))}/>
       <View style={styles.gymSelectorContainer}>
         <Text style={styles.sectionLabel}>Gym</Text>
-        <TouchableOpacity style={styles.gymSelector}>
-          <Text style={{marginRight: 10}}>Bishan</Text>
+        <TouchableOpacity
+          style={styles.gymSelector}
+          onPress={() => navigation.navigate('GymAddScreen', {mode: 'select'})}>
+          <Text style={{marginRight: 10}}>{selectedGym}</Text>
           <MaterialIcon name={'arrow-forward-ios'} size={18} />
         </TouchableOpacity>
       </View>
       <Text style={styles.sectionLabel}>Muscle Group</Text>
-      {Object.keys(newWorkoutMuscleSelection).map(name => {
+      {Object.keys(newWorkoutMuscleSelection).map((name, idx) => {
         const muscleCategory = name as TMuscleCategory;
         return (
           <MuscleSelector
+            key={idx}
             parentTitle={muscleCategory}
             childTitles={newWorkoutMuscleSelection[muscleCategory]}
-            onPress={(musclesSelected) => dispatch(setNewWorkoutMuscleSelection(musclesSelected))}
+            onPress={musclesSelected =>
+              dispatch(setNewWorkoutMuscleSelection(musclesSelected))
+            }
           />
         );
       })}

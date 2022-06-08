@@ -11,6 +11,7 @@ import { unCamelCase } from '../../utils/utils';
 
 const ExerciseSubcategoryScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>()
+  const route = useRoute<ExerciseSubcategoryScreenRouteProp>()
   const dispatch = useAppDispatch()
   const {musclesDisplay} = useAppSelector(state => state.workouts)
 
@@ -31,7 +32,7 @@ const ExerciseSubcategoryScreen = () => {
               accessibilityLabel={item}
               onPress={() => {
                 dispatch(setCurrentMuscle(item))
-                navigation.navigate('ExerciseListScreen', {mode: 'view'})
+                navigation.navigate('ExerciseListScreen', {mode: route.params.mode})
               }}
             />
           );

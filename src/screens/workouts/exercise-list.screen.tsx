@@ -4,14 +4,14 @@ import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import SearchBar from '../../components/search-bar/search-bar.component';
 import {FlatList} from 'react-native-gesture-handler';
-import { setCurrentViewingExercise, setExerciseSearchString } from '../../redux/workouts/workouts.slice';
+import { addExerciseToWorkoutTemplate, removeExerciseFromWorkoutTemplate, setCurrentViewingExercise, setExerciseSearchString } from '../../redux/workouts/workouts.slice';
 import SearchEntry from '../../components/search-entry/search-entry.component';
 import { ExerciseListScreenRouteProp, WorkoutsNavProp } from '../../../types';
 
 const ExerciseListScreen = () => {
 
   const dispatch = useAppDispatch();
-  const {exerciseListDisplay} = useAppSelector(state => state.workouts)
+  const {exerciseListDisplay, newWorkoutTemplate} = useAppSelector(state => state.workouts)
   
   const route = useRoute<ExerciseListScreenRouteProp>()
   const navigation = useNavigation<WorkoutsNavProp>()
@@ -28,16 +28,18 @@ const ExerciseListScreen = () => {
       />
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={exerciseListDisplay}
+        data={Object.keys(exerciseListDisplay)}
         renderItem={({item}) => {
-          const isAdded = false
+          const isAdded = exerciseListDisplay[item]
 
           const onPlusTapped = () => {
-
+            // create action to add exercise to currentWorkoutTemplate with name
+            dispatch(addExerciseToWorkoutTemplate(item))
           };
 
           const onCheckTapped = () => {
-
+            // create action to remove exercise from currentWorkoutTemplate with name
+            dispatch(removeExerciseFromWorkoutTemplate(item))
           };
 
           const onTapped = () => {

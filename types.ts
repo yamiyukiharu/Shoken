@@ -4,7 +4,9 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 export type WorkoutStackParamList = {
     WorkoutsScreen: undefined;
     WorkoutEditScreen: undefined;
-    GymAddScreen: undefined;
+    GymAddScreen: {
+      mode: 'add' | 'select';
+    };
     GymEditScreen: {
       mode: 'new' | 'edit';
     };
@@ -16,20 +18,28 @@ export type WorkoutStackParamList = {
     GymDetailsScreen: {
       mode: 'add' | 'edit';
     }
-    ExerciseSubcategoryScreen: undefined;
+    ExerciseSubcategoryScreen: {
+      mode: 'view' | 'add'
+    };
     ExerciseListScreen: {
       mode: 'view' | 'add'
     };
     ExerciseDetailsScreen: undefined;
-    WorkoutNewScreen: undefined;
+    WorkoutNewScreen: {
+      mode: 'new' | 'edit';
+    };
+    WorkoutAddExerciseScreen: undefined;
+    ExerciseCategoriesScreen: undefined;
   };
 
 
 
 export type WorkoutsNavProp = NativeStackNavigationProp<WorkoutStackParamList>
 
+export type GymAddScreenRouteProp = RouteProp<WorkoutStackParamList, 'GymAddScreen'>
 export type GymEquipmentListScreenRouteProp = RouteProp<WorkoutStackParamList, 'GymEquipmentListScreen'>
-export type GymDetailsScreenScreenRouteProp = RouteProp<WorkoutStackParamList, 'GymDetailsScreen'>
+export type GymDetailsScreenRouteProp = RouteProp<WorkoutStackParamList, 'GymDetailsScreen'>
 export type GymEditScreenRouteProp = RouteProp<WorkoutStackParamList, 'GymEditScreen'>
 export type ExerciseSubcategoryScreenRouteProp = RouteProp<WorkoutStackParamList, 'ExerciseSubcategoryScreen'>
 export type ExerciseListScreenRouteProp = RouteProp<WorkoutStackParamList, 'ExerciseListScreen'>
+export type WorkoutNewScreenRouteProp = RouteProp<WorkoutStackParamList, 'WorkoutNewScreen'>

@@ -1,6 +1,6 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {WorkoutStackParamList} from '../../../types';
+import {ExerciseStackParamList, WorkoutStackParamList} from '../../../types';
 
 import WorkoutsScreen from '../workouts/workouts.screen';
 import WorkoutEditScreen from '../workout-edit.screen';
@@ -17,6 +17,49 @@ import WorkoutAddExerciseScreen from '../workouts/workout-add-exercise.screen';
 import ExerciseCategoriesScreen from '../workouts/exercise-categories.screen';
 
 const WorkoutsStack = createNativeStackNavigator<WorkoutStackParamList>();
+const ExerciseStack = createNativeStackNavigator<ExerciseStackParamList>();
+
+const ExerciseStackScreen = () => {
+  return (
+    <ExerciseStack.Navigator>
+      <WorkoutsStack.Group
+        screenOptions={{
+          // headerShown: false,
+        }}>
+        <ExerciseStack.Screen
+          name="ExerciseCategoriesScreen"
+          component={ExerciseCategoriesScreen}
+          options={() => ({
+            presentation: 'modal',
+            headerTitle: 'Muscle Categories',
+          })}
+        />
+        <ExerciseStack.Screen
+          name="ExerciseSubcategoryScreen"
+          component={ExerciseSubcategoryScreen}
+          options={() => ({
+            presentation: 'card',
+            headerTitle: '',
+          })}
+        />
+        <ExerciseStack.Screen
+          name="ExerciseListScreen"
+          component={ExerciseListScreen}
+          options={() => ({
+            presentation: 'card',
+          })}
+        />
+        <ExerciseStack.Screen
+          name="ExerciseDetailsScreen"
+          component={ExerciseDetailsScreen}
+          options={() => ({
+            presentation: 'card',
+          })}
+        />
+      </WorkoutsStack.Group>
+    </ExerciseStack.Navigator>
+  );
+};
 
 export const WorkoutsStackScreen = () => {
   return (
@@ -68,27 +111,6 @@ export const WorkoutsStackScreen = () => {
         })}
       />
       <WorkoutsStack.Screen
-        name="ExerciseSubcategoryScreen"
-        component={ExerciseSubcategoryScreen}
-        options={() => ({
-          headerTitle: 'Exercises',
-        })}
-      />
-      <WorkoutsStack.Screen
-        name="ExerciseListScreen"
-        component={ExerciseListScreen}
-        options={() => ({
-          headerTitle: 'Exercises',
-        })}
-      />
-      <WorkoutsStack.Screen
-        name="ExerciseDetailsScreen"
-        component={ExerciseDetailsScreen}
-        options={() => ({
-          headerTitle: 'Exercise',
-        })}
-      />
-      <WorkoutsStack.Screen
         name="WorkoutNewScreen"
         component={WorkoutNewScreen}
         options={() => ({
@@ -103,13 +125,14 @@ export const WorkoutsStackScreen = () => {
         })}
       />
       <WorkoutsStack.Screen
-        name="ExerciseCategoriesScreen"
-        component={ExerciseCategoriesScreen}
+        name="ExerciseScreenStack"
+        component={ExerciseStackScreen}
         options={() => ({
-          headerTitle: 'Add Exercises',
+          headerShown: false,
+          presentation: 'modal',
+          
         })}
       />
-      
     </WorkoutsStack.Navigator>
   );
 };

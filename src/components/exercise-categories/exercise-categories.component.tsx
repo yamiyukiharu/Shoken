@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native"
 import React from "react"
 import { View, StyleSheet, ActivityIndicator } from "react-native"
-import { WorkoutsNavProp } from "../../../types"
+import { ExercisesNavProp, WorkoutsNavProp } from "../../../types"
 import { useAppDispatch, useAppSelector } from "../../redux/hooks"
 import { setCurrentMuscleCategory } from "../../redux/workouts/workouts.slice"
 import { TMuscleCategory } from "../../utils/firebase/types"
@@ -30,7 +30,10 @@ const ExerciseCategories:React.FC<Props> = ({mode='view'}) => {
                 style={styles.exerciseTile}
                 onPress={() => {
                   dispatch(setCurrentMuscleCategory(category as TMuscleCategory))
-                  navigation.navigate('ExerciseSubcategoryScreen', {mode: mode});
+                  navigation.navigate('ExerciseScreenStack', {
+                    screen: 'ExerciseSubcategoryScreen',
+                    params: {mode: mode}
+                  });
                 }}
               />
             ))

@@ -6,7 +6,7 @@ import SearchBar from '../../components/search-bar/search-bar.component';
 import {FlatList} from 'react-native-gesture-handler';
 import { addExerciseToWorkoutTemplate, removeExerciseFromWorkoutTemplate, setCurrentViewingExercise, setExerciseSearchString } from '../../redux/workouts/workouts.slice';
 import SearchEntry from '../../components/search-entry/search-entry.component';
-import { ExerciseListScreenRouteProp, WorkoutsNavProp } from '../../../types';
+import { ExerciseListScreenRouteProp, ExercisesNavProp, WorkoutsNavProp } from '../../../types';
 
 const ExerciseListScreen = () => {
 
@@ -14,7 +14,7 @@ const ExerciseListScreen = () => {
   const {exerciseListDisplay, newWorkoutTemplate} = useAppSelector(state => state.workouts)
   
   const route = useRoute<ExerciseListScreenRouteProp>()
-  const navigation = useNavigation<WorkoutsNavProp>()
+  const navigation = useNavigation<ExercisesNavProp>()
 
   const onSearchStringChange = (text: string) => {
     dispatch(setExerciseSearchString(text.toLocaleLowerCase()));

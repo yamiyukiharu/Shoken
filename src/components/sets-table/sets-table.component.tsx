@@ -47,7 +47,6 @@ const SetsTable: React.FC<Props> = ({
         muscleCategory,
         muscleName,
         exerciseId,
-        index: -1,
       }),
     );
   };
@@ -182,6 +181,7 @@ const styles = StyleSheet.create({
     margin: 10,
     flexDirection: 'column',
     flex: 1,
+    
   },
   header: {
     fontWeight: 'bold',

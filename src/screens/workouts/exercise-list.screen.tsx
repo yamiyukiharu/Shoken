@@ -4,7 +4,7 @@ import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import SearchBar from '../../components/search-bar/search-bar.component';
 import {FlatList} from 'react-native-gesture-handler';
-import { addExerciseToWorkoutTemplate, removeExerciseFromWorkoutTemplate, setCurrentViewingExercise, setExerciseSearchString } from '../../redux/workouts/workouts.slice';
+import { addExerciseToWorkoutTemplate_list, removeExerciseFromWorkoutTemplate_list, setCurrentViewingExercise, setExerciseSearchString } from '../../redux/workouts/workouts.slice';
 import SearchEntry from '../../components/search-entry/search-entry.component';
 import { ExerciseListScreenRouteProp, ExercisesNavProp, WorkoutsNavProp } from '../../../types';
 
@@ -34,12 +34,12 @@ const ExerciseListScreen = () => {
 
           const onPlusTapped = () => {
             // create action to add exercise to currentWorkoutTemplate with name
-            dispatch(addExerciseToWorkoutTemplate(item))
+            dispatch(addExerciseToWorkoutTemplate_list(item))
           };
 
           const onCheckTapped = () => {
             // create action to remove exercise from currentWorkoutTemplate with name
-            dispatch(removeExerciseFromWorkoutTemplate(item))
+            dispatch(removeExerciseFromWorkoutTemplate_list(item))
           };
 
           const onTapped = () => {

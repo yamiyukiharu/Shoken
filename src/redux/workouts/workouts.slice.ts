@@ -17,6 +17,7 @@ import {
   TExerciseEntry,
   TExerciseIndexer,
   TExerciseSetIndexer,
+  TExerciseSetEditProps,
 } from '../../utils/firebase/types';
 
 const emptyAllExercises = {
@@ -263,7 +264,7 @@ const workoutsSlice = createSlice({
     ) => {
       state.newWorkoutTemplate.name = action.payload;
     },
-    addExerciseToWorkoutTemplate: (
+    addExerciseToWorkoutTemplate_list: (
       state: TWorkoutsState,
       action: PayloadAction<string>,
     ) => {
@@ -287,7 +288,7 @@ const workoutsSlice = createSlice({
       };
       state.exerciseListDisplay[action.payload] = true
     },    
-    removeExerciseFromWorkoutTemplate: (
+    removeExerciseFromWorkoutTemplate_list: (
       state: TWorkoutsState,
       action: PayloadAction<string>,
     ) => {
@@ -300,6 +301,11 @@ const workoutsSlice = createSlice({
 
       state.exerciseListDisplay[action.payload] = false
     },
+    removeExerciseFromWorkoutTemplate: (state: TWorkoutsState, action: PayloadAction<TExerciseIndexer>) => {
+      const {muscleCategory, muscleName, exerciseId} = action.payload
+      delete state.newWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId]
+
+    },
     addSetToWorkoutTemplateExercise: (state: TWorkoutsState, action: PayloadAction<TExerciseIndexer>) => {
       const {muscleCategory, muscleName, exerciseId} = action.payload
       state.newWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].sets.push({
@@ -307,11 +313,11 @@ const workoutsSlice = createSlice({
         weight: 0,
       })
     },
-    removeSetFromWorkoutTemplateExercise: (state: TWorkoutsState, action: PayloadAction<TExerciseIndexer>) => {
+    removeSetFromWorkoutTemplateExercise: (state: TWorkoutsState, action: PayloadAction<TExerciseSetIndexer>) => {
       const {muscleCategory, muscleName, exerciseId, index} = action.payload
       state.newWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].sets.splice(index, 1)
     },
-    editSetInWorkoutTemplateExercise: (state: TWorkoutsState, action: PayloadAction<TExerciseSetIndexer>) => {
+    editSetInWorkoutTemplateExercise: (state: TWorkoutsState, action: PayloadAction<TExerciseSetEditProps>) => {
       const {muscleCategory, muscleName, exerciseId, index, reps, weight} = action.payload
       state.newWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].sets[index].reps = reps
       state.newWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].sets[index].weight = weight
@@ -368,7 +374,8 @@ export const {
   setNewWorkoutGymId,
   resetNewWorkout,
   setNewWorkoutName,
-  addExerciseToWorkoutTemplate,
+  addExerciseToWorkoutTemplate_list,
+  removeExerciseFromWorkoutTemplate_list,
   removeExerciseFromWorkoutTemplate,
   addSetToWorkoutTemplateExercise,
   removeSetFromWorkoutTemplateExercise,

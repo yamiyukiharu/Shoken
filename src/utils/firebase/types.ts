@@ -104,10 +104,16 @@ export type TExerciseIndexer = {
   muscleCategory: TMuscleCategory;
   muscleName: string;
   exerciseId: string;
+}
+
+export type TExerciseSetIndexer = {
+  muscleCategory: TMuscleCategory;
+  muscleName: string;
+  exerciseId: string;
   index: number;
 }
 
-export interface TExerciseSetIndexer extends TExerciseIndexer {
+export interface TExerciseSetEditProps extends TExerciseSetIndexer {
   reps: number;
   weight: number;
 }

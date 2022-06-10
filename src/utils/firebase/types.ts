@@ -22,9 +22,9 @@ export type TMuscle = {
   };
 };
 
-type TExerciseSet = Array<{
+export type TExerciseSet = Array<{
   reps: number;
-  weight: string;
+  weight: number; //kg
 }>;
 
 type TExerciseHistory = {
@@ -99,6 +99,18 @@ export type TMuscleCategory =
 export type TAllExercises = {
   [key in TMuscleCategory]: TMuscle;
 };
+
+export type TExerciseIndexer = {
+  muscleCategory: TMuscleCategory;
+  muscleName: string;
+  exerciseId: string;
+  index: number;
+}
+
+export interface TExerciseSetIndexer extends TExerciseIndexer {
+  reps: number;
+  weight: number;
+}
 
 // =================== USER ====================
 

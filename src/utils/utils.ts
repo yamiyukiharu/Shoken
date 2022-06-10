@@ -10,6 +10,14 @@ export const unCamelCase = (data: string): string => {
   );
 };
 
+export const capitalizeWords = (text:string):string => {
+  const arr = text.split(' ')
+  const arrCapitalized = arr.map(element => {
+    return element.charAt(0).toUpperCase() + element.substring(1).toLowerCase();
+  });
+  return arrCapitalized.join(' ')
+}
+
 export const stringToColour = (str:string):string => {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {

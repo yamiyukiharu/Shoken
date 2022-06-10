@@ -1,50 +1,61 @@
-import React from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import React, {useRef, useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { TMuscleCategory } from '../../utils/firebase/types';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
+import {
+  addSetToWorkoutTemplateExercise,
+  editSetInWorkoutTemplateExercise,
+  removeSetFromWorkoutTemplateExercise,
+} from '../../redux/workouts/workouts.slice';
+import {
+  TExerciseIndexer,
+  TExerciseSet,
+  TMuscleCategory,
+} from '../../utils/firebase/types';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
-
-type Props = {
-  muscleCategory: TMuscleCategory;
-  muscleName: string;
-  exerciseId: string;
-};
+interface Props extends TExerciseIndexer {
+  sets: TExerciseSet;
+}
 
 type TableProps = {
   setNum: number;
   previous: string;
   reps: number;
   kg: number;
-}
+};
 
-const SetsTable: React.FC<Props> = ({muscleCategory, muscleName, exerciseId}) => {
-
+const SetsTable: React.FC<Props> = ({
+  muscleCategory,
+  muscleName,
+  exerciseId,
+  sets,
+}) => {
   const dispatch = useAppDispatch();
-  const {} = useAppSelector(state => state.workouts)
+  const {} = useAppSelector(state => state.workouts);
 
-  const RowEntry:React.FC<TableProps> = ({setNum, previous, reps, kg}) => {
-    return (
-      <View style={styles.rowContainer}>
-        <View style={styles.setsColumn}>
-          <Text style={styles.entry}>{setNum}</Text>
-        </View>
-        <View style={styles.previousColumn}>
-          <Text style={styles.entry}>{previous}</Text>
-        </View>
-        <View style={styles.repsColumn}>
-          <TextInput style={[styles.entry, styles.editableEntry]}>{reps}</TextInput>
-        </View>
-        <View style={styles.kgColumn}>
-          <TextInput style={[styles.entry, styles.editableEntry]}>{kg}</TextInput>
-        </View>
-      </View>
+  const onPlusTapped = () => {
+    dispatch(
+      addSetToWorkoutTemplateExercise({
+        muscleCategory,
+        muscleName,
+        exerciseId,
+        index: -1,
+      }),
     );
   };
 
-  return (
-    <View style={styles.container}>
+
+
+  const HeaderRow = () => {
+    return (
       <View style={[styles.rowContainer, styles.headerRowContainer]}>
         <View style={styles.setsColumn}>
           <Text style={styles.header}>Sets</Text>
@@ -59,12 +70,109 @@ const SetsTable: React.FC<Props> = ({muscleCategory, muscleName, exerciseId}) =>
           <Text style={styles.header}>kg</Text>
         </View>
       </View>
-      <RowEntry setNum={1} previous={'45kgx12'} reps={12} kg={50} />
-      <RowEntry setNum={1} previous={'45kgx12'} reps={12} kg={50} />
-      <RowEntry setNum={1} previous={'45kgx12'} reps={12} kg={50} />
-      <TouchableOpacity style={styles.addButton}>
+    );
+  };
+
+  const RowEntry: React.FC<TableProps> = ({setNum, previous, reps, kg}) => {
+    const rep = reps === 0 ? '' : reps;
+    const weight = kg === 0 ? '' : kg;
+
+    const [repsInput, setRepsInput] = useState(reps);
+    const [weightInput, setWeightInput] = useState(kg);
+    const row = useRef<Swipeable | null>(null);
+
+    const onRowDelete = () => {
+      row.current?.close();
+      dispatch(
+        removeSetFromWorkoutTemplateExercise({
+          muscleCategory,
+          muscleName,
+          exerciseId,
+          index: setNum,
+        }),
+      );
+    };
+
+    const onFieldsChange = () => {
+      dispatch(
+        editSetInWorkoutTemplateExercise({
+          muscleCategory,
+          muscleName,
+          exerciseId,
+          index: setNum,
+          reps: repsInput,
+          weight: weightInput,
+        }),
+      );
+    };
+
+    const swipeRightActionView = () => {
+      return (
+        <TouchableOpacity style={styles.deleteButton} onPress={onRowDelete}>
+          <MaterialIcon
+            style={{padding: 2, color: 'red'}}
+            name="highlight-remove"
+            size={22}
+          />
+        </TouchableOpacity>
+      );
+    };
+
+    return (
+      <Swipeable
+        renderRightActions={(progress, dragX) => swipeRightActionView()}
+        ref={ref => (row.current = ref)}>
+        <View style={styles.rowContainer}>
+          <View style={styles.setsColumn}>
+            <Text style={styles.entry}>{setNum + 1}</Text>
+          </View>
+          <View style={styles.previousColumn}>
+            <Text style={styles.entry}>{previous}</Text>
+          </View>
+          <View style={styles.repsColumn}>
+            <TextInput
+              style={[styles.entry, styles.editableEntry]}
+              keyboardType="number-pad"
+              defaultValue={rep.toString()}
+              onChangeText={text => setRepsInput(Number(text))}
+              onEndEditing={onFieldsChange}
+            />
+          </View>
+          <View style={styles.kgColumn}>
+            <TextInput
+              style={[styles.entry, styles.editableEntry]}
+              keyboardType="number-pad"
+              defaultValue={weight.toString()}
+              onChangeText={text => setWeightInput(Number(text))}
+              onEndEditing={onFieldsChange}
+            />
+          </View>
+        </View>
+      </Swipeable>
+    );
+  };
+
+  const AddSetButton = () => {
+    return (
+      <TouchableOpacity style={styles.addButton} onPress={onPlusTapped}>
         <MaterialCommunityIcon style={{padding: 10}} name="plus" size={20} />
       </TouchableOpacity>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <HeaderRow />
+      {sets.map((set, index) => (
+        <RowEntry
+          key={index}
+          setNum={index}
+          previous={''}
+          reps={set.reps}
+          kg={set.weight}
+        />
+      ))}
+      <AddSetButton/>
     </View>
   );
 };
@@ -87,12 +195,15 @@ const styles = StyleSheet.create({
     borderWidth: 0.2,
     paddingHorizontal: 8,
     paddingVertical: 2,
+    width: 55,
+    textAlign: 'center',
   },
   rowContainer: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 3,
+    backgroundColor: 'white',
   },
   headerRowContainer: {
     borderBottomColor: 'black',
@@ -128,8 +239,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignSelf: 'center',
     marginTop: 5,
-
-  }
+  },
+  deleteButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 3,
+  },
 });
 
 export default SetsTable;

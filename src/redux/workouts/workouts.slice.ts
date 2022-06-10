@@ -15,6 +15,8 @@ import {
   TFlattenedExercises,
   TWorkoutTemplate,
   TExerciseEntry,
+  TExerciseIndexer,
+  TExerciseSetIndexer,
 } from '../../utils/firebase/types';
 
 const emptyAllExercises = {
@@ -284,7 +286,7 @@ const workoutsSlice = createSlice({
         sets: [],
       };
       state.exerciseListDisplay[action.payload] = true
-    },
+    },    
     removeExerciseFromWorkoutTemplate: (
       state: TWorkoutsState,
       action: PayloadAction<string>,
@@ -298,6 +300,23 @@ const workoutsSlice = createSlice({
 
       state.exerciseListDisplay[action.payload] = false
     },
+    addSetToWorkoutTemplateExercise: (state: TWorkoutsState, action: PayloadAction<TExerciseIndexer>) => {
+      const {muscleCategory, muscleName, exerciseId} = action.payload
+      state.newWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].sets.push({
+        reps: 0,
+        weight: 0,
+      })
+    },
+    removeSetFromWorkoutTemplateExercise: (state: TWorkoutsState, action: PayloadAction<TExerciseIndexer>) => {
+      const {muscleCategory, muscleName, exerciseId, index} = action.payload
+      state.newWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].sets.splice(index, 1)
+    },
+    editSetInWorkoutTemplateExercise: (state: TWorkoutsState, action: PayloadAction<TExerciseSetIndexer>) => {
+      const {muscleCategory, muscleName, exerciseId, index, reps, weight} = action.payload
+      state.newWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].sets[index].reps = reps
+      state.newWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].sets[index].weight = weight
+    },
+
     resetNewWorkout: (state: TWorkoutsState) => {
       state.newWorkoutTemplate = workoutsInitialState.newWorkoutTemplate;
       // initialize newWorkoutMuscleSelection
@@ -351,5 +370,8 @@ export const {
   setNewWorkoutName,
   addExerciseToWorkoutTemplate,
   removeExerciseFromWorkoutTemplate,
+  addSetToWorkoutTemplateExercise,
+  removeSetFromWorkoutTemplateExercise,
+  editSetInWorkoutTemplateExercise,
 } = workoutsSlice.actions;
 export default workoutsSlice.reducer;

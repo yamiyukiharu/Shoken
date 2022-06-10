@@ -1,24 +1,31 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
+import { View, StyleSheet, Text, TextInput } from "react-native";
+import { useAppSelector } from "../../redux/hooks";
+import { TExerciseIndexers, TMuscleCategory } from "../../utils/firebase/types";
+import { capitalizeWords } from "../../utils/utils";
 import SetsTable from "../sets-table/sets-table.component";
 
-type Props = {
-  ExerciseName: string;
-}
 
-const WorkoutExercise:React.FC<Props> = ({ExerciseName}) => {
+const WorkoutExercise:React.FC<TExerciseIndexers> = ({muscleCategory, muscleName, exerciseId}) => {
+ 
+  const {newWorkoutTemplate, allFlattenedExercises} = useAppSelector(state => state.workouts)
+  const exerciseName = allFlattenedExercises[muscleCategory][muscleName][exerciseId].name
+  const notes = newWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].notes
+  const sets = newWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].sets
+
   return (
     <View style={styles.container}>
       <View style={styles.firstRow}>
         <View style={styles.exerciseImage}/>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Bench Press</Text>
-          <TextInput style={styles.notesContainer} placeholder="Notes"/>
+          <View style={{flexDirection: 'row',}}>
+            <Text style={styles.title}>{capitalizeWords(exerciseName)}</Text>
+          </View>
+          <TextInput style={styles.notesContainer} placeholder="Notes" value={notes}/>
         </View>
       </View>
       <View style={{flexDirection: 'row'}}>
-        <SetsTable/>
+        <SetsTable muscleCategory={muscleCategory} muscleName={muscleName} exerciseId={exerciseId} sets={sets}/>
       </View>
     </View>
   )
@@ -41,16 +48,18 @@ const styles = StyleSheet.create({
   },
   firstRow: {
     flexDirection: 'row',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 2,
+    alignItems: 'center',
   },
   titleContainer: {
     flexDirection: 'column',
     flexGrow: 1,
     marginLeft: 10,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 2,
+    flex: 1,
   },
   notesContainer: {
     borderRadius: 5,
@@ -58,7 +67,7 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
     marginTop: 10,
     paddingHorizontal: 10,
-    flex: 1,
+    height: 30,
   },
   exerciseImage: {
     height: 80,

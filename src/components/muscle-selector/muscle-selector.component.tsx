@@ -87,7 +87,7 @@ const MuscleSelector: React.FC<Props> = ({
         onPress={onParentChipTapped}
       />
       <View style={styles.childMusclesContainer}>
-        {Object.keys(childTitles).map(muscleName => {
+        {Object.keys(childTitles).map((muscleName, idx) => {
           const capitalizedName = unCamelCase(muscleName);
 
           const onChipTapped = () => {
@@ -101,6 +101,7 @@ const MuscleSelector: React.FC<Props> = ({
           };
           return (
             <MuscleChip
+              key={idx}
               style={styles.childMuscle}
               text={capitalizedName}
               isChecked={childTitles[muscleName]}

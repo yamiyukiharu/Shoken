@@ -4,7 +4,7 @@ import {
   getUserFirestore,
   setUserFirestore,
 } from '../../utils/firebase/firestore.utils';
-import {TFbGymEntry, TFbUserEntry, TUser} from '../../utils/firebase/types';
+import {TFbGymEntry, TFbUserEntry, TUser, TWorkoutTemplate} from '../../utils/firebase/types';
 
 
 type TUserState = {
@@ -106,6 +106,27 @@ export const removeUserGym = createAsyncThunk(
   }
 )
 
+export const addUserWorkoutTemplate = createAsyncThunk(
+  'user/addUserWorkoutTemplate',
+  async (newWorkoutTemplate: TWorkoutTemplate, {getState, rejectWithValue}) => {
+    try {
+      const state: TUserState = getState().user as TUserState;
+      const user: TUser = {
+        ...state.user,
+        savedWorkouts: [...state.user.savedWorkouts, newWorkoutTemplate],
+      };
+      setUserFirestore({
+        id: state.uid,
+        user: user,
+      });
+      return user;
+
+    } catch (err) {
+      return rejectWithValue('Error adding user workout')
+    }
+  }
+)
+
 const userSlice = createSlice({
   name: 'user',
   initialState: userInitialState,
@@ -149,6 +170,12 @@ const userSlice = createSlice({
     ) => {
       state.user = action.payload;
     },
+    [addUserWorkoutTemplate.fulfilled.toString()]: (
+      state: TUserState,
+      action: PayloadAction<TUser>,
+    ) => {
+      state.user = action.payload;
+    }
   },
 });
 

@@ -251,6 +251,19 @@ const workoutsSlice = createSlice({
         ...state.newWorkoutMuscleSelection,
         ...action.payload,
       };
+
+      // update newWorkoutTemplate
+      for (const cat in state.newWorkoutMuscleSelection) {
+        console.log(cat)
+        const category = cat as TMuscleCategory
+        for (const muscle in state.newWorkoutMuscleSelection[category]) {
+          if (state.newWorkoutMuscleSelection[category][muscle] === true) {
+            state.newWorkoutTemplate.exercises[category][muscle] = {}
+          } else {
+            delete state.newWorkoutTemplate.exercises[category][muscle]
+          }
+        }
+      }
     },
     setNewWorkoutGymId: (
       state: TWorkoutsState,
@@ -322,7 +335,6 @@ const workoutsSlice = createSlice({
       state.newWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].sets[index].reps = reps
       state.newWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].sets[index].weight = weight
     },
-
     resetNewWorkout: (state: TWorkoutsState) => {
       state.newWorkoutTemplate = workoutsInitialState.newWorkoutTemplate;
       // initialize newWorkoutMuscleSelection
@@ -333,6 +345,7 @@ const workoutsSlice = createSlice({
         });
       });
     },
+
   },
   extraReducers: {
     [getExercises.pending.toString()]: (state: TWorkoutsState) => {

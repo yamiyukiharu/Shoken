@@ -95,10 +95,20 @@ const WorkoutsScreen = () => {
             style={styles.workoutTile}
             onPress={() => {
               dispatch(resetNewWorkout())
-              navigation.navigate('WorkoutNewScreen', {mode: 'new'})
+              navigation.navigate('WorkoutNewScreen')
             }}
           />
-          
+          {
+            user.savedWorkouts.map((workout, idx) => (
+              <ShokenTile
+                accessibilityLabel={workout.name}
+                key={idx}
+                title={workout.name}
+                addNew={false}
+                style={styles.workoutTile}
+                onPress={() => {}}/>
+            ))
+          }
         </View>
         <Text style={styles.sectionTitle}>Exercises</Text>
         <ExerciseCategories/>

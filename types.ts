@@ -29,9 +29,7 @@ export type WorkoutStackParamList = {
   GymDetailsScreen: {
     mode: 'add' | 'edit';
   };
-  WorkoutNewScreen: {
-    mode: 'new' | 'edit';
-  };
+  WorkoutNewScreen: undefined;
   WorkoutAddExerciseScreen: undefined;
   ExerciseScreenStack: undefined;
 };

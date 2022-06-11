@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Button,
+  Alert,
 } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {WorkoutNewScreenRouteProp, WorkoutsNavProp} from '../../../types';
@@ -32,19 +33,25 @@ const WorkoutNewScreen = () => {
 
   // top right button to create new gym
   useEffect(() => {
-    if (route.params.mode === 'new') {
       navigation.setOptions({
         headerRight: () => (
           <Button
             title="Next"
-            onPress={() => {
-              navigation.navigate('WorkoutAddExerciseScreen');
-            }}
+            onPress={onNextTapped}
           />
         ),
       });
+  }, [newWorkoutTemplate, selectedGym]);
+
+  const onNextTapped = () => {
+    if (newWorkoutTemplate.name === '') {
+      Alert.alert('Please input a workout name')
+    } else if (selectedGym ===  '') {
+      Alert.alert('Please select a gym')
+    } else {
+      navigation.navigate('WorkoutAddExerciseScreen');
     }
-  }, []);
+  }
 
   return (
     <ScrollView style={styles.container}>

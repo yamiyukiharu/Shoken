@@ -1,16 +1,35 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import React, { useEffect } from 'react';
+import {View, StyleSheet, ScrollView, Button} from 'react-native';
 import {WorkoutsNavProp} from '../../../types';
 import NormalButton from '../../components/normal-button/normal-button.component';
 import WorkoutExercise from '../../components/workout-exercise/workout-exercise.component';
-import { useAppSelector } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { addUserWorkoutTemplate } from '../../redux/user/user.slice';
 import { TMuscleCategory } from '../../utils/firebase/types';
+import WorkoutsScreen from './workouts.screen';
 
 const WorkoutAddExerciseScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>();
+  const dispatch = useAppDispatch()
   const {newWorkoutTemplate} = useAppSelector(state => state.workouts)
   const exercises = newWorkoutTemplate.exercises
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          title="Done"
+          onPress={onDoneTapped}
+        />
+      ),
+    });
+}, [newWorkoutTemplate]);
+
+  const onDoneTapped = () => {
+    dispatch(addUserWorkoutTemplate(newWorkoutTemplate))
+    navigation.navigate('WorkoutsScreen')
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

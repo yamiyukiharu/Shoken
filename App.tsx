@@ -92,8 +92,8 @@ const AppBody = () => {
             tabBarInactiveTintColor: 'gray',
             headerShown: false,
           })}>
-          <Tab.Screen name="Community" component={HomeScreen} />
           <Tab.Screen name="Workouts" component={WorkoutsStackScreen} />
+          <Tab.Screen name="Community" component={HomeScreen} />
           <Tab.Screen name="Home" component={SignInScreen} />
           <Tab.Screen name="Nutrition" component={HomeScreen} />
           <Tab.Screen name="Planner" component={HomeScreen} />

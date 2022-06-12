@@ -106,7 +106,7 @@ const WorkoutsScreen = () => {
                 title={workout.name}
                 addNew={false}
                 style={styles.workoutTile}
-                onPress={() => {}}/>
+                onPress={() => {navigation.navigate('WorkoutDetailsScreen', {arrayIndex: idx})}}/>
             ))
           }
         </View>

@@ -23,6 +23,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 interface Props extends TExerciseIndexer {
   sets: TExerciseSet;
+  isStarted: boolean;
 }
 
 type TableProps = {
@@ -37,6 +38,7 @@ const SetsTable: React.FC<Props> = ({
   muscleName,
   exerciseId,
   sets,
+  isStarted=false
 }) => {
   const dispatch = useAppDispatch();
   const {} = useAppSelector(state => state.workouts);
@@ -50,8 +52,6 @@ const SetsTable: React.FC<Props> = ({
       }),
     );
   };
-
-
 
   const HeaderRow = () => {
     return (
@@ -132,7 +132,7 @@ const SetsTable: React.FC<Props> = ({
             <TextInput
               style={[styles.entry, styles.editableEntry]}
               keyboardType="number-pad"
-              defaultValue={rep.toString()}
+              placeholder={rep.toString()}
               onChangeText={text => setRepsInput(Number(text))}
               onEndEditing={onFieldsChange}
             />
@@ -141,7 +141,7 @@ const SetsTable: React.FC<Props> = ({
             <TextInput
               style={[styles.entry, styles.editableEntry]}
               keyboardType="number-pad"
-              defaultValue={weight.toString()}
+              placeholder={weight.toString()}
               onChangeText={text => setWeightInput(Number(text))}
               onEndEditing={onFieldsChange}
             />

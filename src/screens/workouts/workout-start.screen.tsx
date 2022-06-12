@@ -5,11 +5,11 @@ import {WorkoutsNavProp} from '../../../types';
 import NormalButton from '../../components/normal-button/normal-button.component';
 import WorkoutExercise from '../../components/workout-exercise/workout-exercise.component';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { saveUserWorkoutTemplate } from '../../redux/user/user.slice';
+import { endWorkout, saveUserWorkoutTemplate } from '../../redux/user/user.slice';
 import { TMuscleCategory } from '../../utils/firebase/types';
 import WorkoutsScreen from './workouts.screen';
 
-const WorkoutAddExerciseScreen = () => {
+const WorkoutStartScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>();
   const dispatch = useAppDispatch()
   const {currentWorkoutTemplate} = useAppSelector(state => state.workouts)
@@ -17,17 +17,20 @@ const WorkoutAddExerciseScreen = () => {
 
   useEffect(() => {
     navigation.setOptions({
+      headerTitle: '',
       headerRight: () => (
         <Button
-          title="Done"
-          onPress={onDoneTapped}
+          title="Finish"
+          onPress={onFinishTapped}
         />
       ),
     });
 }, [currentWorkoutTemplate]);
 
-  const onDoneTapped = () => {
+  const onFinishTapped = () => {
     dispatch(saveUserWorkoutTemplate(currentWorkoutTemplate))
+    dispatch(endWorkout(currentWorkoutTemplate))
+    // TODO: navigate to summary page
     navigation.navigate('WorkoutsScreen')
   }
 
@@ -74,4 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WorkoutAddExerciseScreen;
+export default WorkoutStartScreen;

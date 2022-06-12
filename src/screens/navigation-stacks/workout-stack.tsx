@@ -15,6 +15,8 @@ import ExerciseDetailsScreen from '../workouts/exercise-details.screen';
 import WorkoutNewScreen from '../workouts/workout-new.screen';
 import WorkoutAddExerciseScreen from '../workouts/workout-add-exercise.screen';
 import ExerciseCategoriesScreen from '../workouts/exercise-categories.screen';
+import WorkoutDetailsScreen from '../workouts/workout-details.screen';
+import WorkoutStartScreen from '../workouts/workout-start.screen';
 
 const WorkoutsStack = createNativeStackNavigator<WorkoutStackParamList>();
 const ExerciseStack = createNativeStackNavigator<ExerciseStackParamList>();
@@ -125,12 +127,23 @@ export const WorkoutsStackScreen = () => {
         })}
       />
       <WorkoutsStack.Screen
+        name="WorkoutDetailsScreen"
+        component={WorkoutDetailsScreen}
+      />
+      <WorkoutsStack.Screen
         name="ExerciseScreenStack"
         component={ExerciseStackScreen}
         options={() => ({
           headerShown: false,
           presentation: 'modal',
           
+        })}
+      />
+      <WorkoutsStack.Screen
+        name="WorkoutStartScreen"
+        component={WorkoutStartScreen}
+        options={() => ({
+          presentation: 'containedModal',
         })}
       />
     </WorkoutsStack.Navigator>

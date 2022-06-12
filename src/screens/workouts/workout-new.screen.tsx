@@ -21,15 +21,15 @@ const WorkoutNewScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<WorkoutsNavProp>();
   const route = useRoute<WorkoutNewScreenRouteProp>()
-  const {newWorkoutMuscleSelection, newWorkoutTemplate} = useAppSelector(
+  const {newWorkoutMuscleSelection, currentWorkoutTemplate} = useAppSelector(
     state => state.workouts,
   );
   const {gyms} = useAppSelector(state => state.gym);
   const [selectedGym, setSelectedGym] = useState('');
 
   useEffect(() => {
-    gyms[newWorkoutTemplate.gymId] && setSelectedGym(gyms[newWorkoutTemplate.gymId].name);
-  }, [newWorkoutTemplate.gymId]);
+    gyms[currentWorkoutTemplate.gymId] && setSelectedGym(gyms[currentWorkoutTemplate.gymId].name);
+  }, [currentWorkoutTemplate.gymId]);
 
   // top right button to create new gym
   useEffect(() => {
@@ -41,10 +41,10 @@ const WorkoutNewScreen = () => {
           />
         ),
       });
-  }, [newWorkoutTemplate, selectedGym]);
+  }, [currentWorkoutTemplate, selectedGym]);
 
   const onNextTapped = () => {
-    if (newWorkoutTemplate.name === '') {
+    if (currentWorkoutTemplate.name === '') {
       Alert.alert('Please input a workout name')
     } else if (selectedGym ===  '') {
       Alert.alert('Please select a gym')

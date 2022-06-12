@@ -34,7 +34,6 @@ type TExerciseHistory = {
     [key: string]: {
       // exercise id
       [key: string]: Array<{
-        date: string;
         time: string;
         notes: string;
         sets: TExerciseSet;
@@ -63,12 +62,10 @@ export type TWorkoutTemplate = {
   exercises: TExerciseEntry;
 };
 
-type TWorkoutHistory = {
-  workoutTemplate: string;
-  date: string;
+export type TWorkoutHistory = {
+  workoutTemplate: TWorkoutTemplate;
   startTime: string;
   endTime: string;
-  exercises: TExerciseEntry;
 };
 
 export type TFlattenedExercises = {

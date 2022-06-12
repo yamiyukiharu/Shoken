@@ -20,15 +20,15 @@ const WorkoutExercise: React.FC<TExerciseIndexer> = ({
   exerciseId,
 }) => {
   const dispatch = useAppDispatch();
-  const {newWorkoutTemplate, allFlattenedExercises} = useAppSelector(
+  const {currentWorkoutTemplate, allFlattenedExercises} = useAppSelector(
     state => state.workouts,
   );
   const exerciseName =
     allFlattenedExercises[muscleCategory][muscleName][exerciseId].name;
   const notes =
-    newWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].notes;
+    currentWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].notes;
   const sets =
-    newWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].sets;
+    currentWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].sets;
 
   const swipeRightActionView = () => {
     return (
@@ -77,6 +77,7 @@ const WorkoutExercise: React.FC<TExerciseIndexer> = ({
               muscleName={muscleName}
               exerciseId={exerciseId}
               sets={sets}
+              isStarted={true}
             />
           </View>
         </View>

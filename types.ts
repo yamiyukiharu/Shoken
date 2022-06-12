@@ -31,7 +31,11 @@ export type WorkoutStackParamList = {
   };
   WorkoutNewScreen: undefined;
   WorkoutAddExerciseScreen: undefined;
+  WorkoutDetailsScreen: {
+    arrayIndex: number;
+  };
   ExerciseScreenStack: undefined;
+  WorkoutStartScreen: undefined;
 };
 
 export type WorkoutsNavProp = NativeStackNavigationProp<WorkoutStackParamList>;
@@ -66,4 +70,9 @@ export type GymEditScreenRouteProp = RouteProp<
 export type WorkoutNewScreenRouteProp = RouteProp<
   WorkoutStackParamList,
   'WorkoutNewScreen'
+>;
+
+export type WorkoutDetailsScreenRouteProp = RouteProp<
+  WorkoutStackParamList,
+  'WorkoutDetailsScreen'
 >;

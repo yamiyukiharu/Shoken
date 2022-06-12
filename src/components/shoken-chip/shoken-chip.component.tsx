@@ -10,7 +10,7 @@ type Props = {
 const ShokenChip:React.FC<Props> = ({text, style, fontSize=14}) => {
   return (
     <View style={[styles.container, style]}>
-      <Text style={{color: 'white', fontSize: fontSize}}>{text}</Text>
+      <Text style={{color: 'black', fontSize: fontSize}}>{text}</Text>
     </View>
   )
 }

@@ -11,7 +11,7 @@ import { ExerciseListScreenRouteProp, ExercisesNavProp, WorkoutsNavProp } from '
 const ExerciseListScreen = () => {
 
   const dispatch = useAppDispatch();
-  const {exerciseListDisplay, newWorkoutTemplate} = useAppSelector(state => state.workouts)
+  const {exerciseListDisplay, currentWorkoutTemplate} = useAppSelector(state => state.workouts)
   
   const route = useRoute<ExerciseListScreenRouteProp>()
   const navigation = useNavigation<ExercisesNavProp>()

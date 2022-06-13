@@ -10,13 +10,11 @@ A mobile application to track your gym workouts, nutrition, and connect with oth
 
 
 ## Motivation
-___
 The point of this app is to help apply, solidify, and showcase my knowledge of React-Native and Typescript with a real world application. Since im going to build something, why not build something useful to myself while having the potential to spin off into a startup product?
 <br>
 <br>
 
 ## Big Ideas
-___
 ### Utility
 1. Users can easily track and plan their workouts and nutrition
 2. Users can budget and plan for their meal prep
@@ -43,7 +41,6 @@ ___
 
 
 ## Thought Process
-___
 ### **User Requirements**
 For now, the persona / user of Shoken will just be me. The requirements are captured in the form of user stories, and can be found in this Google Doc: https://docs.google.com/document/d/1nvo7xHUMWI6QibL-x-TCNQafBufl-oqZCeSd9kj0ccc/edit?usp=sharing
 <br>
@@ -62,7 +59,6 @@ In order to save time and money during initial development, Google Firebase (Bac
 <br>
 
 ## Project Execution
-___
 Bugs and features are tracked on Github Projects:
 https://github.com/users/yamiyukiharu/projects/1
 

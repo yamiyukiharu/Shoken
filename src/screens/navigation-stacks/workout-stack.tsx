@@ -41,7 +41,7 @@ const ExerciseStackScreen = () => {
           component={ExerciseSubcategoryScreen}
           options={() => ({
             presentation: 'card',
-            headerTitle: '',
+            headerTitle: 'Muscles',
           })}
         />
         <ExerciseStack.Screen
@@ -70,7 +70,7 @@ export const WorkoutsStackScreen = () => {
         name="WorkoutsScreen"
         component={WorkoutsScreen}
         options={({navigation, route}) => ({
-          headerTitle: 'Gyms & Workouts',
+          headerTitle: 'Workout',
         })}
       />
       <WorkoutsStack.Screen
@@ -109,7 +109,7 @@ export const WorkoutsStackScreen = () => {
         name="GymEquipmentListScreen"
         component={GymEquipmentListScreen}
         options={() => ({
-          headerTitle: 'Add Equipment',
+          headerTitle: 'Equipment',
         })}
       />
       <WorkoutsStack.Screen

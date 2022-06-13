@@ -28,7 +28,6 @@ const WorkoutStartScreen = () => {
 }, [currentWorkoutTemplate]);
 
   const onFinishTapped = () => {
-    dispatch(saveUserWorkoutTemplate(currentWorkoutTemplate))
     dispatch(endWorkout(currentWorkoutTemplate))
     // TODO: navigate to summary page
     navigation.navigate('WorkoutsScreen')

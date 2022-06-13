@@ -5,6 +5,7 @@ import { ExercisesNavProp, WorkoutsNavProp } from "../../../types"
 import { useAppDispatch, useAppSelector } from "../../redux/hooks"
 import { setCurrentMuscleCategory } from "../../redux/workouts/workouts.slice"
 import { TMuscleCategory } from "../../utils/firebase/types"
+import { stringToColour } from "../../utils/utils"
 import ShokenTile from "../shoken-tile/shoken-tile.component"
 
 type Props = {
@@ -27,7 +28,7 @@ const ExerciseCategories:React.FC<Props> = ({mode='view'}) => {
                 accessibilityLabel={category}
                 addNew={false}
                 title={category}
-                style={styles.exerciseTile}
+                style={[styles.exerciseTile, {backgroundColor: stringToColour(category)}]}
                 onPress={() => {
                   dispatch(setCurrentMuscleCategory(category as TMuscleCategory))
                   navigation.navigate('ExerciseScreenStack', {

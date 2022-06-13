@@ -87,7 +87,7 @@ export const getGymsFirestore = async ():Promise<TGyms> => {
 
 export const getEquipmentFirestore = async():Promise<TAllEquipment> => {
     try {
-        const documentSnapshot = await firestore().collection('equipment').doc('generic').get({source: 'cache'})
+        const documentSnapshot = await firestore().collection('equipment').doc('generic').get()
         const data =  documentSnapshot.data() as TAllEquipment
         return data
     } catch (err) {

@@ -34,7 +34,10 @@ export type WorkoutStackParamList = {
   WorkoutDetailsScreen: {
     arrayIndex: number;
   };
-  ExerciseScreenStack: undefined;
+  ExerciseScreenStack: {
+    screen: keyof ExerciseStackParamList;
+    params: {mode: 'view' | 'add';}
+  };
   WorkoutStartScreen: undefined;
 };
 

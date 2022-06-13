@@ -7,7 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 import {WorkoutsNavProp} from '../../../types';
 import {updateVariation} from '../../redux/workouts/workouts.slice';
 import ShokenChip from '../../components/shoken-chip/shoken-chip.component';
-import {stringToColour} from '../../utils/utils';
+import {capitalizeWords, stringToColour} from '../../utils/utils';
 
 type TEquipmentChips = Array<{
   color: string;
@@ -30,7 +30,7 @@ const ExerciseDetailsScreen = () => {
   );
 
   useEffect(() => {
-    navigation.setOptions({headerTitle: currentExerciseName});
+    navigation.setOptions({headerTitle: capitalizeWords(currentExerciseName)});
   }, [currentExerciseName]);
 
   useEffect(() => {

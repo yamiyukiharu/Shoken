@@ -6,73 +6,74 @@ import {
   FlatList,
   ActivityIndicator,
   Alert,
+  Button,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useAppSelector, useAppDispatch} from '../../redux/hooks';
-import {createNewGym, getAllEquipment, updateGym} from '../../redux/gyms/gyms.slice';
+import {
+  createNewGym,
+  getAllEquipment,
+  updateGym,
+} from '../../redux/gyms/gyms.slice';
 import EquipmentCategories from '../../components/equipment-categories/equipment-categories.component';
 import NormalButton from '../../components/normal-button/normal-button.component';
-import { TEquipmentCategories, TGym } from '../../utils/firebase/types';
-import { WorkoutsNavProp } from '../../../types';
-import { addUserGym } from '../../redux/user/user.slice';
+import {TEquipmentCategories, TGym} from '../../utils/firebase/types';
+import {WorkoutsNavProp} from '../../../types';
+import {addUserGym} from '../../redux/user/user.slice';
 
 export const GymEquipmentCategoriesScreen = () => {
-
-  const [done, setDone] = useState(false)
+  const [done, setDone] = useState(false);
   const navigation = useNavigation<WorkoutsNavProp>();
   const dispatch = useAppDispatch();
-  const {gymInEdit} = useAppSelector(state => state.gym)
-  const {user} = useAppSelector(state => state.user)
+  const {gymInEdit} = useAppSelector(state => state.gym);
+  const {user} = useAppSelector(state => state.user);
 
   const {allEquipment, getAllEquipmentLoading} = useAppSelector(
     state => state.gym,
   );
-  const categories = Object.keys(allEquipment) as Array<TEquipmentCategories>
+  const categories = Object.keys(allEquipment) as Array<TEquipmentCategories>;
 
   useEffect(() => {
     dispatch(getAllEquipment());
   }, []);
 
   useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <Button
+            title="Finish"
+            onPress={() => {
+              if (gymInEdit.id === '') {
+                const newGym: TGym = {...gymInEdit.gym, createdBy: user.name};
+                dispatch(createNewGym(newGym));
+                setDone(true);
+              } else {
+                //if editing exiting gym
+                dispatch(updateGym(gymInEdit));
+                navigation.navigate('WorkoutsScreen');
+              }
+            }}
+          />
+        );
+      },
+    });
+  }, [gymInEdit]);
+
+  useEffect(() => {
     if (done) {
-      dispatch(addUserGym(gymInEdit))
-      navigation.navigate('WorkoutsScreen')
+      dispatch(addUserGym(gymInEdit));
+      navigation.navigate('WorkoutsScreen');
     }
-  }, [gymInEdit])
+  }, [gymInEdit]);
 
   return (
     <View style={styles.container}>
       {getAllEquipmentLoading ? (
         <ActivityIndicator size="large" />
       ) : (
-        <EquipmentCategories categories={categories} mode={'edit'}/>
+        <EquipmentCategories categories={categories} mode={'edit'} />
       )}
-
-      <View style={styles.buttonsContainer}>
-        <NormalButton
-          text={'Back'}
-          inverted={true}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-        <NormalButton
-          style={styles.button}
-          text={'Done'}
-          onPress={() => {
-            if (gymInEdit.id === '') {
-              const newGym:TGym = {...gymInEdit.gym, createdBy:user.name}
-              dispatch(createNewGym(newGym))
-              setDone(true)
-
-            } else {
-              //if editing exiting gym
-              dispatch(updateGym(gymInEdit))
-              navigation.navigate('WorkoutsScreen')
-            }
-            }}
-        />
-      </View>
     </View>
   );
 };

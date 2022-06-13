@@ -17,16 +17,14 @@ const ExerciseSubcategoryScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Muscles</Text>
       <FlatList
         numColumns={2}
         showsVerticalScrollIndicator={false}
         data={[...musclesDisplay, 'All']}
         renderItem={({item}) => {
-          const title = unCamelCase(item)
           return (
             <ShokenTile
-              title={title}
+              title={item}
               style={styles.tile}
               addNew={false}
               accessibilityLabel={item}

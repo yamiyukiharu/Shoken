@@ -115,6 +115,10 @@ export interface TExerciseSetEditProps extends TExerciseSetIndexer {
   weight: number;
 }
 
+export interface TExerciseNotesEditProps extends TExerciseIndexer {
+  notes: string;
+}
+
 // =================== USER ====================
 
 export type TUser = {

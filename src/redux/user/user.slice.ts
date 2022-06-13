@@ -157,6 +157,18 @@ export const endWorkout = createAsyncThunk(
     try {
       const state: TUserState = getState().user as TUserState;
 
+      // replace workout template if they have the same name
+      const savedWorkouts = [...state.user.savedWorkouts];
+      const foundIdx = savedWorkouts.findIndex(
+        workout => workout.name === currentWorkoutTemplate.name,
+      );
+      if (foundIdx !== -1) {
+        savedWorkouts[foundIdx] = currentWorkoutTemplate;
+      } else {
+        savedWorkouts.push(currentWorkoutTemplate);
+      }
+
+      // add to workout history
       const endTime = new Date()
       const workoutHistory: TWorkoutHistory = {
         workoutTemplate: currentWorkoutTemplate,
@@ -198,6 +210,7 @@ export const endWorkout = createAsyncThunk(
       // write to firestore
       const user: TUser = {
         ...state.user,
+        savedWorkouts: savedWorkouts,
         workoutHistory: [...state.user.workoutHistory, workoutHistory],
         exerciseHistory: exerciseHistory,
       };

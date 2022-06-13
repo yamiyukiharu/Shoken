@@ -59,7 +59,7 @@ const AppBody = () => {
                     <MaterialIcon name={'hexagon'} size={size} color={color} />
                   );
                   break;
-                case 'Workouts':
+                case 'Workout':
                   return (
                     <MaterialIcon name={'dumbbell'} size={size} color={color} />
                   );
@@ -88,11 +88,11 @@ const AppBody = () => {
                   break;
               }
             },
-            tabBarActiveTintColor: 'tomato',
-            tabBarInactiveTintColor: 'gray',
+            tabBarActiveTintColor: '#0261fa',
+            tabBarInactiveTintColor: '#AAAAAA',
             headerShown: false,
           })}>
-          <Tab.Screen name="Workouts" component={WorkoutsStackScreen} />
+          <Tab.Screen name="Workout" component={WorkoutsStackScreen} />
           <Tab.Screen name="Community" component={HomeScreen} />
           <Tab.Screen name="Home" component={SignInScreen} />
           <Tab.Screen name="Nutrition" component={HomeScreen} />

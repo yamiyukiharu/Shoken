@@ -20,6 +20,7 @@ import ShokenTile from '../../components/shoken-tile/shoken-tile.component';
 import {setCurrentGym} from '../../redux/gyms/gyms.slice';
 import {getExercises, resetNewWorkout, setCurrentMuscleCategory} from '../../redux/workouts/workouts.slice';
 import ExerciseCategories from '../../components/exercise-categories/exercise-categories.component';
+import { stringToColour } from '../../utils/utils';
 
 const WorkoutsScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>();
@@ -75,7 +76,7 @@ const WorkoutsScreen = () => {
                     accessibilityLabel={item.gym.name}
                     addNew={false}
                     details={item.gym.name}
-                    style={styles.gymTile}
+                    style={[styles.gymTile, {backgroundColor: stringToColour(item.gym.name)}]}
                     onPress={() => {
                       dispatch(setCurrentGym(item));
                       navigation.navigate('GymDetailsScreen', {mode: 'edit'});
@@ -88,7 +89,7 @@ const WorkoutsScreen = () => {
         </View>
 
         <Text style={styles.sectionTitle}>Workouts</Text>
-        <View style={styles.exerciseContainer}>
+        <View style={styles.workoutsContainer}>
           <ShokenTile
             accessibilityLabel='new workout'
             addNew={true}
@@ -103,15 +104,15 @@ const WorkoutsScreen = () => {
               <ShokenTile
                 accessibilityLabel={workout.name}
                 key={idx}
-                title={workout.name}
+                details={workout.name}
                 addNew={false}
-                style={styles.workoutTile}
+                style={[styles.workoutTile, {backgroundColor: stringToColour(workout.name)}]}
                 onPress={() => {navigation.navigate('WorkoutDetailsScreen', {arrayIndex: idx})}}/>
             ))
           }
         </View>
         <Text style={styles.sectionTitle}>Exercises</Text>
-        <ExerciseCategories/>
+        <ExerciseCategories mode='view'/>
       </ScrollView>
     </View>
   );
@@ -122,6 +123,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1,
     flexGrow: 1,
+    backgroundColor: 'white'
   },
   sectionTitle: {
     fontWeight: 'bold',
@@ -130,22 +132,22 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   gymContainer: {
-    paddingLeft: 10,
+    paddingLeft: 18,
     paddingBottom: 10,
+
   },
   gymTile: {
     height: 100,
     width: 100,
   },
   workoutTile: {
-    height: 120,
-    width: 120,
+    height: 100,
+    width: 100,
   },
-  exerciseContainer: {
+  workoutsContainer: {
     flexWrap: 'wrap',
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingHorizontal: 18,
   },
 });
 

@@ -8,6 +8,7 @@ import MyImagePicker from '../../components/image-picker/image-picker.component'
 import {useAppSelector, useAppDispatch} from '../../redux/hooks';
 import {gymInitialState, setGymInEdit} from '../../redux/gyms/gyms.slice';
 import {WorkoutsNavProp, GymEditScreenRouteProp} from '../../../types';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const GymEditScreen = () => {
   const navigation = useNavigation<WorkoutsNavProp>();
@@ -54,7 +55,9 @@ const GymEditScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled">
       <MyImagePicker />
       <View style={styles.formContainer}>
         <Text> Gym Name: * </Text>
@@ -93,7 +96,7 @@ const GymEditScreen = () => {
           onPress={() => navigation.navigate('GymEquipmentCategoriesScreen')}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

@@ -18,8 +18,8 @@ import {
   TExerciseIndexer,
   TExerciseSetIndexer,
   TExerciseSetEditProps,
+  TExerciseNotesEditProps,
 } from '../../utils/firebase/types';
-import {getCurrentDate} from '../../utils/utils';
 
 const emptyAllExercises = {
   arms: {},
@@ -73,7 +73,6 @@ type TWorkoutsState = {
   currentWorkoutTemplate: TWorkoutTemplate;
 
   getAllExercisesLoading: boolean;
-  exerciseSearchString: string;
 };
 
 const workoutsInitialState: TWorkoutsState = {
@@ -100,7 +99,6 @@ const workoutsInitialState: TWorkoutsState = {
     exercises: {...emptyAllExercises},
   },
 
-  exerciseSearchString: '',
   muscleCategoriesDisplay: [],
   musclesDisplay: [],
   exercisesReverseMap: {},
@@ -169,22 +167,6 @@ const workoutsSlice = createSlice({
           state.exerciseListDisplay[name] = false;
         }
       });
-    },
-    setExerciseSearchString: (
-      state: TWorkoutsState,
-      action: PayloadAction<string>,
-    ) => {
-      state.exerciseSearchString = action.payload;
-
-      // filter exercises to display
-      const filteredExercises: TExerciseListDispay = {};
-      Object.keys(state.exerciseListDisplay).forEach(
-        name =>
-          (filteredExercises[name] = name
-            .toLocaleLowerCase()
-            .includes(action.payload)),
-      );
-      state.exerciseListDisplay = filteredExercises;
     },
     setCurrentViewingExercise: (
       state: TWorkoutsState,
@@ -361,6 +343,10 @@ const workoutsSlice = createSlice({
         exerciseId
       ].sets[index].weight = weight;
     },
+    setNotesinWorkoutTemplateExercise: (state: TWorkoutsState, action: PayloadAction<TExerciseNotesEditProps>) => {
+      const {muscleCategory, muscleName, exerciseId, notes} = action.payload;
+      state.currentWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].notes = notes;
+    },
     resetNewWorkout: (state: TWorkoutsState) => {
       state.currentWorkoutTemplate =
         workoutsInitialState.currentWorkoutTemplate;
@@ -410,7 +396,6 @@ const workoutsSlice = createSlice({
 });
 
 export const {
-  setExerciseSearchString,
   setCurrentMuscle,
   setCurrentMuscleCategory,
   setCurrentViewingExercise,
@@ -426,5 +411,6 @@ export const {
   removeSetFromWorkoutTemplateExercise,
   editSetInWorkoutTemplateExercise,
   startWorkoutFromTemplate,
+  setNotesinWorkoutTemplateExercise,
 } = workoutsSlice.actions;
 export default workoutsSlice.reducer;

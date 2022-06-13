@@ -84,6 +84,7 @@ const GymEquipmentListScreen = () => {
             <SearchEntry
               title={item.name}
               isEditable={mode === 'edit'}
+              isClickable={false}
               isAdded={isAdded}
               onPlusTapped={onPlusTapped}
               onCheckTapped={onCheckTapped}

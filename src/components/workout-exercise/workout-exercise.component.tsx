@@ -8,11 +8,14 @@ import {
 } from 'react-native';
 import {Swipeable} from 'react-native-gesture-handler';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
-import {TExerciseIndexer, TMuscleCategory} from '../../utils/firebase/types';
+import {TExerciseIndexer} from '../../utils/firebase/types';
 import {capitalizeWords} from '../../utils/utils';
 import SetsTable from '../sets-table/sets-table.component';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import {removeExerciseFromWorkoutTemplate} from '../../redux/workouts/workouts.slice';
+import {
+  removeExerciseFromWorkoutTemplate,
+  setNotesinWorkoutTemplateExercise,
+} from '../../redux/workouts/workouts.slice';
 
 const WorkoutExercise: React.FC<TExerciseIndexer> = ({
   muscleCategory,
@@ -26,20 +29,24 @@ const WorkoutExercise: React.FC<TExerciseIndexer> = ({
   const exerciseName =
     allFlattenedExercises[muscleCategory][muscleName][exerciseId].name;
   const notes =
-    currentWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].notes;
+    currentWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId]
+      .notes;
   const sets =
-    currentWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId].sets;
+    currentWorkoutTemplate.exercises[muscleCategory][muscleName][exerciseId]
+      .sets;
 
   const swipeRightActionView = () => {
     return (
       <TouchableOpacity
         style={styles.actionViewContainer}
         onPress={() => {
-          dispatch(removeExerciseFromWorkoutTemplate({
-            muscleCategory,
-            muscleName,
-            exerciseId,
-          }));
+          dispatch(
+            removeExerciseFromWorkoutTemplate({
+              muscleCategory,
+              muscleName,
+              exerciseId,
+            }),
+          );
         }}>
         <MaterialIcon
           style={{padding: 2, color: 'white'}}
@@ -67,7 +74,17 @@ const WorkoutExercise: React.FC<TExerciseIndexer> = ({
               <TextInput
                 style={styles.notesContainer}
                 placeholder="Notes"
-                value={notes}
+                defaultValue={notes}
+                onChangeText={(text) =>
+                  dispatch(
+                    setNotesinWorkoutTemplateExercise({
+                      muscleCategory,
+                      muscleName,
+                      exerciseId,
+                      notes: text,
+                    }),
+                  )
+                }
               />
             </View>
           </View>

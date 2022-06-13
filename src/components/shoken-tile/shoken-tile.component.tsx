@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { capitalizeWords, unCamelCase } from '../../utils/utils';
 
 interface Props {
   style: StyleProp<ViewStyle>;
@@ -25,10 +26,10 @@ const ShokenTile: React.FC<Props> = props => {
     <TouchableOpacity
       accessible={true}
       {...props}
-      style={[props.style, styles.container]}>
+      style={[styles.container, props.style ]}>
       {props.title && (
         <Text style={styles.title}>
-          {props.title && props.title.toLocaleUpperCase()}
+          {props.title && capitalizeWords(unCamelCase(props.title))}
         </Text>
       )}
       {props.addNew && <MaterialIcon name={'plus-circle-outline'} size={30} />}
@@ -43,15 +44,15 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'space-around',
     alignItems: 'center',
-    marginHorizontal: 10,
+    marginHorizontal: 8,
     marginVertical: 10,
     padding: 10,
     flexDirection: 'column',
     backgroundColor: 'white',
     borderRadius: 10,
     shadowColor: '0x000000',
-    shadowRadius: 2,
-    shadowOpacity: 0.4,
+    shadowRadius: 1,
+    shadowOpacity: 0.5,
     shadowOffset: {
       width: 0,
       height: 0,
@@ -59,9 +60,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   details: {
     fontSize: 14,
+    fontWeight: 'bold',
   },
 });
 

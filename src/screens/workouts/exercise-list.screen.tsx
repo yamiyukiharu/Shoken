@@ -1,23 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import SearchBar from '../../components/search-bar/search-bar.component';
 import {FlatList} from 'react-native-gesture-handler';
-import { addExerciseToWorkoutTemplate_list, removeExerciseFromWorkoutTemplate_list, setCurrentViewingExercise, setExerciseSearchString } from '../../redux/workouts/workouts.slice';
+import { addExerciseToWorkoutTemplate_list, removeExerciseFromWorkoutTemplate_list, setCurrentViewingExercise } from '../../redux/workouts/workouts.slice';
 import SearchEntry from '../../components/search-entry/search-entry.component';
 import { ExerciseListScreenRouteProp, ExercisesNavProp, WorkoutsNavProp } from '../../../types';
 
 const ExerciseListScreen = () => {
 
+  const [searchString, setSearchString] = useState('')
+
   const dispatch = useAppDispatch();
-  const {exerciseListDisplay, currentWorkoutTemplate} = useAppSelector(state => state.workouts)
+  const {exerciseListDisplay} = useAppSelector(state => state.workouts)
+  // filter exercises to display
+  const filteredExercises = Object.keys(exerciseListDisplay).filter(name => name.toLocaleLowerCase().includes(searchString))
+
   
   const route = useRoute<ExerciseListScreenRouteProp>()
   const navigation = useNavigation<ExercisesNavProp>()
 
   const onSearchStringChange = (text: string) => {
-    dispatch(setExerciseSearchString(text.toLocaleLowerCase()));
+    setSearchString(text.toLocaleLowerCase());
   };
   
   return (
@@ -28,7 +33,7 @@ const ExerciseListScreen = () => {
       />
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={Object.keys(exerciseListDisplay)}
+        data={filteredExercises}
         renderItem={({item}) => {
           const isAdded = exerciseListDisplay[item]
 
@@ -51,7 +56,7 @@ const ExerciseListScreen = () => {
             <SearchEntry
               title={item}
               isEditable={route.params.mode === 'add'}
-              isClickable={true}
+              isClickable={route.params.mode === 'view'}
               isAdded={isAdded}
               onPlusTapped={onPlusTapped}
               onCheckTapped={onCheckTapped}

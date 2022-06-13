@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, StyleSheet, Modal, Button, Alert} from 'react-native';
+import {Text, View, StyleSheet, Modal, Button, Alert, KeyboardAvoidingView} from 'react-native';
 import NormalButton from '../../components/normal-button/normal-button.component';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import MyTextInput from '../../components/my-text-input/my-text-input.component';
@@ -18,12 +18,14 @@ const GymEditScreen = () => {
   const gym = gymInEdit.gym;
 
   useEffect(() => {
-    navigation.setOptions(
-      route.params.mode === 'new'
-        ? {
-            headerTitle: 'Create New Gym',
-          }
-        : {headerTitle: 'Edit Gym'},
+    navigation.setOptions({
+      headerTitle: route.params.mode === 'new' ? 'Create New Gym' : 'Edit Gym',
+      headerRight: () => {
+        return(
+          <Button title='Next' onPress={() => navigation.navigate('GymEquipmentCategoriesScreen')}/>
+        )
+      }
+    }
     );
   }, []);
 
@@ -55,6 +57,7 @@ const GymEditScreen = () => {
   };
 
   return (
+    <KeyboardAvoidingView>
     <ScrollView
       contentContainerStyle={styles.container}
       keyboardShouldPersistTaps="handled">
@@ -79,24 +82,8 @@ const GymEditScreen = () => {
           onChangeText={onSizeChange}
         />
       </View>
-
-      <View style={styles.buttonsContainer}>
-        <NormalButton
-          text={'Cancel'}
-          inverted={true}
-          onPress={() => {
-            // reset gymInEdit to empty state
-            dispatch(setGymInEdit(gymInitialState.gymInEdit));
-            navigation.goBack();
-          }}
-        />
-        <NormalButton
-          style={styles.button}
-          text={'Next'}
-          onPress={() => navigation.navigate('GymEquipmentCategoriesScreen')}
-        />
-      </View>
     </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

@@ -148,6 +148,31 @@ export const saveUserWorkoutTemplate = createAsyncThunk(
   },
 );
 
+export const removeUserWorkoutTemplate = createAsyncThunk(
+  'user/removeUserWorkoutTemplate',
+  async (
+    currentWorkoutTemplate: TWorkoutTemplate,
+    {getState, rejectWithValue},
+  ) => {
+    try {
+      const state: TUserState = getState().user as TUserState;
+      const user: TUser = {
+        ...state.user,
+      };
+      user.savedWorkouts = user.savedWorkouts.filter(
+        workout => workout.name !== currentWorkoutTemplate.name,
+      );
+      setUserFirestore({
+        id: state.uid,
+        user: user,
+      });
+      return user;
+    } catch (err) {
+      return rejectWithValue('Error removing user workout');
+    }
+  },
+);
+
 export const endWorkout = createAsyncThunk(
   'user/endWorkout',
   async (
@@ -169,7 +194,7 @@ export const endWorkout = createAsyncThunk(
       }
 
       // add to workout history
-      const endTime = new Date()
+      const endTime = new Date();
       const workoutHistory: TWorkoutHistory = {
         workoutTemplate: currentWorkoutTemplate,
         startTime: state.workoutStartTime,
@@ -178,21 +203,23 @@ export const endWorkout = createAsyncThunk(
 
       // insert exercise records into user exerciseHistory data structue
       const exercises = currentWorkoutTemplate.exercises;
-      const exerciseHistory = JSON.parse(JSON.stringify(state.user.exerciseHistory));
+      const exerciseHistory = JSON.parse(
+        JSON.stringify(state.user.exerciseHistory),
+      );
 
       Object.keys(exercises).forEach(cat => {
         const category = cat as TMuscleCategory;
-        
+
         Object.keys(exercises[category]).forEach(muscle => {
-          console.log(state.user)
-          
+          console.log(state.user);
+
           if (exerciseHistory[category][muscle] === undefined) {
             exerciseHistory[category][muscle] = {};
-            console.log('undefined')
+            console.log('undefined');
           }
-          console.log('passed')
+          console.log('passed');
           Object.keys(exercises[category][muscle]).forEach(id => {
-            console.log(id)
+            console.log(id);
 
             if (exerciseHistory[category][muscle][id] === undefined) {
               exerciseHistory[category][muscle][id] = [];
@@ -237,7 +264,7 @@ const userSlice = createSlice({
       state.uid = '';
     },
     startWorkout: (state: TUserState) => {
-      const startTime = new Date()
+      const startTime = new Date();
       state.workoutStartTime = startTime.toJSON();
     },
   },
@@ -274,6 +301,12 @@ const userSlice = createSlice({
       state.user = action.payload;
     },
     [saveUserWorkoutTemplate.fulfilled.toString()]: (
+      state: TUserState,
+      action: PayloadAction<TUser>,
+    ) => {
+      state.user = action.payload;
+    },
+    [removeUserWorkoutTemplate.fulfilled.toString()]: (
       state: TUserState,
       action: PayloadAction<TUser>,
     ) => {

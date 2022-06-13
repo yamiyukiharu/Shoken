@@ -12,7 +12,7 @@ import {TMuscleCategory} from '../../utils/firebase/types';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDispatch } from 'react-redux';
 import { startWorkoutFromTemplate } from '../../redux/workouts/workouts.slice';
-import { startWorkout } from '../../redux/user/user.slice';
+import { removeUserWorkoutTemplate, startWorkout } from '../../redux/user/user.slice';
 
 
 const WorkoutDetailsScreen = () => {
@@ -37,7 +37,7 @@ const WorkoutDetailsScreen = () => {
   }
 
   const onRemoveTapped = () => {
-    // TODO: remove workout template from user state and firestore
+    dispatch(removeUserWorkoutTemplate(workout))
     navigation.navigate('WorkoutsScreen')
   }
 

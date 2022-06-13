@@ -64,7 +64,9 @@ const WorkoutExercise: React.FC<TExerciseIndexer> = ({
         renderRightActions={(progress, dragX) => swipeRightActionView()}>
         <View style={styles.contents}>
           <View style={styles.firstRow}>
-            <View style={styles.exerciseImage} />
+            <View style={styles.exerciseImage}>
+              <Text style={styles.placeholderImage}>{exerciseName.toUpperCase().charAt(0)}</Text>
+            </View>
             <View style={styles.titleContainer}>
               <View style={{flexDirection: 'row'}}>
                 <Text style={styles.title}>
@@ -140,6 +142,25 @@ const styles = StyleSheet.create({
     marginTop: 2,
     flex: 1,
   },
+  exerciseImage: {
+    height: 80,
+    width: 80,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#31445d',
+    shadowColor: '#14494b',
+    shadowRadius: 1,
+    shadowOpacity: 0.5,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+  },
+  placeholderImage: {
+    fontSize: 30,
+    color: 'white',
+  },
   notesContainer: {
     borderRadius: 5,
     borderWidth: 1,
@@ -148,11 +169,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginRight: 10,
     height: 30,
-  },
-  exerciseImage: {
-    height: 80,
-    width: 80,
-    borderWidth: 1,
   },
   actionViewContainer: {
     backgroundColor: 'red',

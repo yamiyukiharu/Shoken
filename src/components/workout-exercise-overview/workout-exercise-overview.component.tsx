@@ -20,10 +20,12 @@ const WorkoutExerciseOverview: React.FC<Props> = ({exercises}) => {
     return (
       <View style={styles.entryContainer}>
         <View style={styles.imageColumn}>
-          <View style={styles.imageContainer}></View>
+          <View style={styles.imageContainer}>
+            <Text style={styles.placeholderImage}>{name.toUpperCase().charAt(0)}</Text>
+          </View>
         </View>
         <View style={styles.exerciseColumn}>
-          <Text style={styles.entryLabel}>{capitalizeWords(name)}</Text>
+          <Text style={[styles.entryLabel, {alignSelf: 'flex-start'}]}>{capitalizeWords(name)}</Text>
         </View>
         <View style={styles.setsColumn}>
           <Text style={styles.entryLabel}>{sets}</Text>
@@ -67,6 +69,7 @@ const styles = StyleSheet.create({
   headerRow: {
     flexDirection: 'row',
     paddingBottom: 4,
+    marginBottom: 4,
     borderBottomWidth: 1,
   },
   headerLabel: {
@@ -92,11 +95,26 @@ const styles = StyleSheet.create({
   entryContainer: {
     marginVertical: 5,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   imageContainer: {
     height: 90,
     width: 90,
-    borderWidth: 1,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#31445d',
+    shadowColor: '#14494b',
+    shadowRadius: 1,
+    shadowOpacity: 0.5,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+  },
+  placeholderImage: {
+    fontSize: 30,
+    color: 'white',
   },
 });
 

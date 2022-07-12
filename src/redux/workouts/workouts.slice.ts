@@ -5,7 +5,7 @@ import {
   PayloadAction,
 } from '@reduxjs/toolkit';
 import {flattenAllExercises} from '../../utils/exercises';
-import {getAllExercisesFirestore} from '../../utils/firebase/firestore.utils';
+import {getAllExercisesDb} from '../../utils/firebase/firestore.utils';
 import {
   TAllFlattenedExercises,
   TAllExercises,
@@ -110,7 +110,7 @@ export const getExercises = createAsyncThunk(
   'workouts/getExercises',
   async () => {
     try {
-      return await getAllExercisesFirestore();
+      return await getAllExercisesDb();
     } catch {
       console.log('error getting workouts');
     }

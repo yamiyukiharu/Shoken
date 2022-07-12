@@ -1,8 +1,8 @@
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {
-  getUserFirestore,
-  setUserFirestore,
+  getUserDb,
+  setUserDb,
 } from '../../utils/firebase/firestore.utils';
 import {
   TFbGymEntry,
@@ -56,7 +56,7 @@ export const setUser = createAsyncThunk(
   'user/setUser',
   async (user: FirebaseAuthTypes.User, {rejectWithValue}) => {
     try {
-      const userDb = await getUserFirestore(user);
+      const userDb = await getUserDb(user);
       return {
         id: user.uid,
         user: {...emptyUser, ...userDb},
@@ -80,7 +80,7 @@ export const addUserGym = createAsyncThunk(
       if (!state.user.savedGyms.includes(gymEntry.id)) {
         user.savedGyms = [...state.user.savedGyms, gymEntry.id];
       }
-      setUserFirestore({
+      setUserDb({
         id: state.uid,
         user: user,
       });
@@ -101,7 +101,7 @@ export const removeUserGym = createAsyncThunk(
         savedGyms: [...state.user.savedGyms],
       };
       user.savedGyms = user.savedGyms.filter(gymId => gymId !== gymEntry.id);
-      setUserFirestore({
+      setUserDb({
         id: state.uid,
         user: user,
       });
@@ -137,7 +137,7 @@ export const saveUserWorkoutTemplate = createAsyncThunk(
         ...state.user,
         savedWorkouts: savedWorkouts,
       };
-      setUserFirestore({
+      setUserDb({
         id: state.uid,
         user: user,
       });
@@ -162,7 +162,7 @@ export const removeUserWorkoutTemplate = createAsyncThunk(
       user.savedWorkouts = user.savedWorkouts.filter(
         workout => workout.name !== currentWorkoutTemplate.name,
       );
-      setUserFirestore({
+      setUserDb({
         id: state.uid,
         user: user,
       });
@@ -242,7 +242,7 @@ export const endWorkout = createAsyncThunk(
         exerciseHistory: exerciseHistory,
       };
 
-      setUserFirestore({
+      setUserDb({
         id: state.uid,
         user: user,
       });

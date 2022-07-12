@@ -12,6 +12,10 @@ GoogleSignin.configure();
 
 const SignInScreen = () => {
 
+  const testFetch = async () => {
+    console.log(await auth().currentUser?.getIdTokenResult())
+  }
+
   const onGoogleSignInTapped = async () => {
     await onGoogleButtonPress()
   }
@@ -41,6 +45,11 @@ const SignInScreen = () => {
           style={styles.googleSignIn}>
           <MaterialIcon name={'google'} size={18}/>
           <Text style={{marginLeft:10, color: '#222222'}}>Sign in with Google</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={testFetch}
+          style={styles.googleSignIn}>
+          <Text style={{marginLeft:10, color: '#222222'}}>Test fetch</Text>
         </TouchableOpacity>
     </View>
   );

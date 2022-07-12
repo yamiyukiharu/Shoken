@@ -44,17 +44,17 @@ const mockUser:TUser = {
   savedWorkouts: [],
 }
 
-export const getGymsFirestore = async (): Promise<TGyms> => {
+export const getGymsDb = async (): Promise<TGyms> => {
   return {
     'mockGym': mockGym
   }
 };
 
-export const getUserFirestore:(user:FirebaseAuthTypes.User) => Promise<TUser> = async (user) => {
+export const getUserDb:(user:FirebaseAuthTypes.User) => Promise<TUser> = async (user) => {
   return mockUser
 }
 
-// export const createNewGymFirestore = async (gymDetails: TGym):Promise<TGym> => {
+// export const createNewGymDb = async (gymDetails: TGym):Promise<TGym> => {
 //     try {
 //         await firestore().collection('gyms').add(gymDetails)
 //         return gymDetails
@@ -63,7 +63,7 @@ export const getUserFirestore:(user:FirebaseAuthTypes.User) => Promise<TUser> = 
 //     }
 // }
 
-// export const getEquipmentFirestore = async():Promise<TAllEquipment> => {
+// export const getEquipmentDb = async():Promise<TAllEquipment> => {
 //     try {
 //         const documentSnapshot = await firestore().collection('equipment').doc('generic').get()
 //         const data =  documentSnapshot.data() as TAllEquipment

@@ -6,10 +6,10 @@ import {
 } from '@reduxjs/toolkit';
 
 import {
-  createNewGymFirestore,
-  getGymsFirestore,
-  getEquipmentFirestore,
-  updateGymFirestore,
+  createNewGymDb,
+  getGymsDb,
+  getEquipmentDb,
+  updateGymDb,
 } from '../../utils/firebase/firestore.utils';
 
 import {
@@ -78,7 +78,7 @@ export const createNewGym = createAsyncThunk(
   'gyms/createNewGym',
   async (gymDetails: TGym, {rejectWithValue}) => {
     try {
-      return await createNewGymFirestore(gymDetails);
+      return await createNewGymDb(gymDetails);
     } catch (err) {
       return rejectWithValue('Error creating new gym');
     }
@@ -89,7 +89,7 @@ export const updateGym = createAsyncThunk(
   'gyms/updateGym',
   async (gymDetails: TFbGymEntry, {rejectWithValue}) => {
     try {
-      return await updateGymFirestore(gymDetails);
+      return await updateGymDb(gymDetails);
     } catch (err) {
       return rejectWithValue('Error creating new gym');
     }
@@ -100,7 +100,7 @@ export const getGyms = createAsyncThunk(
   'gyms/getGyms',
   async (_, {rejectWithValue}) => {
     try {
-      return await getGymsFirestore();
+      return await getGymsDb();
     } catch (err) {
       return rejectWithValue('Error getting gyms');
     }
@@ -111,7 +111,7 @@ export const getAllEquipment = createAsyncThunk(
   'gyms/getAllEquipment',
   async (_, {rejectWithValue}) => {
     try {
-      return await getEquipmentFirestore();
+      return await getEquipmentDb();
     } catch (err) {
       return rejectWithValue('Error getting all equipment');
     }

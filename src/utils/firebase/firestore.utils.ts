@@ -1,13 +1,25 @@
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 import { TGym, TAllEquipment, TUser, TFbGymEntry, TGyms, TFbUserEntry, TAllFlattenedExercises, TAllExercises } from './types';
 import { emptyUser } from '../../redux/user/user.slice';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { allExercises } from '../exercises';
 
+const API_URL = "http://localhost:8000/v1/"
+
 // ================== EXERCISES =======================
 
 // TODO: replace with call to firebase
-export const getAllExercisesFirestore = async ():Promise<TAllExercises> => {
+export const getAllExercisesDb = async ():Promise<TAllExercises> => {
+    const token = (await auth().currentUser!.getIdTokenResult()).token
+    const response = await fetch(API_URL + 'exercises', {
+        method: 'GET',
+        headers: {
+            Authorization: 'Bearer ' + token
+        }        
+    })
+    const allExercises = await response.json()
+    console.log(allExercises)
     return allExercises
 }
 
@@ -20,7 +32,7 @@ export const getAllExercisesFirestore = async ():Promise<TAllExercises> => {
 // ==================== USER =========================
 
 
-export const getUserFirestore:(user:FirebaseAuthTypes.User) => Promise<TUser> = async (user) => {
+export const getUserDb:(user:FirebaseAuthTypes.User) => Promise<TUser> = async (user) => {
     try {
         const documentSnapshot = await firestore().collection('users').doc(user.uid).get()
         let userData = documentSnapshot.data() as TUser
@@ -43,14 +55,14 @@ export const getUserFirestore:(user:FirebaseAuthTypes.User) => Promise<TUser> = 
     }
 }
 
-export const setUserFirestore:(userEntry: TFbUserEntry) => boolean = (userEntry) => {
+export const setUserDb:(userEntry: TFbUserEntry) => boolean = (userEntry) => {
     firestore().collection('users').doc(userEntry.id).set(userEntry.user).catch(err => {console.log(err)})
     return true
 }
 
 // =============== GYM & EQUIPMENT ===================
 
-export const createNewGymFirestore = async (gymDetails: TGym):Promise<TFbGymEntry> => {
+export const createNewGymDb = async (gymDetails: TGym):Promise<TFbGymEntry> => {
     try {
         const documentReference = await firestore().collection('gyms').add(gymDetails)
         return {
@@ -62,7 +74,7 @@ export const createNewGymFirestore = async (gymDetails: TGym):Promise<TFbGymEntr
     }
 }
 
-export const updateGymFirestore = async (gymEntry: TFbGymEntry):Promise<TFbGymEntry> => {
+export const updateGymDb = async (gymEntry: TFbGymEntry):Promise<TFbGymEntry> => {
     try {
         await firestore().collection('gyms').doc(gymEntry.id).set(gymEntry.gym)
         return gymEntry
@@ -71,7 +83,7 @@ export const updateGymFirestore = async (gymEntry: TFbGymEntry):Promise<TFbGymEn
     }
 }
 
-export const getGymsFirestore = async ():Promise<TGyms> => {
+export const getGymsDb = async ():Promise<TGyms> => {
     try {
         const querySnapshot = await firestore().collection('gyms').get();
         let gyms:TGyms = {}
@@ -85,7 +97,7 @@ export const getGymsFirestore = async ():Promise<TGyms> => {
     }
 }
 
-export const getEquipmentFirestore = async():Promise<TAllEquipment> => {
+export const getEquipmentDb = async():Promise<TAllEquipment> => {
     try {
         const documentSnapshot = await firestore().collection('equipment').doc('generic').get()
         const data =  documentSnapshot.data() as TAllEquipment

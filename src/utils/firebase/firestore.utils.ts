@@ -7,15 +7,29 @@ import { allExercises } from '../exercises';
 
 const API_URL = "http://localhost:8000/v1/"
 
-const getFromEndpoint = async (endpoint:string):Response => {
+const getFromEndpoint = async (endpoint:string):Promise<Response> => {
     const token = (await auth().currentUser!.getIdTokenResult()).token
     return await fetch(API_URL + endpoint, {
         method: 'GET',
+        mode: 'cors',
         headers: {
             Authorization: 'Bearer ' + token
         }        
     })
+}
 
+const postToEndpoint = async (endpoint:string, data:string):Promise<Response> => {
+    const token = (await auth().currentUser!.getIdTokenResult()).token
+    return await fetch(API_URL + endpoint, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: data    
+    })
 }
 
 // ================== EXERCISES =======================
@@ -73,9 +87,10 @@ export const setUserDb:(userEntry: TFbUserEntry) => boolean = (userEntry) => {
 
 export const createNewGymDb = async (gymDetails: TGym):Promise<TFbGymEntry> => {
     try {
-        const documentReference = await firestore().collection('gyms').add(gymDetails)
+        const response = await postToEndpoint('gyms', JSON.stringify(gymDetails))
+        const gymDoc = await response.json()
         return {
-            id: documentReference.id,
+            id: gymDoc._id,
             gym: gymDetails,
         }
     } catch (err) {
@@ -85,8 +100,9 @@ export const createNewGymDb = async (gymDetails: TGym):Promise<TFbGymEntry> => {
 
 export const updateGymDb = async (gymEntry: TFbGymEntry):Promise<TFbGymEntry> => {
     try {
-        await firestore().collection('gyms').doc(gymEntry.id).set(gymEntry.gym)
-        return gymEntry
+        const response = await postToEndpoint('gyms', JSON.stringify(gymEntry.gym))
+        const gymDoc = await response.json()
+        return {id: gymDoc._id, gym: gymDoc} as TFbGymEntry
     } catch (err) {
         throw err
     }
@@ -94,23 +110,17 @@ export const updateGymDb = async (gymEntry: TFbGymEntry):Promise<TFbGymEntry> =>
 
 export const getGymsDb = async ():Promise<TGyms> => {
     try {
-        const querySnapshot = await firestore().collection('gyms').get();
-        let gyms:TGyms = {}
-        querySnapshot.forEach(documentSnapshot => {
-            gyms[documentSnapshot.id] = documentSnapshot.data() as TGym
-
-        })
-        return gyms;
+        const response = await getFromEndpoint('gyms')
+        return await response.json() as TGyms
     } catch (err) {
         throw err
     }
 }
 
-export const getEquipmentDb = async():Promise<TAllEquipment> => {
+export const getAllEquipmentDb = async():Promise<TAllEquipment> => {
     try {
         const response = await getFromEndpoint('equipment')
         const allEquipment = await response.json() as TAllEquipment
-        console.log(allEquipment)
         return allEquipment
     } catch (err) {
         throw err

@@ -8,7 +8,7 @@ import {
 import {
   createNewGymDb,
   getGymsDb,
-  getEquipmentDb,
+  getAllEquipmentDb,
   updateGymDb,
 } from '../../utils/firebase/firestore.utils';
 
@@ -111,7 +111,7 @@ export const getAllEquipment = createAsyncThunk(
   'gyms/getAllEquipment',
   async (_, {rejectWithValue}) => {
     try {
-      return await getEquipmentDb();
+      return await getAllEquipmentDb();
     } catch (err) {
       return rejectWithValue('Error getting all equipment');
     }

@@ -60,7 +60,7 @@ export const getUserDb:(user:FirebaseAuthTypes.User) => Promise<TUser> = async (
 //     }
 // }
 
-// export const getEquipmentDb = async():Promise<TAllEquipment> => {
+// export const getAllEquipmentDb = async():Promise<TAllEquipment> => {
 //     try {
 //         const documentSnapshot = await firestore().collection('equipment').doc('generic').get()
 //         const data =  documentSnapshot.data() as TAllEquipment

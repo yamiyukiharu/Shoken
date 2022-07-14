@@ -38,13 +38,13 @@ export type TEditGymEquipment = {
 };
 
 const emptyEquipment: TAllEquipment = {
-  bars: [],
+  barbells: [],
   benches: [],
   cardio: [],
   machines: [],
   racks: [],
-  dumbbells: [],
-  cableAttachment: [],
+  weights: [],
+  cableAttachments: [],
   others: [],
 }
 

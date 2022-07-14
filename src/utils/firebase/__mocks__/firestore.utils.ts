@@ -1,8 +1,5 @@
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import type {
-  TAllEquipment,
-  TEquipmentCategories,
-  TEquipment,
   TGym,
   TUser,
   TGyms,
@@ -18,7 +15,7 @@ export const mockGym: TGym = {
   // ],
   images: [],
   equipment: {
-    bars: [
+    barbells: [
       {
         name: 'fixed barbell',
         weights: ['15kg', '20kg'],
@@ -26,7 +23,7 @@ export const mockGym: TGym = {
     ],
     benches: [],
     cardio: [],
-    dumbbells: [],
+    weights: [],
     machines: [],
     racks: [],
   },

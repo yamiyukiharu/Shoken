@@ -7,20 +7,29 @@ import { allExercises } from '../exercises';
 
 const API_URL = "http://localhost:8000/v1/"
 
-// ================== EXERCISES =======================
-
-// TODO: replace with call to firebase
-export const getAllExercisesDb = async ():Promise<TAllExercises> => {
+const getFromEndpoint = async (endpoint:string):Response => {
     const token = (await auth().currentUser!.getIdTokenResult()).token
-    const response = await fetch(API_URL + 'exercises', {
+    return await fetch(API_URL + endpoint, {
         method: 'GET',
         headers: {
             Authorization: 'Bearer ' + token
         }        
     })
-    const allExercises = await response.json()
-    console.log(allExercises)
-    return allExercises
+
+}
+
+// ================== EXERCISES =======================
+
+// TODO: replace with call to firebase
+export const getAllExercisesDb = async ():Promise<TAllExercises> => {
+    try {
+        const response = await getFromEndpoint('exercises')
+        const allExercises = await response.json()
+        return allExercises
+    } catch(err) {
+        throw err
+    }
+
 }
 
 // TODO: replace with call to firebase
@@ -99,9 +108,10 @@ export const getGymsDb = async ():Promise<TGyms> => {
 
 export const getEquipmentDb = async():Promise<TAllEquipment> => {
     try {
-        const documentSnapshot = await firestore().collection('equipment').doc('generic').get()
-        const data =  documentSnapshot.data() as TAllEquipment
-        return data
+        const response = await getFromEndpoint('equipment')
+        const allEquipment = await response.json() as TAllEquipment
+        console.log(allEquipment)
+        return allEquipment
     } catch (err) {
         throw err
     }

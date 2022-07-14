@@ -139,13 +139,13 @@ export type TUser = {
 // =================== GYM & EQUIPMENT ====================
 
 export type TEquipmentCategories =
-  | 'bars'
+  | 'barbells'
   | 'benches'
   | 'cardio'
-  | 'dumbbells'
+  | 'weights'
   | 'machines'
   | 'racks'
-  | 'cableAttachment'
+  | 'cableAttachments'
   | 'others';
 
 type dict<TValue> = {[key in TEquipmentCategories]: TValue};

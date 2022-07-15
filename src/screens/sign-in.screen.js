@@ -13,7 +13,7 @@ GoogleSignin.configure();
 const SignInScreen = () => {
 
   const testFetch = async () => {
-    console.log(await auth().currentUser?.getIdTokenResult())
+    console.log(await auth().currentUser)
   }
 
   const onGoogleSignInTapped = async () => {

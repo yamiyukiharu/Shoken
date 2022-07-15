@@ -18,7 +18,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import type {WorkoutStackParamList} from './types';
 import {useAppDispatch, useAppSelector} from './src/redux/hooks';
-import {setUser, resetUser} from './src/redux/user/user.slice';
+import {initUser, resetUser} from './src/redux/user/user.slice';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -34,7 +34,7 @@ const AppBody = () => {
     user: FirebaseAuthTypes.User | null,
   ) => void = user => {
     if (user) {
-      dispatch(setUser(user));
+      dispatch(initUser(user));
     } else {
       dispatch(resetUser());
     }

@@ -12,12 +12,12 @@ import { Provider } from "react-redux"
 import { store } from "../src/redux/store"
 
 import { useAppDispatch } from "../src/redux/hooks";
-import { setUser } from "../src/redux/user/user.slice";
+import { initUser } from "../src/redux/user/user.slice";
 
 const MockAppBody = ({children}) => {
     // mock sign in
     const dispatch = useAppDispatch()
-    dispatch(setUser({}))
+    dispatch(initUser({}))
 
     return (
         <NavigationContainer>

@@ -52,11 +52,11 @@ const userInitialState: TUserState = {
   workoutStartTime: '',
 };
 
-export const setUser = createAsyncThunk(
-  'user/setUser',
+export const initUser = createAsyncThunk(
+  'user/initUser',
   async (user: FirebaseAuthTypes.User, {rejectWithValue}) => {
     try {
-      const userDb = await getUserDb(user);
+      const userDb = await getUserDb();
       return {
         id: user.uid,
         user: {...emptyUser, ...userDb},
@@ -269,10 +269,10 @@ const userSlice = createSlice({
     },
   },
   extraReducers: {
-    [setUser.pending.toString()]: (state: TUserState) => {
+    [initUser.pending.toString()]: (state: TUserState) => {
       state.isSigningIn = true;
     },
-    [setUser.fulfilled.toString()]: (
+    [initUser.fulfilled.toString()]: (
       state: TUserState,
       action: PayloadAction<TFbUserEntry>,
     ) => {
@@ -281,7 +281,7 @@ const userSlice = createSlice({
       state.isSigningIn = false;
       state.isSignedIn = true;
     },
-    [setUser.rejected.toString()]: (state: TUserState) => {
+    [initUser.rejected.toString()]: (state: TUserState) => {
       state.isSigningIn = false;
       state.isSignedIn = false;
     },

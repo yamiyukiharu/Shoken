@@ -7,9 +7,17 @@ import { allExercises } from '../exercises';
 
 const API_URL = "http://localhost:8000/v1/"
 
-const getFromEndpoint = async (endpoint:string):Promise<Response> => {
+type THttpQueryParams = {
+    [key:string]: string
+}
+
+const getFromEndpoint = async (endpoint:string, query?:THttpQueryParams):Promise<Response> => {
     const token = (await auth().currentUser!.getIdTokenResult()).token
-    return await fetch(API_URL + endpoint, {
+    let url = API_URL + endpoint
+    if (query) {
+        url += new URLSearchParams(query)
+    }
+    return await fetch(url, {
         method: 'GET',
         mode: 'cors',
         headers: {
@@ -55,22 +63,11 @@ export const getAllExercisesDb = async ():Promise<TAllExercises> => {
 // ==================== USER =========================
 
 
-export const getUserDb:(user:FirebaseAuthTypes.User) => Promise<TUser> = async (user) => {
+export const getUserDb = async ():Promise<TUser> => {
     try {
-        const documentSnapshot = await firestore().collection('users').doc(user.uid).get()
-        let userData = documentSnapshot.data() as TUser
-        //TODO: handle anonymous signin
-        if (!userData) {
-            // new user
-            userData = {...emptyUser}
-            userData.providerId = user.providerId
-            if (user.email !== null)  userData.email = user.email
-            if (user.displayName !== null)  userData.name = user.displayName
-            if (user.photoURL !== null)  userData.image = user.photoURL
-
-            await firestore().collection('users').doc(user.uid).set(userData)
-        }
-        return userData 
+        const response = await getFromEndpoint('user')
+        const user = await response.json() as TUser
+        return user
     } catch (err) {
         console.log(err)
         throw err
@@ -78,9 +75,13 @@ export const getUserDb:(user:FirebaseAuthTypes.User) => Promise<TUser> = async (
     }
 }
 
-export const setUserDb:(userEntry: TFbUserEntry) => boolean = (userEntry) => {
-    firestore().collection('users').doc(userEntry.id).set(userEntry.user).catch(err => {console.log(err)})
-    return true
+export const setUserDb = async (userEntry: TFbUserEntry) => {
+    try {
+        await postToEndpoint('user', JSON.stringify(userEntry.user))
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
 }
 
 // =============== GYM & EQUIPMENT ===================
@@ -94,6 +95,7 @@ export const createNewGymDb = async (gymDetails: TGym):Promise<TFbGymEntry> => {
             gym: gymDetails,
         }
     } catch (err) {
+        console.log(err)
         throw err
     }
 }
@@ -104,6 +106,7 @@ export const updateGymDb = async (gymEntry: TFbGymEntry):Promise<TFbGymEntry> =>
         const gymDoc = await response.json()
         return {id: gymDoc._id, gym: gymDoc} as TFbGymEntry
     } catch (err) {
+        console.log(err)
         throw err
     }
 }
@@ -113,6 +116,7 @@ export const getGymsDb = async ():Promise<TGyms> => {
         const response = await getFromEndpoint('gyms')
         return await response.json() as TGyms
     } catch (err) {
+        console.log(err)
         throw err
     }
 }
@@ -123,6 +127,7 @@ export const getAllEquipmentDb = async():Promise<TAllEquipment> => {
         const allEquipment = await response.json() as TAllEquipment
         return allEquipment
     } catch (err) {
+        console.log(err)
         throw err
     }
 }
